@@ -12,6 +12,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ToastUtils.showShort(this, "欢迎使用");
+        ToastUtils.showShort(this, "欢迎你使用");
     }
 }
