@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2e99e5</color>
+    <color name="colorPrimaryDark">#005580</color>
+    <color name="colorAccent">#2e99e5</color>
+    <color name="colorLight">#FFBA31</color>
+
+    <color name="colorWhite">#fff</color>
+    <color name="colorBlue">#2694EB</color>
+    <color name="colorRed">#f00</color>
+    <color name="colorWhiteTransparent">#70ffffff</color>
+    <color name="colorBlackTransparent">#e0000000</color>
+    <color name="colorGrayTransparent">#F2F2F2</color>
+
+    <color name="colorDivider">#e0e0e0</color>
+    <color name="colorBg">@android:color/transparent</color>
+    <!-- tab之导航 -->
+    <color name="tab_bg">#FEFFFF</color>
+    <color name="tab_selected_color">#2e99e5</color>
+    <color name="tab_normal_color">#000</color>
+    <color name="gl_background">#000000</color>
+    <!--titleBar-->
+    <color name="colorTitleBar">#2e99e5</color>
+    <color name="colorTitleBarLeft">@color/colorWhite</color>
+    <color name="colorTitleBarCenter">@color/colorWhite</color>
+    <color name="colorTitleBarRight">@color/colorWhite</color>
+    <!--登陆页-->
+    <color name="colorLoginBg">#E3F4FF</color>
+    <color name="colorHint">#898989</color>
+    <color name="divider">#d1d1d1</color>
+    <color name="gray">#e5e5e5</color>
+    <color name="actionbar_bg">#1f84cc</color>
+    <color name="darkgray">#a6a6a6</color>
+    <color name="black_gray">#333333</color>
+    <color name="transparent">#00000000</color>
+    <color name="blue">#326bb2</color>
+    <color name="green">#00b300</color>
+    <color name="orange">#ffaa33</color>
+    <color name="black">#000</color>
+</resources>

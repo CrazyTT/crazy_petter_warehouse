@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "bundles": [
+    {
+      "uri": "main",
+      "pkg": "com.crazy.petter.warehouse.app.main"
+    },
+    {
+      "uri": "lib.style",
+      "pkg": "com.bjdv.lib.style"
+    },
+    {
+      "uri": "lib.utils",
+      "pkg": "com.bjdv.lib.utils"
+    }
+  ]
+}
