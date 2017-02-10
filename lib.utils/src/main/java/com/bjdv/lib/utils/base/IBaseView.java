@@ -10,17 +10,8 @@ package com.bjdv.lib.utils.base;
  */
 public interface IBaseView {
     /**
-     * 显示进度条
-     */
-    public void showLoading();
-
-    /**
-     * 关闭进度条
-     */
-    public void hideLoading();
-
-    /**
      * 提示信息
+     *
      * @param tips
      */
     public void showTips(String tips);

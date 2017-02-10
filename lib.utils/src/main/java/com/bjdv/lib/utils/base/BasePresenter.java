@@ -41,11 +41,9 @@ public abstract class BasePresenter implements IPresenter<String> {
     @Override
     public void requestData(String url, String params, final DataCallBack dataCallBack) {
         mConnection = Connection.getInstance(context);
-        iBaseView.showLoading();
         RequestCallBack callBack = new RequestCallBack() {
             @Override
             public void onResponse(String response) {
-
                 JSONObject respJsonObject = JsonUtil.from(response);
                 String resultCode = JsonUtil.getString(respJsonObject, "returnCode");
                 String resultInfo = JsonUtil.getString(respJsonObject, "resultInfo");
@@ -56,13 +54,11 @@ public abstract class BasePresenter implements IPresenter<String> {
                     dataCallBack.onFailure(resultInfo);//失败提示
                     iBaseView.showTips(resultInfo);
                 }
-                iBaseView.hideLoading();
             }
 
             @Override
             public void onErrorResponse(String errorInfo) {
                 dataCallBack.onFailure(errorInfo);
-                iBaseView.hideLoading();
                 iBaseView.showTips(errorInfo);
             }
 
@@ -101,12 +97,10 @@ public abstract class BasePresenter implements IPresenter<String> {
                     BasePresenter.this.iBaseView.showTips(resultInfo);
                 }
 
-                BasePresenter.this.iBaseView.hideLoading();
             }
 
             public void onErrorResponse(String errorInfo) {
                 dataCallBack.onFailure(errorInfo);
-                BasePresenter.this.iBaseView.hideLoading();
                 BasePresenter.this.iBaseView.showTips(errorInfo);
             }
 

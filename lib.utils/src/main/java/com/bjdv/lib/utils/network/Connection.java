@@ -151,10 +151,84 @@ public class Connection {
             mRequestQueue.add(request);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }catch (SysException e) {
+        } catch (SysException e) {
             e.printStackTrace();
         }
     }
+
+    public void requestData(String url, final Map<String, String> params, String Tag, final RequestCallBack callback) {
+        LogUtils.i(TAG, "[volly request]->url=" + url);
+        LogUtils.i(TAG, "[volly params]->params=" + params);
+        if (mRequestQueue == null) {
+            LogUtils.e(TAG, "Volley未初始化，请先执行初始化方法");
+            return;
+        }
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                if (callback != null) {
+                    String resp = s;
+//                    String resp = null;
+//                    try {
+//                        resp = EncryptUtil.decryptThreeDESECB(s);
+//                    } catch (SysException e) {
+//                        e.printStackTrace();
+//                    }
+                    KLog.json(resp);
+                    callback.onResponse(resp);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                LogUtils.i(TAG, "[volly onResponse]->volleyError=" + getErrorInfo(volleyError));
+                if (volleyError instanceof AuthFailureError) {
+                    callback.onTokenExpire();
+                }
+
+                if (callback != null)
+                    callback.onErrorResponse(getErrorInfo(volleyError));
+            }
+        }) {
+
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> sendHeader = new HashMap<>();
+//                sendHeader.put("Content-Type", "application/json; charset=UTF-8");
+//                String Authorization = PreferenceManager.getDefaultSharedPreferences(mContext).getString("Authorization", null);
+//                if (Authorization != null) {
+//                    LogUtils.i(">>>cookies=" + Authorization);
+//                    sendHeader.put("Authorization", Authorization);
+//                }
+//                return sendHeader;
+//            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return params;
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+//                response.headers.put("Content-Type", "application/json; charset=UTF-8");
+//                Map<String, String> responseHeaders = response.headers;
+//                String Authorization = responseHeaders.get("Authorization");
+//                if (Authorization != null) {
+//                    SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
+//                    editor.putString("Authorization", Authorization);
+//                    editor.commit();
+//                    LogUtils.i(TAG, "[Authorization]-->" + Authorization);
+//                }
+                return super.parseNetworkResponse(response);
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(15 * 000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        request.setTag(Tag);
+        mRequestQueue.add(request);
+    }
+
 
     protected String getErrorInfo(VolleyError error) {
         String errorInfo = error.toString();

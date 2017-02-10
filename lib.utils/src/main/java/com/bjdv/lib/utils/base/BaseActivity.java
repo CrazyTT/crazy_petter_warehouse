@@ -7,7 +7,6 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -43,7 +42,7 @@ import java.util.Map;
  *
  * @author phoon-think
  */
-public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
+public  class BaseActivity extends AppCompatActivity  {
     private RequestQueue mRequestQueue;
     private int time = 15 * 1000;
     private String TAG;
@@ -102,11 +101,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     private Dialog mProgressDialog;
 
-    public void assambleView(int... ids) {
-        for (int id : ids) {
-            findViewById(id).setOnClickListener(this);
-        }
-    }
 
     public void showProgress(String msg, boolean ifCancle) {
         if (this.mProgressDialog != null) {
@@ -209,17 +203,5 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             errorInfo = "连接超时";
         }
         return errorInfo;
-    }
-
-    public abstract void onViewClick(View v);
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            default:
-                onViewClick(v);
-                break;
-
-        }
     }
 }
