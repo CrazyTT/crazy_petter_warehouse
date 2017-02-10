@@ -87,14 +87,13 @@ public abstract class BasePresenter implements IPresenter<String> {
         RequestCallBack callBack = new RequestCallBack() {
             public void onResponse(String response) {
                 JSONObject respJsonObject = JsonUtil.from(response);
-                String resultCode = JsonUtil.getString(respJsonObject, "returnCode");
-                String resultInfo = JsonUtil.getString(respJsonObject, "resultInfo");
-                String responseBody = JsonUtil.getString(respJsonObject, "responseBody");
-                if ("0".equals(resultCode)) {
-                    dataCallBack.onSuccess(responseBody);
+                boolean resultCode = JsonUtil.getBoolean(respJsonObject, "success");
+                String message = JsonUtil.getString(respJsonObject, "message");
+                if (resultCode) {
+                    dataCallBack.onSuccess(response);
                 } else {
-                    dataCallBack.onFailure(resultInfo);
-                    BasePresenter.this.iBaseView.showTips(resultInfo);
+                    dataCallBack.onFailure(message);
+                    BasePresenter.this.iBaseView.showTips(message);
                 }
 
             }

@@ -12,6 +12,10 @@
     {
       "uri": "lib.utils",
       "pkg": "com.bjdv.lib.utils"
+    },
+    {
+      "uri": "login",
+      "pkg": "com.crazy.petter.warehouse.app.login"
     }
   ]
 }

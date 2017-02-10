@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -22,9 +23,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bjdv.lib.utils.R;
-import com.bjdv.lib.utils.network.EncryptUtil;
 import com.bjdv.lib.utils.network.RequestCallBack;
-import com.bjdv.lib.utils.network.SysException;
 import com.bjdv.lib.utils.util.LogUtils;
 import com.bjdv.lib.utils.util.ToastUtils;
 
@@ -42,7 +41,7 @@ import java.util.Map;
  *
  * @author phoon-think
  */
-public  class BaseActivity extends AppCompatActivity  {
+public class BaseActivity extends AppCompatActivity {
     private RequestQueue mRequestQueue;
     private int time = 15 * 1000;
     private String TAG;
@@ -138,17 +137,12 @@ public  class BaseActivity extends AppCompatActivity  {
                 ToastUtils.showShort(this, "尚未初始化网络请求，请先初始化");
                 return;
             }
-            final byte[] content = EncryptUtil.encryptThreeDESECB(params).getBytes("UTF-8");
+            final byte[] content = params.getBytes("UTF-8");
             StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String s) {
                     if (callback != null) {
-                        try {
-                            String resp = EncryptUtil.decryptThreeDESECB(s);
-                            callback.onResponse(resp);
-                        } catch (SysException e) {
-                            e.printStackTrace();
-                        }
+                        String resp = s;
                     }
                 }
             }, new Response.ErrorListener() {
@@ -165,8 +159,11 @@ public  class BaseActivity extends AppCompatActivity  {
 
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> sendHeader = new HashMap<String, String>();
-                    sendHeader.put("Content-Type", "application/json; charset=UTF-8");
+                    Map<String, String> sendHeader = new HashMap<>();
+                    if (true) {
+                        sendHeader.put("userName", "admin");
+                        sendHeader.put("apiKey", "123");
+                    }
                     return sendHeader;
                 }
 
@@ -174,14 +171,18 @@ public  class BaseActivity extends AppCompatActivity  {
                 public String getBodyContentType() {
                     return "application/json; charset=UTF-8";
                 }
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    response.headers.put("Content-Type", "application/json; charset=UTF-8");
+                    return super.parseNetworkResponse(response);
+                }
             };
             request.setRetryPolicy(new DefaultRetryPolicy(time,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             request.setTag(TAG);
             mRequestQueue.add(request);
-        } catch (SysException e) {
-            e.printStackTrace();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

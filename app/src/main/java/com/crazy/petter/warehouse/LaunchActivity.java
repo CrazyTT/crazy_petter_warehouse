@@ -11,6 +11,7 @@ import net.wequick.small.Small;
  */
 public class LaunchActivity extends Activity {
     private TextView textView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +30,7 @@ public class LaunchActivity extends Activity {
                 textView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Small.openUri("main", LaunchActivity.this);
+                        Small.openUri("login", LaunchActivity.this);
                         finish();
                     }
                 }, 1000);

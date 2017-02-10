@@ -2,8 +2,6 @@ package com.bjdv.lib.utils.network;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -78,19 +76,12 @@ public class Connection {
                 LogUtils.e(TAG, "Volley未初始化，请先执行初始化方法");
                 return;
             }
-            //final byte[] content = params.getBytes("UTF-8");
-            final byte[] content = EncryptUtil.encryptThreeDESECB(params).getBytes("UTF-8");
+            final byte[] content = params.getBytes("UTF-8");
             StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String s) {
                     if (callback != null) {
-                        //String resp = s;
-                        String resp = null;
-                        try {
-                            resp = EncryptUtil.decryptThreeDESECB(s);
-                        } catch (SysException e) {
-                            e.printStackTrace();
-                        }
+                        String resp = s;
                         KLog.json(resp);
                         callback.onResponse(resp);
                     }
@@ -116,11 +107,9 @@ public class Connection {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> sendHeader = new HashMap<>();
-                    sendHeader.put("Content-Type", "application/json; charset=UTF-8");
-                    String Authorization = PreferenceManager.getDefaultSharedPreferences(mContext).getString("Authorization", null);
-                    if (Authorization != null) {
-                        LogUtils.i(">>>cookies=" + Authorization);
-                        sendHeader.put("Authorization", Authorization);
+                    if (true) {
+                        sendHeader.put("userName", "admin");
+                        sendHeader.put("apiKey", "123");
                     }
                     return sendHeader;
                 }
@@ -133,14 +122,6 @@ public class Connection {
                 @Override
                 protected Response<String> parseNetworkResponse(NetworkResponse response) {
                     response.headers.put("Content-Type", "application/json; charset=UTF-8");
-                    Map<String, String> responseHeaders = response.headers;
-                    String Authorization = responseHeaders.get("Authorization");
-                    if (Authorization != null) {
-                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
-                        editor.putString("Authorization", Authorization);
-                        editor.commit();
-                        LogUtils.i(TAG, "[Authorization]-->" + Authorization);
-                    }
                     return super.parseNetworkResponse(response);
                 }
             };
@@ -150,8 +131,6 @@ public class Connection {
             request.setTag(Tag);
             mRequestQueue.add(request);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (SysException e) {
             e.printStackTrace();
         }
     }
@@ -168,12 +147,6 @@ public class Connection {
             public void onResponse(String s) {
                 if (callback != null) {
                     String resp = s;
-//                    String resp = null;
-//                    try {
-//                        resp = EncryptUtil.decryptThreeDESECB(s);
-//                    } catch (SysException e) {
-//                        e.printStackTrace();
-//                    }
                     KLog.json(resp);
                     callback.onResponse(resp);
                 }
@@ -191,17 +164,15 @@ public class Connection {
             }
         }) {
 
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> sendHeader = new HashMap<>();
-//                sendHeader.put("Content-Type", "application/json; charset=UTF-8");
-//                String Authorization = PreferenceManager.getDefaultSharedPreferences(mContext).getString("Authorization", null);
-//                if (Authorization != null) {
-//                    LogUtils.i(">>>cookies=" + Authorization);
-//                    sendHeader.put("Authorization", Authorization);
-//                }
-//                return sendHeader;
-//            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> sendHeader = new HashMap<>();
+                if (true) {
+                    sendHeader.put("userName", "admin");
+                    sendHeader.put("apiKey", "123");
+                }
+                return sendHeader;
+            }
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
@@ -210,15 +181,6 @@ public class Connection {
 
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
-//                response.headers.put("Content-Type", "application/json; charset=UTF-8");
-//                Map<String, String> responseHeaders = response.headers;
-//                String Authorization = responseHeaders.get("Authorization");
-//                if (Authorization != null) {
-//                    SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(mContext).edit();
-//                    editor.putString("Authorization", Authorization);
-//                    editor.commit();
-//                    LogUtils.i(TAG, "[Authorization]-->" + Authorization);
-//                }
                 return super.parseNetworkResponse(response);
             }
         };
