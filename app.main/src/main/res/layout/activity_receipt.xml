@@ -149,8 +149,8 @@
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
-                android:gravity="right"
                 android:background="@drawable/edt_back"
+                android:gravity="right"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:singleLine="true"/>
@@ -189,6 +189,6 @@
         android:layout_gravity="bottom"
         android:layout_margin="10dp"
         android:background="@drawable/backgroud_gradview"
-        android:text="确认收货"
+        android:text="确认"
         android:textColor="@color/colorWhite"/>
 </RelativeLayout>

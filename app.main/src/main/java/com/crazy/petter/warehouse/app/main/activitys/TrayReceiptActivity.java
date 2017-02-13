@@ -101,29 +101,30 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
         mBtnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                Date curDate = new Date(System.currentTimeMillis());//获取当前时间
-                String str = formatter.format(curDate);
-                ReceiptBean receiptBean = new ReceiptBean();
-                receiptBean.setInboundId(mEdtOrderNum.getText().toString().trim());
-                receiptBean.setReceiptDate(str);
-                ArrayList<ReceiptBean.DetailsEntity> entities = new ArrayList<>();
-                for (int i = 0; i < datas.size(); i++) {
-                    ReceiptBean.DetailsEntity detailsEntity = new ReceiptBean.DetailsEntity();
-                    detailsEntity.setExtLot(datas.get(i).getExtLot());
-                    detailsEntity.setLpnNo(datas.get(i).getLPN());
-                    detailsEntity.setExpiredDate("");
-                    detailsEntity.setProduceDate("");
-                    detailsEntity.setReceiptQty("");
-                    detailsEntity.setSeqNo(datas.get(i).getSeqNo());
-                    detailsEntity.setSkuId(datas.get(i).getSkuId());
-                    detailsEntity.setSkuName(datas.get(i).getSkuName());
-                    detailsEntity.setSkuProperty(datas.get(i).getSkuProperty());
-                    entities.add(detailsEntity);
+                if (datas != null && datas.size() > 0) {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+                    String str = formatter.format(curDate);
+                    ReceiptBean receiptBean = new ReceiptBean();
+                    receiptBean.setInboundId(mEdtOrderNum.getText().toString().trim());
+                    receiptBean.setReceiptDate(str);
+                    ArrayList<ReceiptBean.DetailsEntity> entities = new ArrayList<>();
+                    for (int i = 0; i < datas.size(); i++) {
+                        ReceiptBean.DetailsEntity detailsEntity = new ReceiptBean.DetailsEntity();
+                        detailsEntity.setExtLot(datas.get(i).getExtLot());
+                        detailsEntity.setLpnNo(datas.get(i).getLPN());
+                        detailsEntity.setExpiredDate("");
+                        detailsEntity.setProduceDate("");
+                        detailsEntity.setReceiptQty("");
+                        detailsEntity.setSeqNo(datas.get(i).getSeqNo());
+                        detailsEntity.setSkuId(datas.get(i).getSkuId());
+                        detailsEntity.setSkuName(datas.get(i).getSkuName());
+                        detailsEntity.setSkuProperty(datas.get(i).getSkuProperty());
+                        entities.add(detailsEntity);
+                    }
+                    receiptBean.setDetails(entities);
+                    mTrayReceiptPresenter.receipt(JsonFormatter.getInstance().object2Json(receiptBean));
                 }
-                receiptBean.setDetails(entities);
-                mTrayReceiptPresenter.receipt(JsonFormatter.getInstance().object2Json(receiptBean));
-
             }
         });
 

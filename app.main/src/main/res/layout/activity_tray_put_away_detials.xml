@@ -8,44 +8,64 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="按托盘号收货"/>
+        android:text="按托盘号上架"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="50dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="托盘号:"/>
+            android:orientation="horizontal"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp">
 
-        <EditText
-            android:id="@+id/edt_order_num"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/edt_back"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:singleLine="true"/>
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="托盘号"/>
 
-        <com.bjdv.lib.utils.widgets.ButtonAutoBg
-            android:id="@+id/btn_query"
-            android:layout_width="70dp"
+            <EditText
+                android:id="@+id/edt_lpn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edt_back"
+                android:hint="请扫描输入货品代码"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:singleLine="true"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="查询"/>
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="上架货位"/>
+
+            <EditText
+                android:id="@+id/edt_loc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/edt_back"
+                android:gravity="right"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:singleLine="true"/>
+
+        </LinearLayout>
     </LinearLayout>
-
-    <CheckBox
-        android:id="@+id/cb_default"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:checked="true"
-        android:text="默认确认"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="料号"
+            android:text="货品代码"
             android:textColor="@color/black_gray"/>
 
         <TextView
@@ -83,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="外部批号"
+            android:text="生产日期"
             android:textColor="@color/black_gray"/>
     </LinearLayout>
 
@@ -93,7 +113,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
-    <Button
+    <com.bjdv.lib.utils.widgets.ButtonAutoBg
         android:id="@+id/btn_commit"
         android:layout_width="match_parent"
         android:layout_height="35dp"

@@ -4,6 +4,11 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="标准收货"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -70,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="定单日期"
+            android:text="订单日期"
             android:textColor="@color/black_gray"/>
     </LinearLayout>
 
