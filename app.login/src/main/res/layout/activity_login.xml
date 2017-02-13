@@ -5,7 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorHint"
     tools:context="com.crazy.petter.warehouse.app.login.LoginActivity">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="仓库管理系统"
+        android:textColor="@color/colorWhite"
+        android:textSize="30sp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,48 +30,48 @@
             android:layout_height="40dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="0dp"
+            <ImageView
+                android:layout_width="40dp"
                 android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="用户名"
-                android:textColor="@color/colorBlackTransparent"/>
+                android:scaleType="fitXY"
+                android:src="@mipmap/icon_user"/>
 
             <EditText
                 android:id="@+id/edt_name"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
+                android:layout_marginLeft="20dp"
                 android:layout_weight="4"
-                android:background="@drawable/backgroud_edit"
+                android:background="@drawable/edt_back"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:textColor="@color/colorBlackTransparent"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="30dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="0dp"
+            <ImageView
+                android:layout_width="40dp"
                 android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="密码"
-                android:textColor="@color/colorBlackTransparent"/>
+                android:scaleType="fitXY"
+                android:src="@mipmap/icon_pwd"/>
 
             <EditText
                 android:id="@+id/edt_psd"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
+                android:layout_marginLeft="20dp"
                 android:layout_weight="4"
-                android:background="@drawable/backgroud_edit"
+                android:background="@drawable/edt_back"
                 android:gravity="center_vertical"
                 android:inputType="textPassword"
                 android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:textColor="@color/colorBlackTransparent"/>
         </LinearLayout>
 

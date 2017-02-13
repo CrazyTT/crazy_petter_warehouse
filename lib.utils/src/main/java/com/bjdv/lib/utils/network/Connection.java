@@ -90,11 +90,6 @@ public class Connection {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
                     LogUtils.i(TAG, "[volly onResponse]->volleyError=" + getErrorInfo(volleyError));
-
-                    if (volleyError instanceof AuthFailureError) {
-                        callback.onTokenExpire();
-                    }
-
                     if (callback != null)
                         callback.onErrorResponse(getErrorInfo(volleyError));
                 }
@@ -155,10 +150,6 @@ public class Connection {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 LogUtils.i(TAG, "[volly onResponse]->volleyError=" + getErrorInfo(volleyError));
-                if (volleyError instanceof AuthFailureError) {
-                    callback.onTokenExpire();
-                }
-
                 if (callback != null)
                     callback.onErrorResponse(getErrorInfo(volleyError));
             }

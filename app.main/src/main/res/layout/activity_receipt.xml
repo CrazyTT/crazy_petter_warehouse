@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/activity_receipt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/backgroud_edit"
+        android:orientation="vertical"
+        android:padding="10dp"
+        tools:context="com.crazy.petter.warehouse.app.main.activitys.ReceiptActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="入库单号:"
+                android:textColor="@color/black_gray"/>
+
+            <EditText
+                android:id="@+id/txt_orderNum"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/edt_back"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"
+                android:text="123123213"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="3dp">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="货品代码:"
+                android:textColor="@color/black_gray"/>
+
+            <EditText
+                android:id="@+id/edt_good_id"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/edt_back"
+                android:hint="请扫描货品代码"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="3dp">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="货品名称:"
+                android:textColor="@color/black_gray"/>
+
+            <EditText
+                android:id="@+id/edt_good_name"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/edt_back"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="3dp">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="接收数量:"
+                android:textColor="@color/black_gray"/>
+
+            <EditText
+                android:id="@+id/edt_num"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/edt_back"
+                android:gravity="right"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="3dp">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="LPN:"
+                android:textColor="@color/black_gray"/>
+
+            <EditText
+                android:id="@+id/edt_lpn"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/edt_back"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="3dp">
+
+            <TextView
+                android:id="@+id/txt_date"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="失效日期:"
+                android:textColor="@color/black_gray"/>
+
+            <EditText
+                android:id="@+id/edt_date"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:background="@drawable/edt_back"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:singleLine="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="3dp">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="货品属性:"
+                android:textColor="@color/black_gray"/>
+
+            <Spinner
+                android:id="@+id/sp_good_Property"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.bjdv.lib.utils.widgets.ButtonAutoBg
+        android:id="@+id/btn_commit"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_margin="10dp"
+        android:background="@drawable/backgroud_gradview"
+        android:text="确认收货"
+        android:textColor="@color/colorWhite"/>
+</RelativeLayout>

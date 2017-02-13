@@ -14,6 +14,4 @@ public interface RequestCallBack {
 
     public void onErrorResponse(String errorInfo);
 
-    public void onTokenExpire();
-
 }

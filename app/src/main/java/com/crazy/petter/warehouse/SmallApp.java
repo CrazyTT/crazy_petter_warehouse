@@ -2,7 +2,11 @@ package com.crazy.petter.warehouse;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
+
 import net.wequick.small.Small;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * The host application for Small
@@ -34,5 +38,10 @@ public class SmallApp extends Application {
         //
         // Small.setBaseUri("https://your_domain/path");
         //
+        final Fabric fabric = new Fabric.Builder(this)
+                .kits(new Crashlytics())
+                .debuggable(true)
+                .build();
+        Fabric.with(this, new Crashlytics());
     }
 }

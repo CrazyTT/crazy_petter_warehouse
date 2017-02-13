@@ -5,9 +5,11 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.bjdv.lib.utils.base.BaseActivity;
+import com.bjdv.lib.utils.constants.Constant;
 import com.bjdv.lib.utils.network.Connection;
 import com.bjdv.lib.utils.network.RequestCallBack;
 import com.bjdv.lib.utils.util.JsonUtil;
+import com.bjdv.lib.utils.util.StringUtils;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 
@@ -50,6 +52,15 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void login() {
+        String userName = mEdtName.getText().toString().trim();
+        String passWord = mEdtPsd.getText().toString().trim();
+        if (StringUtils.isBlank(userName)) {
+            ToastUtils.showShort(LoginActivity.this, getResources().getString(R.string.hint_account));
+            return;
+        } else if (StringUtils.isBlank(passWord)) {
+            ToastUtils.showShort(LoginActivity.this, getResources().getString(R.string.hint_pwd));
+            return;
+        }
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("UserName", "admin");
@@ -57,9 +68,11 @@ public class LoginActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Connection.getInstance(this).requestData("http://115.159.197.221:9898/WebAPI/api/WmsRf/LoginWmsRf", jsonObject.toString(), "login", new RequestCallBack() {
+        showProgress("正在登录中...", false);
+        Connection.getInstance(this).requestData(Constant.SERVER_URL_BASE + Constant.LOGIN, jsonObject.toString(), "login", new RequestCallBack() {
             @Override
             public void onResponse(String s) {
+                stopProgress();
                 JSONObject jsonObject1 = JsonUtil.from(s);
                 if (JsonUtil.getBoolean(jsonObject1, "success")) {
                     Small.openUri("main", LoginActivity.this);
@@ -72,15 +85,9 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onErrorResponse(String s) {
+                stopProgress();
                 ToastUtils.showShort(LoginActivity.this, s);
             }
-
-            @Override
-            public void onTokenExpire() {
-
-            }
         });
-
-
     }
 }

@@ -36,7 +36,7 @@
     <application
         android:name=".SmallApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_back"
+        android:icon="@mipmap/ic_launcher2"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
@@ -49,6 +49,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="fad741054e7e18fcc776df5b16f10e968ddeecab"/>
     </application>
-
 </manifest>
