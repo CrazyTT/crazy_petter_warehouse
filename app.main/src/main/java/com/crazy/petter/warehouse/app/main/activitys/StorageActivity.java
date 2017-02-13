@@ -38,7 +38,6 @@ public class StorageActivity extends BaseActivity {
     private Fragment mTab2;
     SharedPreferencesUtil mSharedPreferencesUtil;
 
-
     public static String getTemp() {
         return temp;
     }

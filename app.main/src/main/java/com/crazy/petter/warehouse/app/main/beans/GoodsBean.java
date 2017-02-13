@@ -47,9 +47,9 @@ public class GoodsBean extends BaseBean {
         public String SkuId;
         public String SkuName;
         public String LPN;
-        public double Qty;
-        public double ReceivedQty;
-        public double WaitReceiveQty;
+        public int Qty;
+        public int ReceivedQty;
+        public int WaitReceiveQty;
         public String ExtLot;
         public String SkuProperty;
         public boolean ShelfLifeCtrl;
@@ -102,27 +102,27 @@ public class GoodsBean extends BaseBean {
             this.LPN = LPN;
         }
 
-        public double getQty() {
+        public int getQty() {
             return Qty;
         }
 
-        public void setQty(double Qty) {
+        public void setQty(int Qty) {
             this.Qty = Qty;
         }
 
-        public double getReceivedQty() {
+        public int getReceivedQty() {
             return ReceivedQty;
         }
 
-        public void setReceivedQty(double ReceivedQty) {
+        public void setReceivedQty(int ReceivedQty) {
             this.ReceivedQty = ReceivedQty;
         }
 
-        public double getWaitReceiveQty() {
+        public int getWaitReceiveQty() {
             return WaitReceiveQty;
         }
 
-        public void setWaitReceiveQty(double WaitReceiveQty) {
+        public void setWaitReceiveQty(int WaitReceiveQty) {
             this.WaitReceiveQty = WaitReceiveQty;
         }
 

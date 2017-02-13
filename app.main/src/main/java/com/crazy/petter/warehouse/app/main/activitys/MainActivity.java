@@ -48,7 +48,15 @@ public class MainActivity extends BaseActivity {
         mStorage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sp.setBoolean("tray", false);
                 startActivity(new Intent(MainActivity.this, StorageActivity.class));
+            }
+        });
+        mStorageWithNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sp.setBoolean("tray", true);
+                startActivity(new Intent(MainActivity.this, TrayStorageActivity.class));
             }
         });
     }
