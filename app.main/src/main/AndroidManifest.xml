@@ -19,46 +19,49 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activitys.StorageActivity"
+            android:name=".activitys.in.StorageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden">
         </activity>
         <activity
-            android:name=".activitys.ReceiptActivity"
+            android:name=".activitys.in.ReceiptActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden">
         </activity>
         <activity
-            android:name=".activitys.TrayStorageActivity"
+            android:name=".activitys.in.TrayStorageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden">
         </activity>
         <activity
-            android:name=".activitys.TrayReceiptActivity"
+            android:name=".activitys.in.TrayReceiptActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden">
         </activity>
         <activity
-            android:name=".activitys.PutAwayActivity"
+            android:name=".activitys.in.PutAwayActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden">
         </activity>
         <activity
-            android:name=".activitys.PutAwayDetialsActivity"
+            android:name=".activitys.in.PutAwayDetialsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden">
         </activity>
         <activity
-            android:name=".activitys.TrayPutAwayActivity"
+            android:name=".activitys.in.TrayPutAwayActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden">
         </activity>
         <activity
-            android:name=".activitys.TrayPutAwayDetialsActivity"
+            android:name=".activitys.in.TrayPutAwayDetialsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden">
         </activity>
-
+        <activity android:name=".activitys.out.TraySendActivity">
+        </activity>
+        <activity android:name=".activitys.out.TraySendDetialsActivity">
+        </activity>
     </application>
 
 </manifest>

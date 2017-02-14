@@ -1,4 +1,4 @@
-package com.crazy.petter.warehouse.app.main.activitys;
+package com.crazy.petter.warehouse.app.main.activitys.out;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,10 +17,10 @@ import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.adapters.ScanOrderAdapter;
-import com.crazy.petter.warehouse.app.main.beans.ScanStoreageBean;
-import com.crazy.petter.warehouse.app.main.presenters.TrayStoragePresenter;
-import com.crazy.petter.warehouse.app.main.views.TrayStorageView;
+import com.crazy.petter.warehouse.app.main.adapters.ScanSendOrderAdapter;
+import com.crazy.petter.warehouse.app.main.beans.ScanSendBean;
+import com.crazy.petter.warehouse.app.main.presenters.TraySendPresenter;
+import com.crazy.petter.warehouse.app.main.views.TraySendView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,27 +30,27 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class TrayStorageActivity extends BaseActivity implements TrayStorageView {
+public class TraySendActivity extends BaseActivity implements TraySendView {
+    TraySendPresenter mTraySendPresenter;
     @Bind(R.id.edt_order_num)
     EditText mEdtOrderNum;
     @Bind(R.id.btn_query)
     ButtonAutoBg mBtnQuery;
     @Bind(R.id.order_list)
     RecyclerView mOrderList;
-    ScanOrderAdapter scanOrderAdapter;
-    TrayStoragePresenter mTrayStoragePresenter;
+    ScanSendOrderAdapter scanOrderAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tray_storage);
-        mTrayStoragePresenter = new TrayStoragePresenter(this, this, "TrayStorageActivity");
+        setContentView(R.layout.activity_tray_send);
         ButterKnife.bind(this);
+        mTraySendPresenter = new TraySendPresenter(this, this, "mTraySendPresenter");
         initViews();
     }
 
     private void initViews() {
-        scanOrderAdapter = new ScanOrderAdapter(this, new ScanOrderAdapter.OrderTodoAdapterCallBack() {
+        scanOrderAdapter = new ScanSendOrderAdapter(this, new ScanSendOrderAdapter.OrderTodoAdapterCallBack() {
             @Override
             public void click(int postion) {
                 jump(postion);
@@ -90,6 +90,8 @@ public class TrayStorageActivity extends BaseActivity implements TrayStorageView
                 getDetials();
             }
         });
+
+
     }
 
     private void getDetials() {
@@ -103,14 +105,7 @@ public class TrayStorageActivity extends BaseActivity implements TrayStorageView
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        mTrayStoragePresenter.getOrders(jsonObject.toString());
-
-    }
-
-    private void jump(int postion) {
-        Intent intent = new Intent(this, TrayReceiptActivity.class);
-        intent.putExtra("detials", JsonFormatter.getInstance().object2Json(scanOrderAdapter.getList().get(postion)));
-        startActivity(intent);
+        mTraySendPresenter.getOrders(jsonObject.toString());
 
     }
 
@@ -119,14 +114,20 @@ public class TrayStorageActivity extends BaseActivity implements TrayStorageView
         ToastUtils.showShort(this, s);
     }
 
+    private void jump(int postion) {
+        Intent intent = new Intent(this, TraySendDetialsActivity.class);
+        intent.putExtra("detials", JsonFormatter.getInstance().object2Json(scanOrderAdapter.getList().get(postion)));
+        startActivity(intent);
+    }
+
     @Override
-    public void setList(ArrayList<ScanStoreageBean.DataEntity> data) {
+    public void setList(ArrayList<ScanSendBean.DataEntity> data) {
         scanOrderAdapter.setList(data);
     }
 
     @Override
     public void getOrderFailure() {
-        ArrayList<ScanStoreageBean.DataEntity> data = new ArrayList<>();
+        ArrayList<ScanSendBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
     }
 }

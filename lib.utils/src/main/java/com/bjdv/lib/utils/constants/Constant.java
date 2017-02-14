@@ -9,5 +9,8 @@ public class Constant {
     public static String PUTAWAY = "WebAPI/api/WmsRf/QueryPutAway";
     public static String PUTAWAYDETIALS = "WebAPI/api/WmsRf/QueryPutAwayDt";
     public static String ConfirmPutAway = "WebAPI/api/WmsRf/ConfirmPutAway";
+    public static String TRAYSEND = "WebAPI/api/WmsRf/QueryOutboundShip";
+    public static String TRAYSENDDETIALS = "WebAPI/api/WmsRf/QueryOutboundShipDt";
+
 
 }

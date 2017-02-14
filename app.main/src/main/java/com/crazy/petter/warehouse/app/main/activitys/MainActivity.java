@@ -11,6 +11,11 @@ import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.util.SharedPreferencesUtil;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.crazy.petter.warehouse.app.main.R;
+import com.crazy.petter.warehouse.app.main.activitys.in.PutAwayActivity;
+import com.crazy.petter.warehouse.app.main.activitys.in.StorageActivity;
+import com.crazy.petter.warehouse.app.main.activitys.in.TrayPutAwayActivity;
+import com.crazy.petter.warehouse.app.main.activitys.in.TrayStorageActivity;
+import com.crazy.petter.warehouse.app.main.activitys.out.TraySendActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -67,6 +72,12 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, TrayPutAwayActivity.class));
+            }
+        });
+        mDeliver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, TraySendActivity.class));
             }
         });
     }

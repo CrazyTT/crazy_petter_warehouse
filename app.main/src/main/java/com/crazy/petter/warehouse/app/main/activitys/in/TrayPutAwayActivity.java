@@ -1,4 +1,4 @@
-package com.crazy.petter.warehouse.app.main.activitys;
+package com.crazy.petter.warehouse.app.main.activitys.in;
 
 import android.content.Context;
 import android.content.Intent;

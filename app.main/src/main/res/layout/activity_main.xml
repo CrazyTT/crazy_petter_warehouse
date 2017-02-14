@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="30dp">
+        android:padding="10dp">
 
         <com.bjdv.lib.utils.widgets.ButtonAutoBg
             android:id="@+id/storage"
@@ -56,8 +56,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
-        android:padding="30dp">
+        android:padding="10dp">
 
         <com.bjdv.lib.utils.widgets.ButtonAutoBg
             android:id="@+id/pick"
@@ -86,6 +87,26 @@
             android:background="@drawable/backgroud_gradview"
             android:gravity="center"
             android:text="按托盘号扫描发货"
+            android:textColor="@color/colorWhite"/>
+
+        <com.bjdv.lib.utils.widgets.ButtonAutoBg
+            android:id="@+id/bocidan"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/backgroud_gradview"
+            android:gravity="center"
+            android:text="波次单扫描拣货"
+            android:textColor="@color/colorWhite"/>
+
+        <com.bjdv.lib.utils.widgets.ButtonAutoBg
+            android:id="@+id/fenhuo"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/backgroud_gradview"
+            android:gravity="center"
+            android:text="分货"
             android:textColor="@color/colorWhite"/>
     </LinearLayout>
 </LinearLayout>

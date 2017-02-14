@@ -1,7 +1,8 @@
-package com.crazy.petter.warehouse.app.main.activitys;
+package com.crazy.petter.warehouse.app.main.activitys.in;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -70,6 +71,12 @@ public class StorageActivity extends BaseActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
+    }
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }

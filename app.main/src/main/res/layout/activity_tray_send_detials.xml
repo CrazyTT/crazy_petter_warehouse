@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="按托盘号发货"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="托盘号:"/>
+
+        <EditText
+            android:id="@+id/edt_order_num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/edt_back"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:singleLine="true"/>
+
+        <com.bjdv.lib.utils.widgets.ButtonAutoBg
+            android:id="@+id/btn_query"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="查询"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="料号"
+            android:textColor="@color/black_gray"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="数量"
+            android:textColor="@color/black_gray"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="货品属性"
+            android:textColor="@color/black_gray"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="外部批号"
+            android:textColor="@color/black_gray"/>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/order_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_commit"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/backgroud_gradview"
+            android:text="确定"
+            android:textColor="@color/colorWhite"/>
+
+        <Button
+            android:id="@+id/btn_cancle"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/backgroud_gradview"
+            android:text="取消"
+            android:textColor="@color/colorWhite"/>
+    </LinearLayout>
+
+</LinearLayout>

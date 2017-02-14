@@ -12,7 +12,7 @@
         android:background="@drawable/backgroud_edit"
         android:orientation="vertical"
         android:padding="10dp"
-        tools:context="com.crazy.petter.warehouse.app.main.activitys.ReceiptActivity">
+        tools:context="com.crazy.petter.warehouse.app.main.activitys.in.ReceiptActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
