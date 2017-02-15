@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/activity_pick_detials"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.crazy.petter.warehouse.app.main.activitys.out.PickDetialsActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="扫瞄拣货"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="出库单号"/>
+
+        <TextView
+            android:id="@+id/txt_orderNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="123123"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:text="计划"/>
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="实际"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="30dp">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="拣货货位"/>
+
+        <TextView
+            android:id="@+id/txt_loc"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/txt_back_actual"
+            android:gravity="center"
+            android:textColor="@color/colorBlackTransparent"/>
+
+        <EditText
+            android:id="@+id/edt_loc"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/edt_back"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:singleLine="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="30dp">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="货品代码"/>
+
+        <TextView
+            android:id="@+id/txt_skuid"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/txt_back_actual"
+            android:gravity="center"
+            android:textColor="@color/colorBlackTransparent"/>
+
+        <EditText
+            android:id="@+id/edt_skuid"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/edt_back"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:singleLine="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="30dp">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="货品名称"/>
+
+
+        <EditText
+            android:id="@+id/edt_skuname"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/edt_back"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:singleLine="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="30dp">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="拣货数量"/>
+
+        <TextView
+            android:id="@+id/txt_qty"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/txt_back_actual"
+            android:gravity="center"
+            android:textColor="@color/colorBlackTransparent"/>
+
+        <EditText
+            android:id="@+id/edt_qty"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/edt_back"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:singleLine="true"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:paddingLeft="30dp">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:text="备注"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/txt_back_actual"
+            android:gravity="center"
+            android:textColor="@color/colorBlackTransparent"/>
+    </LinearLayout>
+
+    <com.bjdv.lib.utils.widgets.ButtonAutoBg
+        android:id="@+id/btn_commit"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/backgroud_gradview"
+        android:text="确认"
+        android:textColor="@color/colorWhite"/>
+
+    <TextView
+        android:id="@+id/txt_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        android:text="共计xx条/待处理xx条/已完成XX条"/>
+</LinearLayout>

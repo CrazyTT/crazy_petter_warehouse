@@ -78,6 +78,13 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden">
         </activity>
+        <activity
+            android:name=".activitys.out.PickActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden">
+        </activity>
+        <activity android:name=".activitys.out.PickDetialsActivity">
+        </activity>
     </application>
 
 </manifest>

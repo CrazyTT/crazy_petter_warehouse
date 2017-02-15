@@ -11,6 +11,6 @@ public class Constant {
     public static String ConfirmPutAway = "WebAPI/api/WmsRf/ConfirmPutAway";
     public static String TRAYSEND = "WebAPI/api/WmsRf/QueryOutboundShip";
     public static String TRAYSENDDETIALS = "WebAPI/api/WmsRf/QueryOutboundShipDt";
-
-
+    public static String PICK = "WebAPI/api/WmsRf/QueryOutboundPick";
+    public static String PICKDETIALS = "WebAPI/api/WmsRf/QueryOutboundPickDt";
 }

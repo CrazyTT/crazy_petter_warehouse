@@ -17,10 +17,10 @@ import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.adapters.ScanSendOrderAdapter;
-import com.crazy.petter.warehouse.app.main.beans.ScanSendBean;
-import com.crazy.petter.warehouse.app.main.presenters.PackPresenter;
-import com.crazy.petter.warehouse.app.main.views.PackView;
+import com.crazy.petter.warehouse.app.main.adapters.PickAdapter;
+import com.crazy.petter.warehouse.app.main.beans.PickBean;
+import com.crazy.petter.warehouse.app.main.presenters.PickPresenter;
+import com.crazy.petter.warehouse.app.main.views.PickView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,27 +30,27 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PackActivity extends BaseActivity implements PackView {
+public class PickActivity extends BaseActivity implements PickView {
+    PickPresenter mPickPresenter;
+    PickAdapter scanOrderAdapter;
     @Bind(R.id.edt_order_num)
     EditText mEdtOrderNum;
     @Bind(R.id.btn_query)
     ButtonAutoBg mBtnQuery;
     @Bind(R.id.order_list)
     RecyclerView mOrderList;
-    ScanSendOrderAdapter scanOrderAdapter;
-    PackPresenter mPackPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pack);
-        mPackPresenter = new PackPresenter(this, this, "PackActivity");
+        setContentView(R.layout.activity_pick);
         ButterKnife.bind(this);
+        mPickPresenter = new PickPresenter(this, this, "PickActivity");
         initViews();
     }
 
     private void initViews() {
-        scanOrderAdapter = new ScanSendOrderAdapter(this, new ScanSendOrderAdapter.OrderTodoAdapterCallBack() {
+        scanOrderAdapter = new PickAdapter(this, new PickAdapter.OrderTodoAdapterCallBack() {
             @Override
             public void click(int postion) {
                 jump(postion);
@@ -103,7 +103,7 @@ public class PackActivity extends BaseActivity implements PackView {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        mPackPresenter.getOrders(jsonObject.toString());
+        mPickPresenter.getOrders(jsonObject.toString());
     }
 
     @Override
@@ -112,19 +112,20 @@ public class PackActivity extends BaseActivity implements PackView {
     }
 
     private void jump(int postion) {
-        Intent intent = new Intent(this, PackDetialsActivity.class);
+        Intent intent = new Intent(this, PickDetialsActivity.class);
         intent.putExtra("detials", JsonFormatter.getInstance().object2Json(scanOrderAdapter.getList().get(postion)));
         startActivity(intent);
     }
 
+
     @Override
-    public void setList(ArrayList<ScanSendBean.DataEntity> data) {
+    public void setList(ArrayList<PickBean.DataEntity> data) {
         scanOrderAdapter.setList(data);
     }
 
     @Override
     public void getOrderFailure() {
-        ArrayList<ScanSendBean.DataEntity> data = new ArrayList<>();
+        ArrayList<PickBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
     }
 }

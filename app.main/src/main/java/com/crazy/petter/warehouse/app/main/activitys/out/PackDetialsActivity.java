@@ -43,6 +43,11 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         ButterKnife.bind(this);
         mDataEntity = JsonFormatter.getInstance().json2object(getIntent().getStringExtra("detials"), ScanSendBean.DataEntity.class);
         mPackDetialsPresenter = new PackDetialsPresenter(this, this, "PackDetialsActivity");
+        initViews();
+    }
+
+    private void initViews() {
+        mTxtOrderNum.setText(mDataEntity.getOutboundId());
     }
 
     @Override
