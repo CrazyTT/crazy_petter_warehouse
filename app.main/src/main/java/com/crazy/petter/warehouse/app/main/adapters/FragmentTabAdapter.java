@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.bjdv.lib.utils.util.SharedPreferencesUtil;
 import com.crazy.petter.warehouse.app.main.R;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class FragmentTabAdapter implements RadioGroup.OnCheckedChangeListener {
     private int currentTab;
 
     private OnRgsExtraCheckedChangedListener onRgsExtraCheckedChangedListener;
+    private SharedPreferencesUtil sp;
 
     public FragmentTabAdapter(FragmentActivity fragmentActivity, List<Fragment> fragments, int fragmentContentId, RadioGroup rgs) {
         this.fragments = fragments;
@@ -34,6 +36,7 @@ public class FragmentTabAdapter implements RadioGroup.OnCheckedChangeListener {
         RadioButton radioButton = (RadioButton) rgs.getChildAt(0);
         radioButton.setChecked(true);
         rgs.setOnCheckedChangeListener(this);
+        sp = new SharedPreferencesUtil(fragmentActivity);
     }
 
     @Override
@@ -43,6 +46,11 @@ public class FragmentTabAdapter implements RadioGroup.OnCheckedChangeListener {
                 Fragment fragment = fragments.get(i);
                 FragmentTransaction ft = obtainFragmentTransaction(i);
                 getCurrentFragment().onPause();
+                if (i == 1) {
+                    sp.setBoolean("isRefresh", true);
+                } else {
+                    sp.setBoolean("isRefresh", false);
+                }
                 if (fragment.isAdded()) {
                     fragment.onResume();
                 } else {
@@ -68,18 +76,13 @@ public class FragmentTabAdapter implements RadioGroup.OnCheckedChangeListener {
             } else {
                 ft.hide(fragment);
             }
-
             ft.commit();
         }
-
-
 //        Fragment fragment = fragments.get(idx);
 //        FragmentTransaction ft = obtainFragmentTransaction(idx);
 //        ft.replace(fragmentContentId,fragment);
 //
 //        ft.commit();
-
-
 
 
         currentTab = idx;

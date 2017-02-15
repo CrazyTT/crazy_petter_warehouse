@@ -1,0 +1,23 @@
+# 接口文档
+http://115.159.197.221:9898/WebAPI/Help
+
+
+
+#测试单号
+*IB161219000001 收货单号
+*OB160909000001 发货单号
+LP20170215001
+
+#图标网址
+*http://www.iconfont.cn/plus
+
+
+//正面圆点 KeyEvent.KEYCODE_SYSRQ
+s1键   KeyEvent.KEYCODE_CALL
+s2键   KeyEvent.KEYCODE_ENDCALL
+上    KEYCODE_DPAD_UP
+下   KEYCODE_DPAD_DOWN
+左    KEYCODE_DPAD_LEFT
+右  KEYCODE_DPAD_RIGHT
+
+

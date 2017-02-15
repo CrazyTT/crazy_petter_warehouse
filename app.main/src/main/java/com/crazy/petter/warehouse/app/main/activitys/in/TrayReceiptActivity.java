@@ -106,7 +106,7 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
                     Date curDate = new Date(System.currentTimeMillis());//获取当前时间
                     String str = formatter.format(curDate);
                     ReceiptBean receiptBean = new ReceiptBean();
-                    receiptBean.setInboundId(mEdtOrderNum.getText().toString().trim());
+                    receiptBean.setInboundId(mDataEntity.getInboundId());
                     receiptBean.setReceiptDate(str);
                     ArrayList<ReceiptBean.DetailsEntity> entities = new ArrayList<>();
                     for (int i = 0; i < datas.size(); i++) {
@@ -120,6 +120,7 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
                         detailsEntity.setSkuId(datas.get(i).getSkuId());
                         detailsEntity.setSkuName(datas.get(i).getSkuName());
                         detailsEntity.setSkuProperty(datas.get(i).getSkuProperty());
+                        detailsEntity.setReceiptQty(datas.get(i).getReceivedQty() + "");
                         entities.add(detailsEntity);
                     }
                     receiptBean.setDetails(entities);

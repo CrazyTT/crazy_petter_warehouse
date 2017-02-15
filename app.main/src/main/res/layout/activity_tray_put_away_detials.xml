@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/edt_back"
-                android:hint="请扫描输入货品代码"
+                android:hint="请扫描输入托盘号"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:singleLine="true"/>

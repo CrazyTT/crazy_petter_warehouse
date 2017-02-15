@@ -50,7 +50,6 @@ public class DetialsStoreageFragment extends Fragment implements DetialsStoreage
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detials_storeage, container, false);
         ButterKnife.bind(this, view);
-        sp = new SharedPreferencesUtil(getActivity());
         mDetialsStoreageFragmentPresenter = new DetialsStoreageFragmentPresenter(this, (BaseActivity) getActivity(), "");
         return view;
     }
@@ -64,7 +63,6 @@ public class DetialsStoreageFragment extends Fragment implements DetialsStoreage
 
             }
         });
-        mEdtOrderNum.setText(sp.getString("num"));
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mOrderList.setLayoutManager(layoutManager);
@@ -118,7 +116,9 @@ public class DetialsStoreageFragment extends Fragment implements DetialsStoreage
     public void onResume() {
         super.onResume();
         mEdtOrderNum.requestFocus();
-        if (!TextUtils.isEmpty(sp.getString("num"))) {
+        sp = new SharedPreferencesUtil(getActivity());
+        mEdtOrderNum.setText(sp.getString("num"));
+        if (!TextUtils.isEmpty(sp.getString("num")) && sp.getBoolean("isRefresh")) {
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.put("InboundId", sp.getString("num"));
