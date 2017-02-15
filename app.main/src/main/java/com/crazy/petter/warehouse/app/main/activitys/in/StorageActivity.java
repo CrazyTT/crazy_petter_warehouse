@@ -72,8 +72,13 @@ public class StorageActivity extends BaseActivity {
     public void onSaveInstanceState(Bundle outState) {
 
     }
+
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+            mRbHome.setChecked(true);
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+            mRbWork.setChecked(true);
             return true;
         }
         return super.onKeyDown(keyCode, event);

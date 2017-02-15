@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorHint"
+    android:background="@mipmap/index_back"
     tools:context="com.crazy.petter.warehouse.app.login.LoginActivity">
 
 
@@ -34,7 +34,7 @@
                 android:layout_width="40dp"
                 android:layout_height="fill_parent"
                 android:scaleType="fitXY"
-                android:src="@mipmap/icon_user"/>
+                android:src="@mipmap/user"/>
 
             <EditText
                 android:id="@+id/edt_name"
@@ -59,7 +59,7 @@
                 android:layout_width="40dp"
                 android:layout_height="fill_parent"
                 android:scaleType="fitXY"
-                android:src="@mipmap/icon_pwd"/>
+                android:src="@mipmap/psd"/>
 
             <EditText
                 android:id="@+id/edt_psd"
