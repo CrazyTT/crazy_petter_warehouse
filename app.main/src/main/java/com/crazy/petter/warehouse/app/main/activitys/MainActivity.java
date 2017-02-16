@@ -15,8 +15,10 @@ import com.crazy.petter.warehouse.app.main.activitys.in.PutAwayActivity;
 import com.crazy.petter.warehouse.app.main.activitys.in.StorageActivity;
 import com.crazy.petter.warehouse.app.main.activitys.in.TrayPutAwayActivity;
 import com.crazy.petter.warehouse.app.main.activitys.in.TrayStorageActivity;
+import com.crazy.petter.warehouse.app.main.activitys.out.DivideActivity;
 import com.crazy.petter.warehouse.app.main.activitys.out.PackActivity;
 import com.crazy.petter.warehouse.app.main.activitys.out.PickActivity;
+import com.crazy.petter.warehouse.app.main.activitys.out.PickWaveActivity;
 import com.crazy.petter.warehouse.app.main.activitys.out.TraySendActivity;
 
 import butterknife.Bind;
@@ -41,6 +43,10 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.activity_main)
     LinearLayout mActivityMain;
     SharedPreferencesUtil sp;
+    @Bind(R.id.bocidan)
+    ButtonAutoBg mWave;
+    @Bind(R.id.fenhuo)
+    ButtonAutoBg mFenhuo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +98,18 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, PickActivity.class));
+            }
+        });
+        mWave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, PickWaveActivity.class));
+            }
+        });
+        mFenhuo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, DivideActivity.class));
             }
         });
     }

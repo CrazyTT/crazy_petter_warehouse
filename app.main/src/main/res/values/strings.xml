@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">App.main</string>
+    <string name="string_good_Property">货品属性</string>
 </resources>

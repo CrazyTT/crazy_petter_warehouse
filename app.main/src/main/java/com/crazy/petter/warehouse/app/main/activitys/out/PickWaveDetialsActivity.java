@@ -16,8 +16,8 @@ import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.beans.PickBean;
 import com.crazy.petter.warehouse.app.main.beans.PickDetialsBean;
-import com.crazy.petter.warehouse.app.main.presenters.PickDetialsPresenter;
-import com.crazy.petter.warehouse.app.main.views.PickDetialsView;
+import com.crazy.petter.warehouse.app.main.presenters.PickWaveDetialsPresenter;
+import com.crazy.petter.warehouse.app.main.views.PickWaveDetialsView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PickDetialsActivity extends BaseActivity implements PickDetialsView {
+public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDetialsView {
 
     @Bind(R.id.txt_orderNum)
     TextView mTxtOrderNum;
@@ -52,15 +52,15 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
     @Bind(R.id.activity_pick_detials)
     LinearLayout mActivityPickDetials;
     PickBean.DataEntity mDataEntity;
-    PickDetialsPresenter mPickDetialsPresenter;
+    PickWaveDetialsPresenter mPickDetialsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pick_detials);
+        setContentView(R.layout.activity_pick_wave_detials);
         ButterKnife.bind(this);
         mDataEntity = JsonFormatter.getInstance().json2object(getIntent().getStringExtra("detials"), PickBean.DataEntity.class);
-        mPickDetialsPresenter = new PickDetialsPresenter(this, this, "PickDetialsActivity");
+        mPickDetialsPresenter = new PickWaveDetialsPresenter(this, this, "PickDetialsActivity");
         initViews();
         mEdtLoc.setOnKeyListener(new View.OnKeyListener() {
             @Override

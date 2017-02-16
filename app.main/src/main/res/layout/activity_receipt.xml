@@ -168,11 +168,14 @@
                 android:text="货品属性:"
                 android:textColor="@color/black_gray"/>
 
-            <Spinner
+            <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/sp_good_Property"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:dropDownVerticalOffset="@dimen/spinner_dropdown_verticaloffset"
+                android:prompt="@string/string_good_Property"
+                android:spinnerMode="dialog"/>
 
             <EditText
                 android:layout_width="0dp"
