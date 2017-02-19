@@ -1,7 +1,7 @@
 package com.crazy.petter.warehouse.app.main.views;
 
 import com.bjdv.lib.utils.base.IBaseView;
-import com.crazy.petter.warehouse.app.main.beans.GoodsBean;
+import com.crazy.petter.warehouse.app.main.beans.HistoryBean;
 
 import java.util.ArrayList;
 
@@ -10,5 +10,5 @@ import java.util.ArrayList;
  */
 
 public interface DetialsStoreageFragmentView extends IBaseView {
-    void showGoods(ArrayList<GoodsBean.DataEntity> data);
+    void showGoods(ArrayList<HistoryBean.DataEntity> data);
 }

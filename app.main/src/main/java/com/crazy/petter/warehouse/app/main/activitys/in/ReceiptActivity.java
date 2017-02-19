@@ -22,6 +22,7 @@ import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.beans.GoodsBean;
+import com.crazy.petter.warehouse.app.main.beans.PropertyBean;
 import com.crazy.petter.warehouse.app.main.beans.ReceiptBean;
 import com.crazy.petter.warehouse.app.main.beans.ScanStoreageBean;
 import com.crazy.petter.warehouse.app.main.presenters.ReceiptPresenter;
@@ -63,7 +64,7 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
     @Bind(R.id.activity_receipt)
     LinearLayout mActivityReceipt;
 
-    private String[] SkuPropertyNames = {"GOOD", "NOTGOOD"};
+    private String[] SkuPropertyNames = {};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,10 +142,6 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
                 mReceiptPresenter.receipt(JsonFormatter.getInstance().object2Json(receiptBean));
             }
         });
-        mSpGoodProperty.setOnItemSelectedListener(new SelectedListener());
-        ArrayAdapter<String> arrayAdapter5 = new ArrayAdapter<>(ReceiptActivity.this, R.layout.item_spinner_work_left, SkuPropertyNames);
-        arrayAdapter5.setDropDownViewResource(R.layout.item_spinner_work_query_center);
-        mSpGoodProperty.setAdapter(arrayAdapter5);
         this.getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         try {
@@ -164,6 +161,14 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
             e.printStackTrace();
         }
         mEdtGoodId.requestFocus();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("SkuPropertyCode", "");
+            jsonObject.put("SkuPropertyDesc", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mReceiptPresenter.getProperty(jsonObject.toString());
     }
 
     private TextWatcher textWatcher = new TextWatcher() {
@@ -214,6 +219,18 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
         mEdtDate.setText(c.get(Calendar.YEAR) + "");
         mEdtNum.setText("");
         mEdtGoodId.requestFocus();
+    }
+
+    @Override
+    public void showProperty(ArrayList<PropertyBean.DataEntity> data) {
+        SkuPropertyNames = new String[data.size()];
+        for (int i = 0; i < data.size(); i++) {
+            SkuPropertyNames[i] = data.get(i).getSkuPropertyDesc();
+        }
+        mSpGoodProperty.setOnItemSelectedListener(new SelectedListener());
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(ReceiptActivity.this, R.layout.item_spinner_work_query_center, SkuPropertyNames);
+        arrayAdapter.setDropDownViewResource(R.layout.item_spinner_work_query_center);
+        mSpGoodProperty.setAdapter(arrayAdapter);
     }
 
     private void init() {

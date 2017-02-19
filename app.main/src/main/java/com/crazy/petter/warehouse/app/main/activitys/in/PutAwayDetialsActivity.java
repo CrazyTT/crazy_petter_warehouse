@@ -113,6 +113,14 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
                             detailsEntity.setSeqNo(datas.get(key).getSeqNo());
                             detailsEntity.setSkuId(datas.get(key).getSkuId());
                             detailsEntity.setSkuName(datas.get(key).getSkuName());
+                            if (TextUtils.isEmpty(mEdtSkuqty.getText().toString().trim())) {
+                                ToastUtils.showShort(PutAwayDetialsActivity.this, "请输入上架数量");
+                                return;
+                            }
+                            if (TextUtils.isEmpty(mEdtLoc.getText().toString().trim())) {
+                                ToastUtils.showShort(PutAwayDetialsActivity.this, "请输入上架货位");
+                                return;
+                            }
                             detailsEntity.setQty(Integer.parseInt(mEdtSkuqty.getText().toString().trim()));
                             detailsEntity.setIbnReceiveInc(datas.get(key).getIbnReceiveInc());
                             detailsEntity.setLpnNo("");

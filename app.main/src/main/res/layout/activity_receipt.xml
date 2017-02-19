@@ -16,7 +16,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp">
+            android:layout_height="35dp">
 
             <TextView
                 android:layout_width="80dp"
@@ -39,7 +39,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:layout_marginTop="3dp">
 
             <TextView
@@ -63,7 +63,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:layout_marginTop="3dp">
 
             <TextView
@@ -86,7 +86,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:layout_marginTop="3dp">
 
             <TextView
@@ -102,7 +102,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="@drawable/edt_back"
-                android:gravity="right"
+                android:inputType="numberDecimal"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:singleLine="true"/>
@@ -110,7 +110,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:layout_marginTop="3dp">
 
             <TextView
@@ -133,7 +133,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:layout_marginTop="3dp">
 
             <TextView
@@ -141,7 +141,7 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="失效日期:"
+                android:text="生产日期:"
                 android:textColor="@color/black_gray"/>
 
             <EditText
@@ -150,7 +150,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="1"
                 android:background="@drawable/edt_back"
-                android:gravity="right"
+                android:inputType="numberDecimal"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:singleLine="true"/>
@@ -158,7 +158,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:layout_marginTop="3dp">
 
             <TextView

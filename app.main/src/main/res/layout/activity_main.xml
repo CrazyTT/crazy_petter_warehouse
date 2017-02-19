@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:visibility="gone">
 
         <com.bjdv.lib.utils.widgets.ButtonAutoBg
             android:id="@+id/storage"
@@ -58,7 +59,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:visibility="gone">
 
         <com.bjdv.lib.utils.widgets.ButtonAutoBg
             android:id="@+id/pick"
@@ -109,4 +111,20 @@
             android:text="分货"
             android:textColor="@color/colorWhite"/>
     </LinearLayout>
+
+    <GridView
+        android:id="@+id/gr_in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:horizontalSpacing="1dp"
+        android:numColumns="3"
+        android:verticalSpacing="1dp"/>
+
+    <GridView
+        android:id="@+id/gr_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:horizontalSpacing="1dp"
+        android:numColumns="3"
+        android:verticalSpacing="1dp"/>
 </LinearLayout>

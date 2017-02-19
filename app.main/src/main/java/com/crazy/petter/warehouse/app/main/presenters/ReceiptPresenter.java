@@ -6,6 +6,7 @@ import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
 import com.bjdv.lib.utils.util.JsonFormatter;
 import com.crazy.petter.warehouse.app.main.beans.GoodsBean;
+import com.crazy.petter.warehouse.app.main.beans.PropertyBean;
 import com.crazy.petter.warehouse.app.main.views.ReceiptView;
 
 /**
@@ -49,6 +50,20 @@ public class ReceiptPresenter extends BasePresenter {
             @Override
             public void onFailure(String s) {
                 context.stopProgress();
+            }
+        });
+    }
+
+    public void getProperty(String params) {
+        requestData(Constant.SERVER_URL_BASE + Constant.SkuProperty, params, new DataCallBack() {
+            @Override
+            public void onSuccess(Object o) {
+                PropertyBean goodsBean = JsonFormatter.getInstance().json2object(o.toString(), PropertyBean.class);
+                mReceiptView.showProperty(goodsBean.getData());
+            }
+
+            @Override
+            public void onFailure(String s) {
             }
         });
     }

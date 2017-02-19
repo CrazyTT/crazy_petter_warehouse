@@ -9,12 +9,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.beans.GoodsBean;
+import com.crazy.petter.warehouse.app.main.beans.HistoryBean;
 
 import java.util.ArrayList;
 
 public class DetialsStoreageAdapter extends RecyclerView.Adapter<DetialsStoreageAdapter.ViewHolder> {
-    public ArrayList<GoodsBean.DataEntity> datas = new ArrayList<>();
+    public ArrayList<HistoryBean.DataEntity> datas = new ArrayList<>();
     private Context mContext;
     OrderTodoAdapterCallBack mOrderTodoAdapterCallBack;
 
@@ -32,10 +32,10 @@ public class DetialsStoreageAdapter extends RecyclerView.Adapter<DetialsStoreage
 
     @Override
     public void onBindViewHolder(final DetialsStoreageAdapter.ViewHolder viewHolder, final int position) {
-        final GoodsBean.DataEntity obj = datas.get(position);
-        viewHolder.one.setText(obj.getSeqNo()+"");
+        final HistoryBean.DataEntity obj = datas.get(position);
+        viewHolder.one.setText(obj.getSeqNo() + "");
         viewHolder.two.setText(obj.getSkuId());
-        viewHolder.three.setText(obj.getWaitReceiveQty() + "");
+        viewHolder.three.setText(obj.getQty() + "");
         viewHolder.four.setText(obj.getReceivedQty() + "");
         viewHolder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,18 +50,18 @@ public class DetialsStoreageAdapter extends RecyclerView.Adapter<DetialsStoreage
         return datas.size();
     }
 
-    public void setList(ArrayList<GoodsBean.DataEntity> mList) {
+    public void setList(ArrayList<HistoryBean.DataEntity> mList) {
         datas = mList;
         notifyDataSetChanged();
 
     }
 
-    public void addList(ArrayList<GoodsBean.DataEntity> mList) {
+    public void addList(ArrayList<HistoryBean.DataEntity> mList) {
         datas.addAll(mList);
         notifyDataSetChanged();
     }
 
-    public ArrayList<GoodsBean.DataEntity> getList() {
+    public ArrayList<HistoryBean.DataEntity> getList() {
         return datas;
     }
 
@@ -82,7 +82,7 @@ public class DetialsStoreageAdapter extends RecyclerView.Adapter<DetialsStoreage
         }
     }
 
-    public void addItem(GoodsBean.DataEntity content, int postion) {
+    public void addItem(HistoryBean.DataEntity content, int postion) {
         datas.add(postion, content);
         notifyItemInserted(postion + 1);
     }

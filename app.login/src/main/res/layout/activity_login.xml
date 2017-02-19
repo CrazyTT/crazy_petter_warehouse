@@ -37,6 +37,7 @@
                 android:src="@mipmap/user"/>
 
             <EditText
+                android:singleLine="true"
                 android:id="@+id/edt_name"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
@@ -62,6 +63,7 @@
                 android:src="@mipmap/psd"/>
 
             <EditText
+                android:singleLine="true"
                 android:id="@+id/edt_psd"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"

@@ -20,7 +20,7 @@ import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.adapters.DetialsStoreageAdapter;
-import com.crazy.petter.warehouse.app.main.beans.GoodsBean;
+import com.crazy.petter.warehouse.app.main.beans.HistoryBean;
 import com.crazy.petter.warehouse.app.main.presenters.DetialsStoreageFragmentPresenter;
 import com.crazy.petter.warehouse.app.main.views.DetialsStoreageFragmentView;
 
@@ -130,7 +130,7 @@ public class DetialsStoreageFragment extends Fragment implements DetialsStoreage
     }
 
     @Override
-    public void showGoods(ArrayList<GoodsBean.DataEntity> data) {
+    public void showGoods(ArrayList<HistoryBean.DataEntity> data) {
         mDetialsStoreageAdapter.setList(data);
     }
 

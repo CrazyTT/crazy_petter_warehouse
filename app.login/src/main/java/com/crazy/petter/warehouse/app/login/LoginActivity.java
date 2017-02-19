@@ -51,7 +51,10 @@ public class LoginActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        //测试代码
+        mEdtName.setText("admin");
+        mEdtPsd.setText("123");
+        mBtnLogin.performClick();
     }
 
     private void login() {
