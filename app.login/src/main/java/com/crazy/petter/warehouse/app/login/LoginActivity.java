@@ -9,6 +9,7 @@ import com.bjdv.lib.utils.constants.Constant;
 import com.bjdv.lib.utils.network.Connection;
 import com.bjdv.lib.utils.network.RequestCallBack;
 import com.bjdv.lib.utils.util.JsonUtil;
+import com.bjdv.lib.utils.util.SharedPreferencesUtil;
 import com.bjdv.lib.utils.util.StringUtils;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
@@ -29,12 +30,14 @@ public class LoginActivity extends BaseActivity {
     EditText mEdtPsd;
     @Bind(R.id.btn_login)
     ButtonAutoBg mBtnLogin;
+    private SharedPreferencesUtil sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        sp = new SharedPreferencesUtil(this);
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,8 +55,8 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void login() {
-        String userName = mEdtName.getText().toString().trim();
-        String passWord = mEdtPsd.getText().toString().trim();
+        final String userName = mEdtName.getText().toString().trim();
+        final String passWord = mEdtPsd.getText().toString().trim();
         if (StringUtils.isBlank(userName)) {
             ToastUtils.showShort(LoginActivity.this, getResources().getString(R.string.hint_account));
             return;
@@ -63,8 +66,8 @@ public class LoginActivity extends BaseActivity {
         }
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("UserName", "admin");
-            jsonObject.put("UserPwd", "123");
+            jsonObject.put("UserName", userName);
+            jsonObject.put("UserPwd", passWord);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -75,6 +78,8 @@ public class LoginActivity extends BaseActivity {
                 stopProgress();
                 JSONObject jsonObject1 = JsonUtil.from(s);
                 if (JsonUtil.getBoolean(jsonObject1, "success")) {
+                    sp.setString("userName", userName);
+                    sp.setString("passWord", passWord);
                     Small.openUri("main", LoginActivity.this);
                     ToastUtils.showShort(LoginActivity.this, "登录成功");
                     LoginActivity.this.finish();

@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bjdv.lib.utils.util.LogUtils;
+import com.bjdv.lib.utils.util.SharedPreferencesUtil;
 import com.socks.library.KLog;
 
 import java.io.UnsupportedEncodingException;
@@ -36,9 +37,11 @@ public class Connection {
     protected static final String TAG = "Connection";
     private static RequestQueue mRequestQueue;
     private static Context mContext;
+    private SharedPreferencesUtil sp;
 
     private Connection() {
         initialize(mContext);
+        sp = new SharedPreferencesUtil(mContext);
     }
 
     /**
@@ -103,8 +106,8 @@ public class Connection {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> sendHeader = new HashMap<>();
                     if (true) {
-                        sendHeader.put("userName", "admin");
-                        sendHeader.put("apiKey", "123");
+                        sendHeader.put("userName", sp.getString("userName"));
+                        sendHeader.put("apiKey", sp.getString("passWord"));
                     }
                     return sendHeader;
                 }
