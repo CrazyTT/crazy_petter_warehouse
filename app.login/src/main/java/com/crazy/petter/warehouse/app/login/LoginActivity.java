@@ -1,6 +1,10 @@
 package com.crazy.petter.warehouse.app.login;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.EditText;
@@ -46,12 +50,40 @@ public class LoginActivity extends BaseActivity {
                 login();
             }
         });
-        TelephonyManager TelephonyMgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        szImei = TelephonyMgr.getDeviceId();
-        //测试代码
+
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
+        } else {
+            TelephonyManager TelephonyMgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+            szImei = TelephonyMgr.getDeviceId();
+            //测试代码
+            test();
+        }
+    }
+
+    private void test() {
         mEdtName.setText("admin");
         mEdtPsd.setText("123");
         mBtnLogin.performClick();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    TelephonyManager TelephonyMgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+                    szImei = TelephonyMgr.getDeviceId();
+                    //测试代码
+                    test();
+                } else {
+                    ToastUtils.showShort(this, "授权失败");
+                }
+                return;
+            }
+        }
     }
 
     private void login() {
