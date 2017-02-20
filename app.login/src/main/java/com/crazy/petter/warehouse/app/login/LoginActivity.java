@@ -1,6 +1,7 @@
 package com.crazy.petter.warehouse.app.login;
 
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.EditText;
 
@@ -31,6 +32,7 @@ public class LoginActivity extends BaseActivity {
     @Bind(R.id.btn_login)
     ButtonAutoBg mBtnLogin;
     private SharedPreferencesUtil sp;
+    String szImei = "";//设备唯一标识Imei
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +46,8 @@ public class LoginActivity extends BaseActivity {
                 login();
             }
         });
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("UserName", "admin");
-            jsonObject.put("UserPwd", "123");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        TelephonyManager TelephonyMgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        szImei = TelephonyMgr.getDeviceId();
         //测试代码
         mEdtName.setText("admin");
         mEdtPsd.setText("123");
@@ -71,6 +68,7 @@ public class LoginActivity extends BaseActivity {
         try {
             jsonObject.put("UserName", userName);
             jsonObject.put("UserPwd", passWord);
+            jsonObject.put("SymbolId", szImei);
         } catch (JSONException e) {
             e.printStackTrace();
         }
