@@ -9,28 +9,28 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.beans.PickDetialsBean;
+import com.crazy.petter.warehouse.app.main.beans.PickWaveDetialsBean;
 
 import java.util.ArrayList;
 
-public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder> {
-    public ArrayList<PickDetialsBean.DataEntity.LotPropertyEntity> datas = new ArrayList<>();
+public class RemarkWaveAdapter extends RecyclerView.Adapter<RemarkWaveAdapter.ViewHolder> {
+    public ArrayList<PickWaveDetialsBean.DataEntity.LotPropertyEntity> datas = new ArrayList<>();
     private Context mContext;
 
-    public RemarkAdapter(Context context) {
+    public RemarkWaveAdapter(Context context) {
         this.mContext = context;
     }
 
 
     @Override
-    public RemarkAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public RemarkWaveAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_remark, viewGroup, false);
-        return new RemarkAdapter.ViewHolder(view);
+        return new RemarkWaveAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final RemarkAdapter.ViewHolder viewHolder, final int position) {
-        final PickDetialsBean.DataEntity.LotPropertyEntity obj = datas.get(position);
+    public void onBindViewHolder(final RemarkWaveAdapter.ViewHolder viewHolder, final int position) {
+        final PickWaveDetialsBean.DataEntity.LotPropertyEntity obj = datas.get(position);
         viewHolder.one.setText(obj.getLotValue());
         viewHolder.two.setText(obj.getLotCode());
         if ("N".equalsIgnoreCase(obj.getRfVisible())) {
@@ -43,18 +43,18 @@ public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder
         return datas.size();
     }
 
-    public void setList(ArrayList<PickDetialsBean.DataEntity.LotPropertyEntity> mList) {
+    public void setList(ArrayList<PickWaveDetialsBean.DataEntity.LotPropertyEntity> mList) {
         datas = mList;
         notifyDataSetChanged();
 
     }
 
-    public void addList(ArrayList<PickDetialsBean.DataEntity.LotPropertyEntity> mList) {
+    public void addList(ArrayList<PickWaveDetialsBean.DataEntity.LotPropertyEntity> mList) {
         datas.addAll(mList);
         notifyDataSetChanged();
     }
 
-    public ArrayList<PickDetialsBean.DataEntity.LotPropertyEntity> getList() {
+    public ArrayList<PickWaveDetialsBean.DataEntity.LotPropertyEntity> getList() {
         return datas;
     }
 
@@ -71,7 +71,7 @@ public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder
         }
     }
 
-    public void addItem(PickDetialsBean.DataEntity.LotPropertyEntity content, int postion) {
+    public void addItem(PickWaveDetialsBean.DataEntity.LotPropertyEntity content, int postion) {
         datas.add(postion, content);
         notifyItemInserted(postion + 1);
     }

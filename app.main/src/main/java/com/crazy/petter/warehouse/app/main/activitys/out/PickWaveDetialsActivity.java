@@ -16,9 +16,9 @@ import com.bjdv.lib.utils.util.JsonFormatter;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.adapters.RemarkAdapter;
-import com.crazy.petter.warehouse.app.main.beans.PickBean;
-import com.crazy.petter.warehouse.app.main.beans.PickDetialsBean;
+import com.crazy.petter.warehouse.app.main.adapters.RemarkWaveAdapter;
+import com.crazy.petter.warehouse.app.main.beans.PickWaveBean;
+import com.crazy.petter.warehouse.app.main.beans.PickWaveDetialsBean;
 import com.crazy.petter.warehouse.app.main.presenters.PickWaveDetialsPresenter;
 import com.crazy.petter.warehouse.app.main.views.PickWaveDetialsView;
 
@@ -55,13 +55,13 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
     TextView mTxtBottom;
     @Bind(R.id.activity_pick_detials)
     LinearLayout mActivityPickDetials;
-    PickBean.DataEntity mDataEntity;
+    PickWaveBean.DataEntity mDataEntity;
     PickWaveDetialsPresenter mPickDetialsPresenter;
     @Bind(R.id.rl_remark)
     RecyclerView mRlRemark;
-    RemarkAdapter mRemarkAdapter;
-    ArrayList<PickDetialsBean.DataEntity> datas = new ArrayList<>();
-    ArrayList<PickDetialsBean.DataEntity.LotPropertyEntity> reMarks = new ArrayList<>();
+    RemarkWaveAdapter mRemarkAdapter;
+    ArrayList<PickWaveDetialsBean.DataEntity> datas = new ArrayList<>();
+    ArrayList<PickWaveDetialsBean.DataEntity.LotPropertyEntity> reMarks = new ArrayList<>();
     boolean isFirst = true;
 
     @Override
@@ -69,7 +69,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_wave_detials);
         ButterKnife.bind(this);
-        mDataEntity = JsonFormatter.getInstance().json2object(getIntent().getStringExtra("detials"), PickBean.DataEntity.class);
+        mDataEntity = JsonFormatter.getInstance().json2object(getIntent().getStringExtra("detials"), PickWaveBean.DataEntity.class);
         mPickDetialsPresenter = new PickWaveDetialsPresenter(this, this, "PickDetialsActivity");
         initViews();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -88,10 +88,10 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
     }
 
     private void initViews() {
-        mTxtOrderNum.setText(mDataEntity.getOutboundId());
+        mTxtOrderNum.setText(mDataEntity.getWaveDocId());
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("OutboundId", mDataEntity.getOutboundId());
+            jsonObject.put("WaveId", mDataEntity.getWaveDocId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -106,7 +106,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
                     }
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("OutboundId", mDataEntity.getOutboundId());
+                        jsonObject.put("WaveId", mDataEntity.getWaveDocId());
                         jsonObject.put("PickLoc", mEdtLoc.getText().toString().trim());
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -117,27 +117,27 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
                 return false;
             }
         });
-        mEdtSkuid.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (imm.isActive()) {
-                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
-                    }
-                    JSONObject jsonObject = new JSONObject();
-                    try {
-                        jsonObject.put("OutboundId", mDataEntity.getOutboundId());
-                        jsonObject.put("SkuId", mEdtSkuid.getText().toString().trim());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    getOrders(jsonObject.toString(), false);
-                    return true;
-                }
-                return false;
-            }
-        });
+//        mEdtSkuid.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+//                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    if (imm.isActive()) {
+//                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+//                    }
+//                    JSONObject jsonObject = new JSONObject();
+//                    try {
+//                        jsonObject.put("WaveId", mDataEntity.getWaveDocId());
+//                        jsonObject.put("SkuId", mEdtSkuid.getText().toString().trim());
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                    getOrders(jsonObject.toString(), false);
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
     }
 
@@ -154,7 +154,11 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
 
 
     @Override
-    public void setList(ArrayList<PickDetialsBean.DataEntity> data) {
+    public void setList(ArrayList<PickWaveDetialsBean.DataEntity> data) {
+        if (data == null || data.size() <= 0) {
+            ToastUtils.showShort(this, "此单没有拣货明细");
+            return;
+        }
         if (isFirst) {
             datas = data;
             setFist();
@@ -165,13 +169,14 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
     }
 
     private void showRemark(int postion) {
-        mRemarkAdapter = new RemarkAdapter(this);
+        mRemarkAdapter = new RemarkWaveAdapter(this);
         reMarks = datas.get(postion).getLotProperty();
         mRemarkAdapter.setList(reMarks);
+        mRlRemark.setAdapter(mRemarkAdapter);
     }
 
 
-    private void showInfo(PickDetialsBean.DataEntity dataEntity) {
+    private void showInfo(PickWaveDetialsBean.DataEntity dataEntity) {
         mEdtLoc.setText(dataEntity.getPickLoc());
         mEdtSkuid.setText(dataEntity.getSkuId());
         mEdtSkuname.setText(dataEntity.getSkuName());
@@ -187,7 +192,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
     private void initBottom() {
         int all = datas.size();
         int finish = 0;
-        for (PickDetialsBean.DataEntity data : datas) {
+        for (PickWaveDetialsBean.DataEntity data : datas) {
             if (data.getWaitPickQty() == 0) {
                 finish++;
             }

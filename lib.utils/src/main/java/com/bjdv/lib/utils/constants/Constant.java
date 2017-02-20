@@ -14,5 +14,11 @@ public class Constant {
     public static String TRAYSENDDETIALS = "WebAPI/api/WmsRf/QueryOutboundShipDt";
     public static String PICK = "WebAPI/api/WmsRf/QueryOutboundPick";
     public static String PICKDETIALS = "WebAPI/api/WmsRf/QueryOutboundPickDt";
+    public static String ConfirmObnPick = "WebAPI/api/WmsRf/ConfirmObnPick";
     public static String SkuProperty = "WebAPI/api/WmsRf/QuerySkuProperty";
+    public static String QueryWavePick = "WebAPI/api/WmsRf/QueryWavePick";
+    public static String QueryWavePickDt = "WebAPI/api/WmsRf/QueryWavePickDt";
+    public static String ConfirmWavePic = "WebAPI/api/WmsRf/ConfirmWavePick";
+
+
 }

@@ -1,7 +1,7 @@
 package com.crazy.petter.warehouse.app.main.views;
 
 import com.bjdv.lib.utils.base.IBaseView;
-import com.crazy.petter.warehouse.app.main.beans.PickDetialsBean;
+import com.crazy.petter.warehouse.app.main.beans.PickWaveDetialsBean;
 
 import java.util.ArrayList;
 
@@ -10,5 +10,5 @@ import java.util.ArrayList;
  */
 
 public interface PickWaveDetialsView extends IBaseView {
-    void setList(ArrayList<PickDetialsBean.DataEntity> data);
+    void setList(ArrayList<PickWaveDetialsBean.DataEntity> data);
 }

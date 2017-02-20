@@ -1,71 +1,81 @@
 package com.crazy.petter.warehouse.app.main.activitys.in;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.util.SharedPreferencesUtil;
 import com.crazy.petter.warehouse.app.main.Fragment.stroage.DetialsStoreageFragment;
 import com.crazy.petter.warehouse.app.main.Fragment.stroage.ScanStoreageFragment;
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.adapters.FragmentTabAdapter;
+import com.crazy.petter.warehouse.app.main.adapters.FragAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class StorageActivity extends BaseActivity {
-    @Bind(R.id.rb_home)
-    RadioButton mRbHome;
-    @Bind(R.id.rb_work)
-    RadioButton mRbWork;
-    @Bind(R.id.rg_content)
-    RadioGroup mRgContent;
-    @Bind(R.id.fragment_content)
-    FrameLayout mFragmentContent;
+
+    @Bind(R.id.main_tab)
+    TabLayout mMainTab;
+    @Bind(R.id.main_viewpager)
+    ViewPager mMainViewpager;
     @Bind(R.id.activity_storage)
     LinearLayout mActivityStorage;
-    private List<Fragment> fragments = new ArrayList<>();
-    private ArrayList<RadioButton> rbs = new ArrayList<>();
-    FragmentTabAdapter tabAdapter;
-    private Fragment mTab1;
-    private Fragment mTab2;
-    SharedPreferencesUtil mSharedPreferencesUtil;
-
-    public static String getTemp() {
-        return temp;
-    }
-
-    public static void setTemp(String temp) {
-        StorageActivity.temp = temp;
-    }
-
-    public static String temp = "";
+    private ArrayList<Fragment> fragments = new ArrayList<>();
+    private ArrayList<String> rbs = new ArrayList<>();
+    FragAdapter tabAdapter;
+    SharedPreferencesUtil sp;
+    Fragment tabOne;
+    Fragment tabTwo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storage);
-        mSharedPreferencesUtil = new SharedPreferencesUtil(this);
-        mSharedPreferencesUtil.setString("num", "");
+        sp = new SharedPreferencesUtil(this);
+        sp.setString("num", "");
         ButterKnife.bind(this);
         initViews();
     }
 
     private void initViews() {
-        rbs.add(mRbHome);
-        rbs.add(mRbWork);
-        fragments.add(new ScanStoreageFragment());
-        fragments.add(new DetialsStoreageFragment());
-        tabAdapter = new FragmentTabAdapter(this, fragments, R.id.fragment_content, mRgContent);
-        mRgContent.setOnCheckedChangeListener(tabAdapter);
+        rbs.add("扫描收货");
+        rbs.add("扫描收货");
+        tabOne = new ScanStoreageFragment();
+        tabTwo = new DetialsStoreageFragment();
+        fragments.add(tabOne);
+        fragments.add(tabTwo);
+        tabAdapter = new FragAdapter(getSupportFragmentManager(), fragments, rbs);
+        mMainTab.setupWithViewPager(mMainViewpager);
+        mMainViewpager.setAdapter(tabAdapter);
+        mMainViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 1) {
+                    sp.setBoolean("isRefresh", true);
+                    tabTwo.onResume();
+                } else {
+                    sp.setBoolean("isRefresh", false);
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -75,10 +85,10 @@ public class StorageActivity extends BaseActivity {
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-            mRbHome.setChecked(true);
+            mMainViewpager.setCurrentItem(0);
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-            mRbWork.setChecked(true);
+            mMainViewpager.setCurrentItem(1);
             return true;
         }
         return super.onKeyDown(keyCode, event);

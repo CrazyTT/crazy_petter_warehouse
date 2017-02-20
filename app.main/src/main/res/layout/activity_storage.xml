@@ -2,54 +2,27 @@
 <LinearLayout
     android:id="@+id/activity_storage"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.crazy.petter.warehouse.app.main.activitys.in.StorageActivity">
 
-    <RadioGroup
-        android:id="@+id/rg_content"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/main_tab"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/colorWhite"
-        android:orientation="horizontal">
+        android:layout_height="50dp"
+        app:tabIndicatorColor="@color/colorTitleBar"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/colorTitleBar"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:tabTextColor="@color/colorBlackTransparent"/>
 
-        <RadioButton
-            android:id="@+id/rb_home"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:button="@null"
-            android:drawablePadding="5dp"
-            android:gravity="center"
-            android:text="扫描收货"
-            android:textColor="@color/tab_main"
-            android:textSize="18sp"/>
-
-        <RadioButton
-            android:id="@+id/rb_work"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:button="@null"
-            android:checked="false"
-            android:drawablePadding="5dp"
-            android:gravity="center"
-            android:text="收货明细"
-            android:textColor="@color/tab_main"
-            android:textSize="18sp"/>
-    </RadioGroup>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/divider"/>
-
-    <FrameLayout
-        android:id="@+id/fragment_content"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/main_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
-    </FrameLayout>
+        android:layout_below="@+id/main_tab"
+        android:layout_marginTop="5dp"/>
 </LinearLayout>

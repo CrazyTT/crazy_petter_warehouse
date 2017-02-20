@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Created by liuliuchen on 2017/2/15.
  */
 
-public class PickDetialsBean extends BaseBean {
+public class PickWaveDetialsBean extends BaseBean {
 
     public ArrayList<DataEntity> data;
 
@@ -22,67 +22,49 @@ public class PickDetialsBean extends BaseBean {
 
     public static class DataEntity {
         /**
-         * OutboundId : sample string 1
-         * SeqNo : 2
-         * ObnPickInc : 3
+         * WaveId : sample string 1
+         * LocSeq : 2
+         * PickLoc : sample string 3
          * SkuId : sample string 4
          * SkuName : sample string 5
-         * ExtLot : sample string 6
-         * PickLoc : sample string 7
-         * Qty : 8.0
-         * PickedQty : 9.0
-         * WaitPickQty : 10.0
-         * SkuProperty : sample string 11
-         * ShelfLifeCtrl : true
-         * ShelfLifeCtrlType : sample string 13
-         * ShelfLifeDays : 14
-         * ShelfLifeDaysIn : 15
-         * ShelfLifeDaysOt : 16
-         * SingleScan : true
+         * Qty : 6.0
+         * PickedQty : 7.0
+         * WaitPickQty : 8.0
          * LotProperty : [{"SeqNo":"sample string 1","LotCode":"sample string 2","LotValue":"sample string 3","RfVisible":"sample string 4"},{"SeqNo":"sample string 1","LotCode":"sample string 2","LotValue":"sample string 3","RfVisible":"sample string 4"}]
          */
 
-        public String OutboundId;
-        public int SeqNo;
-        public int ObnPickInc;
+        public String WaveId;
+        public int LocSeq;
+        public String PickLoc;
         public String SkuId;
         public String SkuName;
-        public String ExtLot;
-        public String PickLoc;
         public int Qty;
         public int PickedQty;
         public int WaitPickQty;
-        public String SkuProperty;
-        public boolean ShelfLifeCtrl;
-        public String ShelfLifeCtrlType;
-        public int ShelfLifeDays;
-        public int ShelfLifeDaysIn;
-        public int ShelfLifeDaysOt;
-        public boolean SingleScan;
         public ArrayList<LotPropertyEntity> LotProperty;
 
-        public String getOutboundId() {
-            return OutboundId;
+        public String getWaveId() {
+            return WaveId;
         }
 
-        public void setOutboundId(String OutboundId) {
-            this.OutboundId = OutboundId;
+        public void setWaveId(String WaveId) {
+            this.WaveId = WaveId;
         }
 
-        public int getSeqNo() {
-            return SeqNo;
+        public int getLocSeq() {
+            return LocSeq;
         }
 
-        public void setSeqNo(int SeqNo) {
-            this.SeqNo = SeqNo;
+        public void setLocSeq(int LocSeq) {
+            this.LocSeq = LocSeq;
         }
 
-        public int getObnPickInc() {
-            return ObnPickInc;
+        public String getPickLoc() {
+            return PickLoc;
         }
 
-        public void setObnPickInc(int ObnPickInc) {
-            this.ObnPickInc = ObnPickInc;
+        public void setPickLoc(String PickLoc) {
+            this.PickLoc = PickLoc;
         }
 
         public String getSkuId() {
@@ -99,22 +81,6 @@ public class PickDetialsBean extends BaseBean {
 
         public void setSkuName(String SkuName) {
             this.SkuName = SkuName;
-        }
-
-        public String getExtLot() {
-            return ExtLot;
-        }
-
-        public void setExtLot(String ExtLot) {
-            this.ExtLot = ExtLot;
-        }
-
-        public String getPickLoc() {
-            return PickLoc;
-        }
-
-        public void setPickLoc(String PickLoc) {
-            this.PickLoc = PickLoc;
         }
 
         public int getQty() {
@@ -139,62 +105,6 @@ public class PickDetialsBean extends BaseBean {
 
         public void setWaitPickQty(int WaitPickQty) {
             this.WaitPickQty = WaitPickQty;
-        }
-
-        public String getSkuProperty() {
-            return SkuProperty;
-        }
-
-        public void setSkuProperty(String SkuProperty) {
-            this.SkuProperty = SkuProperty;
-        }
-
-        public boolean isShelfLifeCtrl() {
-            return ShelfLifeCtrl;
-        }
-
-        public void setShelfLifeCtrl(boolean ShelfLifeCtrl) {
-            this.ShelfLifeCtrl = ShelfLifeCtrl;
-        }
-
-        public String getShelfLifeCtrlType() {
-            return ShelfLifeCtrlType;
-        }
-
-        public void setShelfLifeCtrlType(String ShelfLifeCtrlType) {
-            this.ShelfLifeCtrlType = ShelfLifeCtrlType;
-        }
-
-        public int getShelfLifeDays() {
-            return ShelfLifeDays;
-        }
-
-        public void setShelfLifeDays(int ShelfLifeDays) {
-            this.ShelfLifeDays = ShelfLifeDays;
-        }
-
-        public int getShelfLifeDaysIn() {
-            return ShelfLifeDaysIn;
-        }
-
-        public void setShelfLifeDaysIn(int ShelfLifeDaysIn) {
-            this.ShelfLifeDaysIn = ShelfLifeDaysIn;
-        }
-
-        public int getShelfLifeDaysOt() {
-            return ShelfLifeDaysOt;
-        }
-
-        public void setShelfLifeDaysOt(int ShelfLifeDaysOt) {
-            this.ShelfLifeDaysOt = ShelfLifeDaysOt;
-        }
-
-        public boolean isSingleScan() {
-            return SingleScan;
-        }
-
-        public void setSingleScan(boolean SingleScan) {
-            this.SingleScan = SingleScan;
         }
 
         public ArrayList<LotPropertyEntity> getLotProperty() {

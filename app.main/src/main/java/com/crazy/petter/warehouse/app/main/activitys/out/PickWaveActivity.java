@@ -17,8 +17,8 @@ import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.adapters.PickAdapter;
-import com.crazy.petter.warehouse.app.main.beans.PickBean;
+import com.crazy.petter.warehouse.app.main.adapters.PickWaveAdapter;
+import com.crazy.petter.warehouse.app.main.beans.PickWaveBean;
 import com.crazy.petter.warehouse.app.main.presenters.PickWavePresenter;
 import com.crazy.petter.warehouse.app.main.views.PickWaveView;
 
@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
 
 public class PickWaveActivity extends BaseActivity implements PickWaveView {
     PickWavePresenter mPickPresenter;
-    PickAdapter scanOrderAdapter;
+    PickWaveAdapter scanOrderAdapter;
     @Bind(R.id.edt_order_num)
     EditText mEdtOrderNum;
     @Bind(R.id.btn_query)
@@ -50,7 +50,7 @@ public class PickWaveActivity extends BaseActivity implements PickWaveView {
     }
 
     private void initViews() {
-        scanOrderAdapter = new PickAdapter(this, new PickAdapter.OrderTodoAdapterCallBack() {
+        scanOrderAdapter = new PickWaveAdapter(this, new PickWaveAdapter.OrderTodoAdapterCallBack() {
             @Override
             public void click(int postion) {
                 jump(postion);
@@ -119,13 +119,13 @@ public class PickWaveActivity extends BaseActivity implements PickWaveView {
 
 
     @Override
-    public void setList(ArrayList<PickBean.DataEntity> data) {
+    public void setList(ArrayList<PickWaveBean.DataEntity> data) {
         scanOrderAdapter.setList(data);
     }
 
     @Override
     public void getOrderFailure() {
-        ArrayList<PickBean.DataEntity> data = new ArrayList<>();
+        ArrayList<PickWaveBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
     }
 }

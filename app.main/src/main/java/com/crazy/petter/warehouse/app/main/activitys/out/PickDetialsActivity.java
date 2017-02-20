@@ -150,6 +150,10 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
 
     @Override
     public void setList(ArrayList<PickDetialsBean.DataEntity> data) {
+        if (data == null || data.size() <= 0) {
+            ToastUtils.showShort(this, "此单没有明细");
+            return;
+        }
         if (isFirst) {
             datas = data;
             setFist();
@@ -163,6 +167,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
         mRemarkAdapter = new RemarkAdapter(this);
         reMarks = datas.get(postion).getLotProperty();
         mRemarkAdapter.setList(reMarks);
+        mRlRemark.setAdapter(mRemarkAdapter);
     }
 
     private void showInfo(PickDetialsBean.DataEntity dataEntity) {

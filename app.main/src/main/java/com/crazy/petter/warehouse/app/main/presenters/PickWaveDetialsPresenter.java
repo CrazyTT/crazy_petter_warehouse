@@ -5,7 +5,7 @@ import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
 import com.bjdv.lib.utils.util.JsonFormatter;
-import com.crazy.petter.warehouse.app.main.beans.PickDetialsBean;
+import com.crazy.petter.warehouse.app.main.beans.PickWaveDetialsBean;
 import com.crazy.petter.warehouse.app.main.views.PickWaveDetialsView;
 
 /**
@@ -21,10 +21,10 @@ public class PickWaveDetialsPresenter extends BasePresenter {
     }
 
     public void getOrders(String params) {
-        requestData(Constant.SERVER_URL_BASE + Constant.PICKDETIALS, params, new DataCallBack() {
+        requestData(Constant.SERVER_URL_BASE + Constant.QueryWavePickDt, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
-                PickDetialsBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), PickDetialsBean.class);
+                PickWaveDetialsBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), PickWaveDetialsBean.class);
                 mPickDetialsView.setList(scanStoreageBean.getData());
                 context.stopProgress();
             }
