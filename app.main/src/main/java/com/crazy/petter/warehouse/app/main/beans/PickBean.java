@@ -35,6 +35,8 @@ public class PickBean extends BaseBean {
         public String OwnerId;
         public String OwnerName;
         public String OrderDate;
+        public String Status;
+        public String StatusDesc;
 
         public String getOutboundId() {
             return OutboundId;
@@ -74,6 +76,22 @@ public class PickBean extends BaseBean {
 
         public void setOrderDate(String OrderDate) {
             this.OrderDate = OrderDate;
+        }
+
+        public String getStatus() {
+            return Status;
+        }
+
+        public void setStatus(String status) {
+            Status = status;
+        }
+
+        public String getStatusDesc() {
+            return StatusDesc;
+        }
+
+        public void setStatusDesc(String statusDesc) {
+            StatusDesc = statusDesc;
         }
     }
 }

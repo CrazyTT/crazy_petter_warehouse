@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -15,6 +16,8 @@ import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.beans.ScanSendBean;
 import com.crazy.petter.warehouse.app.main.presenters.PackDetialsPresenter;
 import com.crazy.petter.warehouse.app.main.views.PackDetialsView;
+
+import java.lang.reflect.Method;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,6 +52,19 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         mDataEntity = JsonFormatter.getInstance().json2object(getIntent().getStringExtra("detials"), ScanSendBean.DataEntity.class);
         mPackDetialsPresenter = new PackDetialsPresenter(this, this, "PackDetialsActivity");
         initViews();
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        try {
+            Class<EditText> cls = EditText.class;
+            Method setShowSoftInputOnFocus;
+            setShowSoftInputOnFocus = cls.getMethod("setShowSoftInputOnFocus", boolean.class);
+            setShowSoftInputOnFocus.setAccessible(true);
+            setShowSoftInputOnFocus.invoke(mEdtPackNum, false);
+            setShowSoftInputOnFocus.invoke(mEdtPackstyle, false);
+            setShowSoftInputOnFocus.invoke(mEdtSkuid, false);
+            setShowSoftInputOnFocus.invoke(mEdtQty, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initViews() {

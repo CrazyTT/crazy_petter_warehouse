@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import com.crazy.petter.warehouse.app.main.views.PutAwayDetialsView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -133,6 +135,18 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
                 }
             }
         });
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        try {
+            Class<EditText> cls = EditText.class;
+            Method setShowSoftInputOnFocus;
+            setShowSoftInputOnFocus = cls.getMethod("setShowSoftInputOnFocus", boolean.class);
+            setShowSoftInputOnFocus.setAccessible(true);
+            setShowSoftInputOnFocus.invoke(mEdtSkuqty, false);
+            setShowSoftInputOnFocus.invoke(mEdtLoc, false);
+            setShowSoftInputOnFocus.invoke(mEdtSkuid, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void showQTY() {

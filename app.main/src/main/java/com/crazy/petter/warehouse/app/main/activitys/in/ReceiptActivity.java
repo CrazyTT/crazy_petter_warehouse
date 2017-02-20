@@ -142,8 +142,7 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
                 mReceiptPresenter.receipt(JsonFormatter.getInstance().object2Json(receiptBean));
             }
         });
-        this.getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         try {
             Class<EditText> cls = EditText.class;
             Method setShowSoftInputOnFocus;

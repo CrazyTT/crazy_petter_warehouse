@@ -20,7 +20,7 @@ public class PickDetialsBean extends BaseBean {
         this.data = data;
     }
 
-    public static class DataEntity {
+    public class DataEntity {
         /**
          * OutboundId : sample string 1
          * SeqNo : 2
@@ -39,6 +39,7 @@ public class PickDetialsBean extends BaseBean {
          * ShelfLifeDaysIn : 15
          * ShelfLifeDaysOt : 16
          * SingleScan : true
+         * LotProperty : [{"SeqNo":"sample string 1","LotCode":"sample string 2","LotValue":"sample string 3","RfVisible":"sample string 4"},{"SeqNo":"sample string 1","LotCode":"sample string 2","LotValue":"sample string 3","RfVisible":"sample string 4"}]
          */
 
         public String OutboundId;
@@ -58,6 +59,7 @@ public class PickDetialsBean extends BaseBean {
         public int ShelfLifeDaysIn;
         public int ShelfLifeDaysOt;
         public boolean SingleScan;
+        public ArrayList<LotPropertyEntity> LotProperty;
 
         public String getOutboundId() {
             return OutboundId;
@@ -193,6 +195,60 @@ public class PickDetialsBean extends BaseBean {
 
         public void setSingleScan(boolean SingleScan) {
             this.SingleScan = SingleScan;
+        }
+
+        public ArrayList<LotPropertyEntity> getLotProperty() {
+            return LotProperty;
+        }
+
+        public void setLotProperty(ArrayList<LotPropertyEntity> LotProperty) {
+            this.LotProperty = LotProperty;
+        }
+
+        public class LotPropertyEntity {
+            /**
+             * SeqNo : sample string 1
+             * LotCode : sample string 2
+             * LotValue : sample string 3
+             * RfVisible : sample string 4
+             */
+
+            public String SeqNo;
+            public String LotCode;
+            public String LotValue;
+            public String RfVisible;
+
+            public String getSeqNo() {
+                return SeqNo;
+            }
+
+            public void setSeqNo(String SeqNo) {
+                this.SeqNo = SeqNo;
+            }
+
+            public String getLotCode() {
+                return LotCode;
+            }
+
+            public void setLotCode(String LotCode) {
+                this.LotCode = LotCode;
+            }
+
+            public String getLotValue() {
+                return LotValue;
+            }
+
+            public void setLotValue(String LotValue) {
+                this.LotValue = LotValue;
+            }
+
+            public String getRfVisible() {
+                return RfVisible;
+            }
+
+            public void setRfVisible(String RfVisible) {
+                this.RfVisible = RfVisible;
+            }
         }
     }
 }

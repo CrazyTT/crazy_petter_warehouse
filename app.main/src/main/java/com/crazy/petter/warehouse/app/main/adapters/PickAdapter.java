@@ -34,7 +34,7 @@ public class PickAdapter extends RecyclerView.Adapter<PickAdapter.ViewHolder> {
     public void onBindViewHolder(final PickAdapter.ViewHolder viewHolder, final int position) {
         final PickBean.DataEntity obj = datas.get(position);
         viewHolder.one.setText(obj.getOutboundId());
-        viewHolder.two.setText("");//状态还不确定
+        viewHolder.two.setText(obj.getStatusDesc());//状态还不确定
         viewHolder.three.setText(obj.getOwnerName());
         viewHolder.four.setText(obj.getExtDocId());
         viewHolder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
