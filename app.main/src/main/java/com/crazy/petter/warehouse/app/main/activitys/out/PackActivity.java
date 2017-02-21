@@ -17,8 +17,8 @@ import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.adapters.ScanSendOrderAdapter;
-import com.crazy.petter.warehouse.app.main.beans.ScanSendBean;
+import com.crazy.petter.warehouse.app.main.adapters.PackAdapter;
+import com.crazy.petter.warehouse.app.main.beans.QueryObnCartonBean;
 import com.crazy.petter.warehouse.app.main.presenters.PackPresenter;
 import com.crazy.petter.warehouse.app.main.views.PackView;
 
@@ -37,7 +37,7 @@ public class PackActivity extends BaseActivity implements PackView {
     ButtonAutoBg mBtnQuery;
     @Bind(R.id.order_list)
     RecyclerView mOrderList;
-    ScanSendOrderAdapter scanOrderAdapter;
+    PackAdapter scanOrderAdapter;
     PackPresenter mPackPresenter;
 
     @Override
@@ -50,11 +50,10 @@ public class PackActivity extends BaseActivity implements PackView {
     }
 
     private void initViews() {
-        scanOrderAdapter = new ScanSendOrderAdapter(this, new ScanSendOrderAdapter.OrderTodoAdapterCallBack() {
+        scanOrderAdapter = new PackAdapter(this, new PackAdapter.OrderTodoAdapterCallBack() {
             @Override
             public void click(int postion) {
                 jump(postion);
-
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -118,13 +117,13 @@ public class PackActivity extends BaseActivity implements PackView {
     }
 
     @Override
-    public void setList(ArrayList<ScanSendBean.DataEntity> data) {
+    public void setList(ArrayList<QueryObnCartonBean.DataEntity> data) {
         scanOrderAdapter.setList(data);
     }
 
     @Override
     public void getOrderFailure() {
-        ArrayList<ScanSendBean.DataEntity> data = new ArrayList<>();
+        ArrayList<QueryObnCartonBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
     }
 }

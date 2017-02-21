@@ -1,10 +1,13 @@
 package com.crazy.petter.warehouse.app.main.activitys.out;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -13,17 +16,25 @@ import com.bjdv.lib.utils.util.JsonFormatter;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.beans.ScanSendBean;
+import com.crazy.petter.warehouse.app.main.adapters.PackDetialsAdapter;
+import com.crazy.petter.warehouse.app.main.beans.ConfirmObnCartonBean;
+import com.crazy.petter.warehouse.app.main.beans.PackBean;
+import com.crazy.petter.warehouse.app.main.beans.PackDetialsBean;
+import com.crazy.petter.warehouse.app.main.beans.QueryObnCartonBean;
 import com.crazy.petter.warehouse.app.main.presenters.PackDetialsPresenter;
 import com.crazy.petter.warehouse.app.main.views.PackDetialsView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class PackDetialsActivity extends BaseActivity implements PackDetialsView {
-    ScanSendBean.DataEntity mDataEntity;
+    QueryObnCartonBean.DataEntity mDataEntity;
     PackDetialsPresenter mPackDetialsPresenter;
     @Bind(R.id.txt_orderNum)
     TextView mTxtOrderNum;
@@ -43,13 +54,14 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     RecyclerView mOrderList;
     @Bind(R.id.btn_commit)
     ButtonAutoBg mBtnCommit;
+    PackDetialsAdapter mPackDetialsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pack_detials);
         ButterKnife.bind(this);
-        mDataEntity = JsonFormatter.getInstance().json2object(getIntent().getStringExtra("detials"), ScanSendBean.DataEntity.class);
+        mDataEntity = JsonFormatter.getInstance().json2object(getIntent().getStringExtra("detials"), QueryObnCartonBean.DataEntity.class);
         mPackDetialsPresenter = new PackDetialsPresenter(this, this, "PackDetialsActivity");
         initViews();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -65,6 +77,14 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         } catch (Exception e) {
             e.printStackTrace();
         }
+        mPackDetialsAdapter = new PackDetialsAdapter(this, new PackDetialsAdapter.OrderTodoAdapterCallBack() {
+            @Override
+            public void click(int postion) {
+
+            }
+        });
+        mPackDetialsAdapter.setList(mList);
+        mOrderList.setAdapter(mPackDetialsAdapter);
     }
 
     private void initViews() {
@@ -72,7 +92,51 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         mBtnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showShort(PackDetialsActivity.this, "你点击了确定按钮");
+                Intent intent = new Intent(PackDetialsActivity.this, SealActivity.class);
+                intent.putExtra("OutboundId", mDataEntity.getOutboundId());
+                intent.putExtra("CartonId", mEdtPackNum.getText().toString().trim());
+                intent.putExtra("CartonTypeId", mEdtPackstyle.getText().toString().trim());
+                startActivityForResult(intent, 0x123);
+            }
+        });
+        mEdtPackNum.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm.isActive()) {
+                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    }
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("TypeId", mEdtPackNum.getText().toString().trim());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    mPackDetialsPresenter.getPackType(jsonObject.toString());
+                    return true;
+                }
+                return false;
+            }
+        });
+        mEdtPackstyle.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm.isActive()) {
+                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    }
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("TypeDesc", mEdtPackstyle.getText().toString().trim());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    mPackDetialsPresenter.getPackType(jsonObject.toString());
+                    return true;
+                }
+                return false;
             }
         });
     }
@@ -82,11 +146,58 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         ToastUtils.showShort(this, s);
     }
 
+    ArrayList<PackDetialsBean.DataEntity> mList = new ArrayList<>();
+
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_CALL) {
             mBtnCommit.performClick();
             return true;
         }
+        if (keyCode == KeyEvent.KEYCODE_ENDCALL) {
+            //加入明细
+            ConfirmObnCartonBean temp = new ConfirmObnCartonBean();
+            temp.setOutboundId(mDataEntity.getOutboundId());
+            temp.setAutoCartonId(true);
+            temp.setBarCode("");
+            temp.setCartonId(mEdtPackNum.getText().toString().trim());
+            temp.setCartonTypeId(mEdtPackstyle.getText().toString().trim());
+            temp.setQty(Integer.parseInt(mEdtQty.getText().toString().trim()));
+            temp.setSkuId(mEdtSkuid.getText().toString().trim());
+            mPackDetialsPresenter.addList(JsonFormatter.getInstance().object2Json(temp));
+            return true;
+        }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void setConfirmResult(PackDetialsBean scanStoreageBean) {
+        mList = scanStoreageBean.getData();
+
+        mEdtSkuid.requestFocus();
+        mEdtSkuid.setText("");
+        mEdtQty.setText("");
+        mPackDetialsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setPackInfo(ArrayList<PackBean.DataEntity> data) {
+        if (data.size() <= 0) {
+            mEdtPackNum.setText("");
+            mEdtPackstyle.setText("");
+            return;
+        }
+        mEdtPackNum.setText(data.get(0).getCartonTypeId());
+        mEdtPackstyle.setText(data.get(0).getCartonTypeDesc());
+        mEdtSkuid.requestFocus();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 0x123) {
+                this.finish();
+            }
+        }
     }
 }

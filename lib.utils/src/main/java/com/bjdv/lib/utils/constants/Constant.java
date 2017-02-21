@@ -19,6 +19,10 @@ public class Constant {
     public static String QueryWavePick = "WebAPI/api/WmsRf/QueryWavePick";
     public static String QueryWavePickDt = "WebAPI/api/WmsRf/QueryWavePickDt";
     public static String ConfirmWavePic = "WebAPI/api/WmsRf/ConfirmWavePick";
+    public static String QueryObnCarton = "WebAPI/api/WmsRf/QueryObnCarton";
+    public static String ConfirmObnCarton = "WebAPI/api/WmsRf/ConfirmObnCarton";
+    public static String SealObnCarton = "WebAPI/api/WmsRf/SealObnCarton";
+    public static String QueryCartonType = "WebAPI/api/WmsRf/QueryCartonType";
 
 
 }

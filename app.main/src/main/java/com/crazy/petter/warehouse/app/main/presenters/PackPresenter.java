@@ -5,7 +5,7 @@ import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
 import com.bjdv.lib.utils.util.JsonFormatter;
-import com.crazy.petter.warehouse.app.main.beans.ScanSendBean;
+import com.crazy.petter.warehouse.app.main.beans.QueryObnCartonBean;
 import com.crazy.petter.warehouse.app.main.views.PackView;
 
 /**
@@ -22,10 +22,10 @@ public class PackPresenter extends BasePresenter {
 
     public void getOrders(String params) {
         context.showProgress("查询中...", false);
-        requestData(Constant.SERVER_URL_BASE + Constant.TRAYSEND, params, new DataCallBack() {
+        requestData(Constant.SERVER_URL_BASE + Constant.QueryObnCarton, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
-                ScanSendBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), ScanSendBean.class);
+                QueryObnCartonBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), QueryObnCartonBean.class);
                 mPackView.setList(scanStoreageBean.getData());
                 context.stopProgress();
             }
