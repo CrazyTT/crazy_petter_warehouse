@@ -20,7 +20,7 @@ public class SealPresenter extends BasePresenter {
 
     public void seal(String params) {
         context.showProgress("装箱中...", false);
-        requestData(Constant.SERVER_URL_BASE + Constant.GOODDETIALS, params, new DataCallBack() {
+        requestData(Constant.SERVER_URL_BASE + Constant.SealObnCarton, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
                 mSealView.sealOK();

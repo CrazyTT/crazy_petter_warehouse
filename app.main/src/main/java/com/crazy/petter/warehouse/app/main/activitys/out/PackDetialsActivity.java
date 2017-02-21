@@ -182,6 +182,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     @Override
     public void setPackInfo(ArrayList<PackBean.DataEntity> data) {
         if (data.size() <= 0) {
+            ToastUtils.showShort(this, "不存在此箱");
             mEdtPackNum.setText("");
             mEdtPackstyle.setText("");
             return;
