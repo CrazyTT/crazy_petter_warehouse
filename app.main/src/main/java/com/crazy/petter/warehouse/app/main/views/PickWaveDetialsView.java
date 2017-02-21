@@ -11,4 +11,7 @@ import java.util.ArrayList;
 
 public interface PickWaveDetialsView extends IBaseView {
     void setList(ArrayList<PickWaveDetialsBean.DataEntity> data);
+
+    void commitOk();
+
 }

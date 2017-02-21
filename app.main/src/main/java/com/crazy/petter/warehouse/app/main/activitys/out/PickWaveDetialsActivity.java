@@ -3,6 +3,7 @@ package com.crazy.petter.warehouse.app.main.activitys.out;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -17,6 +18,7 @@ import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.adapters.RemarkWaveAdapter;
+import com.crazy.petter.warehouse.app.main.beans.ConfirmWavePickBean;
 import com.crazy.petter.warehouse.app.main.beans.PickWaveBean;
 import com.crazy.petter.warehouse.app.main.beans.PickWaveDetialsBean;
 import com.crazy.petter.warehouse.app.main.presenters.PickWaveDetialsPresenter;
@@ -63,6 +65,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
     ArrayList<PickWaveDetialsBean.DataEntity> datas = new ArrayList<>();
     ArrayList<PickWaveDetialsBean.DataEntity.LotPropertyEntity> reMarks = new ArrayList<>();
     boolean isFirst = true;
+    PickWaveDetialsBean.DataEntity temp = new PickWaveDetialsBean.DataEntity();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,9 +141,60 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
 //                return false;
 //            }
 //        });
+        mBtnCommit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //提交数据
+                ConfirmWavePickBean confirmObnPickBean = new ConfirmWavePickBean();
+                ArrayList<ConfirmWavePickBean.DetailsEntity> detailsEntities = new ArrayList<>();
+                ConfirmWavePickBean.DetailsEntity detailsEntity = new ConfirmWavePickBean.DetailsEntity();
+                if (TextUtils.isEmpty(mEdtQty.getText().toString().trim())) {
+                    ToastUtils.showShort(PickWaveDetialsActivity.this, "数量不能为空");
+                    return;
+                }
+                detailsEntity.setQty(Integer.parseInt(mEdtQty.getText().toString().trim()));
+                detailsEntity.setSkuId(temp.getSkuId());
+                detailsEntity.setSkuName(temp.getSkuName());
+                detailsEntity.setLocSeq(temp.getLocSeq());
+                detailsEntity.setPickLoc(temp.getPickLoc());
+                detailsEntity.setLotProperty(temp.getLotProperty());
+                detailsEntities.add(detailsEntity);
+                confirmObnPickBean.setWaveId(mDataEntity.getWaveDocId());
+                confirmObnPickBean.setDetails(detailsEntities);
+
+                mPickDetialsPresenter.commit(JsonFormatter.getInstance().object2Json(confirmObnPickBean));
+            }
+        });
 
     }
 
+    @Override
+    public void commitOk() {
+        //提交成功
+        if (mTxtQty.getText().toString().trim().equals(mEdtQty.getText().toString().trim())) {
+            //这条记录拣货完毕了
+            mEdtSkuname.setText("");
+            mEdtSkuid.setText("");
+            mEdtLoc.setText("");
+            mEdtQty.setText("");
+            current++;
+            if (current >= datas.size()) {
+                current = 0;
+            }
+            setCurrent(current);
+            finish++;
+            initBottom();
+        } else {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("WaveId", mDataEntity.getWaveDocId());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            getOrders(jsonObject.toString(), true);
+            mEdtQty.setText("");
+        }
+    }
 
     private void getOrders(String params, boolean isFirst) {
         this.isFirst = isFirst;
@@ -152,18 +206,34 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
         ToastUtils.showShort(this, s);
     }
 
+    int current = 0;
 
     @Override
     public void setList(ArrayList<PickWaveDetialsBean.DataEntity> data) {
         if (data == null || data.size() <= 0) {
-            ToastUtils.showShort(this, "此单没有拣货明细");
+            ToastUtils.showShort(this, "此单没有明细");
             return;
         }
         if (isFirst) {
             datas = data;
-            setFist();
+            all = datas.size();
+            for (PickWaveDetialsBean.DataEntity temp : datas) {
+                if (temp.getWaitPickQty() == 0) {
+                    finish++;
+                }
+            }
+            setCurrent(current);
+            initBottom();
         } else {
-            showInfo(data.get(0));
+            temp = data.get(0);
+            showInfo(temp);
+            //并且得到操作的postion
+            for (int i = 0; i < datas.size(); i++) {
+                if (datas.get(i).getPickLoc().equalsIgnoreCase(temp.getPickLoc()) && datas.get(i).getSkuId().equalsIgnoreCase(temp.getSkuId())) {
+                    current = i;
+                    setCurrent(current);
+                }
+            }
         }
         showRemark(0);
     }
@@ -175,28 +245,22 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
         mRlRemark.setAdapter(mRemarkAdapter);
     }
 
-
     private void showInfo(PickWaveDetialsBean.DataEntity dataEntity) {
         mEdtLoc.setText(dataEntity.getPickLoc());
         mEdtSkuid.setText(dataEntity.getSkuId());
         mEdtSkuname.setText(dataEntity.getSkuName());
     }
 
-    private void setFist() {
-        mTxtLoc.setText(datas.get(0).getPickLoc());
-        mTxtSkuid.setText(datas.get(0).getSkuId());
-        mTxtQty.setText(datas.get(0).getWaitPickQty() + "");
-        initBottom();
+    private void setCurrent(int postion) {
+        mTxtLoc.setText(datas.get(postion).getPickLoc());
+        mTxtSkuid.setText(datas.get(postion).getSkuId());
+        mTxtQty.setText(datas.get(postion).getWaitPickQty() + "");
     }
 
+    int all = 0;
+    int finish = 0;
+
     private void initBottom() {
-        int all = datas.size();
-        int finish = 0;
-        for (PickWaveDetialsBean.DataEntity data : datas) {
-            if (data.getWaitPickQty() == 0) {
-                finish++;
-            }
-        }
         mTxtBottom.setText("共计" + all + "条/待处理" + (all - finish) + "条/已完成" + finish + "条");
     }
 }

@@ -35,4 +35,22 @@ public class PickWaveDetialsPresenter extends BasePresenter {
             }
         });
     }
+
+    public void commit(String params) {
+        requestData(Constant.SERVER_URL_BASE + Constant.ConfirmWavePic, params, new DataCallBack() {
+            @Override
+            public void onSuccess(Object o) {
+                mPickDetialsView.commitOk();
+
+
+                context.stopProgress();
+            }
+
+            @Override
+            public void onFailure(String s) {
+                context.stopProgress();
+            }
+        });
+
+    }
 }

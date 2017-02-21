@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 public class ReceiptBean implements Serializable {
 
-    public String InboundId;
-    public String ReceiptDate;
-    public ArrayList<DetailsEntity> details;
+    private String InboundId;
+    private String ReceiptDate;
+    private ArrayList<DetailsEntity> details;
 
     public String getInboundId() {
         return InboundId;
@@ -50,15 +50,15 @@ public class ReceiptBean implements Serializable {
          * ExpiredDate : 2017-02-12T13:19:19.3632414+08:00
          */
 
-        public String SeqNo;
-        public String SkuId;
-        public String SkuName;
-        public String ReceiptQty;
-        public String SkuProperty;
-        public String LpnNo;
-        public String ExtLot;
-        public String ProduceDate;
-        public String ExpiredDate;
+        private String SeqNo;
+        private String SkuId;
+        private String SkuName;
+        private String ReceiptQty;
+        private String SkuProperty;
+        private String LpnNo;
+        private String ExtLot;
+        private String ProduceDate;
+        private String ExpiredDate;
 
         public String getSeqNo() {
             return SeqNo;

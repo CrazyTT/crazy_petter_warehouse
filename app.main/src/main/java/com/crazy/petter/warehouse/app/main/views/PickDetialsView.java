@@ -11,4 +11,7 @@ import java.util.ArrayList;
 
 public interface PickDetialsView extends IBaseView {
     void setList(ArrayList<PickDetialsBean.DataEntity> data);
+
+    void commitOk();
+
 }

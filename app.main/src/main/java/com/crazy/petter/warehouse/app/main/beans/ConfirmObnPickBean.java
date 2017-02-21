@@ -1,29 +1,29 @@
 package com.crazy.petter.warehouse.app.main.beans;
 
-import java.io.Serializable;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 
 /**
- * Created by liuliuchen on 2017/2/12.
+ * Created by liuliuchen on 2017/2/21.
  */
-
-public class PutAwayBean implements Serializable {
-
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
+public class ConfirmObnPickBean {
 
     /**
-     * InboundId : sample string 1
-     * details : [{"IbnReceiveInc":1,"SeqNo":2,"SkuId":"sample string 3","SkuName":"sample string 4","Qty":5,"ToLoc":"sample string 6","LpnNo":"sample string 7"},{"IbnReceiveInc":1,"SeqNo":2,"SkuId":"sample string 3","SkuName":"sample string 4","Qty":5,"ToLoc":"sample string 6","LpnNo":"sample string 7"}]
+     * OutboundId : sample string 1
+     * details : [{"ObnPickInc":1,"SeqNo":2,"SkuId":"sample string 3","SkuName":"sample string 4","Qty":5,"ToLoc":"sample string 6","LpnNo":"sample string 7"},{"ObnPickInc":1,"SeqNo":2,"SkuId":"sample string 3","SkuName":"sample string 4","Qty":5,"ToLoc":"sample string 6","LpnNo":"sample string 7"}]
      */
 
-    private String InboundId;
+    private String OutboundId;
     private ArrayList<DetailsEntity> details;
 
-    public String getInboundId() {
-        return InboundId;
+    public String getOutboundId() {
+        return OutboundId;
     }
 
-    public void setInboundId(String InboundId) {
-        this.InboundId = InboundId;
+    public void setOutboundId(String OutboundId) {
+        this.OutboundId = OutboundId;
     }
 
     public ArrayList<DetailsEntity> getDetails() {
@@ -36,7 +36,7 @@ public class PutAwayBean implements Serializable {
 
     public static class DetailsEntity {
         /**
-         * IbnReceiveInc : 1
+         * ObnPickInc : 1
          * SeqNo : 2
          * SkuId : sample string 3
          * SkuName : sample string 4
@@ -45,7 +45,7 @@ public class PutAwayBean implements Serializable {
          * LpnNo : sample string 7
          */
 
-        private int IbnReceiveInc;
+        private int ObnPickInc;
         private int SeqNo;
         private String SkuId;
         private String SkuName;
@@ -53,12 +53,12 @@ public class PutAwayBean implements Serializable {
         private String ToLoc;
         private String LpnNo;
 
-        public int getIbnReceiveInc() {
-            return IbnReceiveInc;
+        public int getObnPickInc() {
+            return ObnPickInc;
         }
 
-        public void setIbnReceiveInc(int IbnReceiveInc) {
-            this.IbnReceiveInc = IbnReceiveInc;
+        public void setObnPickInc(int ObnPickInc) {
+            this.ObnPickInc = ObnPickInc;
         }
 
         public int getSeqNo() {
