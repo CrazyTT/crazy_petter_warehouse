@@ -71,7 +71,7 @@ public class DetialsStoreageFragment extends Fragment implements DetialsStoreage
         mEdtOrderNum.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (!TextUtils.isEmpty(sp.getString("num"))) {
                         JSONObject jsonObject = new JSONObject();
                         try {

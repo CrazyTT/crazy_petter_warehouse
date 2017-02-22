@@ -77,7 +77,7 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
         mEdtGoodId.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     JSONObject jsonObject = new JSONObject();
                     try {
                         jsonObject.put("InboundId", mDataEntity.getInboundId());
@@ -154,8 +154,6 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
             setShowSoftInputOnFocus.invoke(mEdtNum, false);
             setShowSoftInputOnFocus.invoke(mEdtGoodName, false);
             setShowSoftInputOnFocus.invoke(mEdtLpn, false);
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }

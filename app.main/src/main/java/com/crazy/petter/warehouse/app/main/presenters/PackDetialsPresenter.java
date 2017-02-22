@@ -39,6 +39,7 @@ public class PackDetialsPresenter extends BasePresenter {
     }
 
     public void addList(String params) {
+        context.showProgress("加入明细中...", false);
         requestData(Constant.SERVER_URL_BASE + Constant.ConfirmObnCarton, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {

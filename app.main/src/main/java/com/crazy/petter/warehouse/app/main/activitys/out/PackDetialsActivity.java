@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -102,7 +103,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         mEdtPackNum.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (imm.isActive()) {
                         imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
@@ -155,6 +156,14 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         }
         if (keyCode == KeyEvent.KEYCODE_ENDCALL) {
             //加入明细
+            if (TextUtils.isEmpty(mEdtPackNum.getText().toString().trim()) ||
+                    TextUtils.isEmpty(mEdtPackstyle.getText().toString().trim()) ||
+                    TextUtils.isEmpty(mEdtQty.getText().toString().trim()) ||
+                    TextUtils.isEmpty(mEdtSkuid.getText().toString().trim())) {
+                ToastUtils.showShort(PackDetialsActivity.this, "请将信息补充完整");
+                return true;
+
+            }
             ConfirmObnCartonBean temp = new ConfirmObnCartonBean();
             temp.setOutboundId(mDataEntity.getOutboundId());
             temp.setAutoCartonId(true);

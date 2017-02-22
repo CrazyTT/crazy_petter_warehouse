@@ -154,7 +154,7 @@ public class MainActivity extends BaseActivity {
         mlist.add(gridViewItem2);
         GridViewItem gridViewItem3 = new GridViewItem(R.mipmap.icon_tjbb, "按托盘号扫描发货");
         mlist.add(gridViewItem3);
-        GridViewItem gridViewItem4 = new GridViewItem(R.mipmap.icon_wghyw, "波次单扫描发货");
+        GridViewItem gridViewItem4 = new GridViewItem(R.mipmap.icon_wghyw, "波次单扫描拣货");
         mlist.add(gridViewItem4);
         GridViewItem gridViewItem5 = new GridViewItem(R.mipmap.icon_khgl, "分货");
         mlist.add(gridViewItem5);
@@ -205,7 +205,6 @@ public class MainActivity extends BaseActivity {
             }
         }
     }
-
 
     long mExitTime = 0;
 

@@ -1,6 +1,7 @@
 package com.crazy.petter.warehouse.app.main.activitys.out;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -73,6 +74,10 @@ public class SealActivity extends BaseActivity implements SealView {
         mBtnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (TextUtils.isEmpty(mEdtVolume.getText().toString().trim()) || TextUtils.isEmpty(mEdtWeight.getText().toString().trim())) {
+                    ToastUtils.showShort(SealActivity.this, "请将信息补充完整");
+                    return;
+                }
                 SealBean sealBean = new SealBean();
                 sealBean.setCartonId(CartonId);
                 sealBean.setCartonTypeId(CartonTypeId);
