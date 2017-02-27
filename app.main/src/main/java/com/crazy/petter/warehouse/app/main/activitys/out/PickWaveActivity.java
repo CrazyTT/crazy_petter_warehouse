@@ -120,6 +120,9 @@ public class PickWaveActivity extends BaseActivity implements PickWaveView {
 
     @Override
     public void setList(ArrayList<PickWaveBean.DataEntity> data) {
+        if (data == null) {
+            return;
+        }
         scanOrderAdapter.setList(data);
     }
 

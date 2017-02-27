@@ -120,6 +120,9 @@ public class PickActivity extends BaseActivity implements PickView {
 
     @Override
     public void setList(ArrayList<PickBean.DataEntity> data) {
+        if (data == null) {
+            return;
+        }
         scanOrderAdapter.setList(data);
     }
 

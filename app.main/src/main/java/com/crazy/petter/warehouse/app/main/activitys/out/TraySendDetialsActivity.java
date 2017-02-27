@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -18,6 +19,7 @@ import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.adapters.TratSendAdapter;
 import com.crazy.petter.warehouse.app.main.beans.ScanSendBean;
+import com.crazy.petter.warehouse.app.main.beans.TraySendCommitBean;
 import com.crazy.petter.warehouse.app.main.beans.TraySendDetialsBean;
 import com.crazy.petter.warehouse.app.main.presenters.TraySendDetialsPresenter;
 import com.crazy.petter.warehouse.app.main.views.TraySendDetialsView;
@@ -99,14 +101,47 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
             @Override
             public void onClick(View v) {
                 //确认发货
+                if (TextUtils.isEmpty(mEdtOrderNum.getText().toString().trim())) {
+                    ToastUtils.showShort(TraySendDetialsActivity.this, "请输入托盘号");
+                    return;
+                }
+                if (datas.size() <= 0) {
+                    ToastUtils.showShort(TraySendDetialsActivity.this, "没有明细，无法发货");
+                    return;
+                }
+                TraySendCommitBean traySendCommitBean = new TraySendCommitBean();
+                traySendCommitBean.setOutboundId(mDataEntity.getOutboundId());
+                traySendCommitBean.setLpnNo(mEdtOrderNum.getText().toString().trim());
+                ArrayList<TraySendCommitBean.DetailsEntity> detailsEntities = new ArrayList<>();
+                for (TraySendDetialsBean.DataEntity data : datas) {
+                    TraySendCommitBean.DetailsEntity temp = new TraySendCommitBean.DetailsEntity();
+                    temp.setOutboundId(data.getOutboundId());
+                    temp.setExtLot(data.getExtLot());
+                    temp.setObnPickInc(data.getObnPickInc());
+                    temp.setSeqNo(data.getSeqNo());
+                    temp.setShipQty(data.getShippedQty());
+                    temp.setSkuId(data.getSkuId());
+                    temp.setSkuName(data.getSkuName());
+                    temp.setSkuProperty(data.getSkuProperty());
+                    detailsEntities.add(temp);
+                }
+                traySendCommitBean.setDetails(detailsEntities);
+                mTraySendDetialsPresenter.commit(JsonFormatter.getInstance().object2Json(traySendCommitBean));
             }
         });
         mBtnCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //点击取消按钮的事件
+                TraySendDetialsActivity.this.onBackPressed();
             }
         });
+    }
+
+    @Override
+    public void commitOK() {
+        ToastUtils.showShort(this, "发货成功");
+
     }
 
     private void getDetials() {
@@ -125,10 +160,14 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
         ToastUtils.showShort(this, s);
     }
 
-    ArrayList<TraySendDetialsBean.DataEntity> datas;
+    ArrayList<TraySendDetialsBean.DataEntity> datas = new ArrayList<>();
 
     @Override
     public void showGoods(ArrayList<TraySendDetialsBean.DataEntity> data) {
+        if (data == null || data.size() == 0) {
+            ToastUtils.showShort(TraySendDetialsActivity.this, "没有查询到明细");
+            return;
+        }
         datas = data;
         scanOrderAdapter.setList(datas);
     }

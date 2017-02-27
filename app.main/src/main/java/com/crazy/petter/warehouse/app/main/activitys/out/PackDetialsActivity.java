@@ -93,6 +93,10 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         mBtnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mList.size() <= 0) {
+                    ToastUtils.showShort(PackDetialsActivity.this, "还没有添加任何明细");
+                    return;
+                }
                 Intent intent = new Intent(PackDetialsActivity.this, SealActivity.class);
                 intent.putExtra("OutboundId", mDataEntity.getOutboundId());
                 intent.putExtra("CartonId", mEdtPackNum.getText().toString().trim());
@@ -181,7 +185,6 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     @Override
     public void setConfirmResult(PackDetialsBean scanStoreageBean) {
         mList = scanStoreageBean.getData();
-
         mEdtSkuid.requestFocus();
         mEdtSkuid.setText("");
         mEdtQty.setText("");

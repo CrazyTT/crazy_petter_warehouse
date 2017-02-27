@@ -118,6 +118,9 @@ public class PackActivity extends BaseActivity implements PackView {
 
     @Override
     public void setList(ArrayList<QueryObnCartonBean.DataEntity> data) {
+        if (data == null) {
+            return;
+        }
         scanOrderAdapter.setList(data);
     }
 

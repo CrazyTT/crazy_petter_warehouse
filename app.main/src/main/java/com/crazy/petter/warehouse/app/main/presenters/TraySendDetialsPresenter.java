@@ -35,6 +35,21 @@ public class TraySendDetialsPresenter extends BasePresenter {
                 context.stopProgress();
             }
         });
+    }
 
+    public void commit(String params) {
+        context.showProgress("确认发货中...", false);
+        requestData(Constant.SERVER_URL_BASE + Constant.TRAYSENDDETIALS, params, new DataCallBack() {
+            @Override
+            public void onSuccess(Object o) {
+                mTraySendDetialsView.commitOK();
+                context.stopProgress();
+            }
+
+            @Override
+            public void onFailure(String s) {
+                context.stopProgress();
+            }
+        });
     }
 }

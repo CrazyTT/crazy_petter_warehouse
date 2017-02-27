@@ -1,7 +1,7 @@
 package com.crazy.petter.warehouse.app.main.views;
 
 import com.bjdv.lib.utils.base.IBaseView;
-import com.crazy.petter.warehouse.app.main.beans.PickBean;
+import com.crazy.petter.warehouse.app.main.beans.PickWaveBean;
 
 import java.util.ArrayList;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 
 public interface DivideView extends IBaseView {
-    void setList(ArrayList<PickBean.DataEntity> data);
+    void setList(ArrayList<PickWaveBean.DataEntity> data);
 
 
     void getOrderFailure();

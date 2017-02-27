@@ -122,6 +122,9 @@ public class TraySendActivity extends BaseActivity implements TraySendView {
 
     @Override
     public void setList(ArrayList<ScanSendBean.DataEntity> data) {
+        if (data == null) {
+            return;
+        }
         scanOrderAdapter.setList(data);
     }
 

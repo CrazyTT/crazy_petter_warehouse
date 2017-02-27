@@ -23,6 +23,6 @@ public class Constant {
     public static String ConfirmObnCarton = "WebAPI/api/WmsRf/ConfirmObnCarton";
     public static String SealObnCarton = "WebAPI/api/WmsRf/SealObnCarton";
     public static String QueryCartonType = "WebAPI/api/WmsRf/QueryCartonType";
-
-
+    public static String QueryReBinWallWave = "WebAPI/api/WmsRf/QueryReBinWallWave";
+    public static String ConfirmObnShip = "WebAPI/api/WmsRf/ConfirmObnShip";
 }

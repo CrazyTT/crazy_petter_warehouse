@@ -17,8 +17,8 @@ import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.adapters.PickAdapter;
-import com.crazy.petter.warehouse.app.main.beans.PickBean;
+import com.crazy.petter.warehouse.app.main.adapters.PickWaveAdapter;
+import com.crazy.petter.warehouse.app.main.beans.PickWaveBean;
 import com.crazy.petter.warehouse.app.main.presenters.DividePresenter;
 import com.crazy.petter.warehouse.app.main.views.DivideView;
 
@@ -38,7 +38,7 @@ public class DivideActivity extends BaseActivity implements DivideView {
     ButtonAutoBg mBtnQuery;
     @Bind(R.id.order_list)
     RecyclerView mOrderList;
-    PickAdapter scanOrderAdapter;
+    PickWaveAdapter scanOrderAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class DivideActivity extends BaseActivity implements DivideView {
     }
 
     private void initViews() {
-        scanOrderAdapter = new PickAdapter(this, new PickAdapter.OrderTodoAdapterCallBack() {
+        scanOrderAdapter = new PickWaveAdapter(this, new PickWaveAdapter.OrderTodoAdapterCallBack() {
             @Override
             public void click(int postion) {
                 jump(postion);
@@ -99,7 +99,7 @@ public class DivideActivity extends BaseActivity implements DivideView {
         }
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("DocNo", mEdtOrderNum.getText().toString().trim());
+            jsonObject.put("WaveId", mEdtOrderNum.getText().toString().trim());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -119,13 +119,16 @@ public class DivideActivity extends BaseActivity implements DivideView {
 
 
     @Override
-    public void setList(ArrayList<PickBean.DataEntity> data) {
+    public void setList(ArrayList<PickWaveBean.DataEntity> data) {
+        if (data == null) {
+            return;
+        }
         scanOrderAdapter.setList(data);
     }
 
     @Override
     public void getOrderFailure() {
-        ArrayList<PickBean.DataEntity> data = new ArrayList<>();
+        ArrayList<PickWaveBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
     }
 }
