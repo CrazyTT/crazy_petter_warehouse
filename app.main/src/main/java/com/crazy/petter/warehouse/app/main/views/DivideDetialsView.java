@@ -14,4 +14,5 @@ public interface DivideDetialsView extends IBaseView {
 
     void setOne(PickWaveDtBean.DataEntity dataEntity);
 
+    void commitOk();
 }
