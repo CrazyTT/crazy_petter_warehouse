@@ -1,16 +1,26 @@
 package com.crazy.petter.warehouse.app.main.activitys.out;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bjdv.lib.utils.base.BaseActivity;
+import com.bjdv.lib.utils.util.JsonFormatter;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.crazy.petter.warehouse.app.main.R;
+import com.crazy.petter.warehouse.app.main.beans.PickWaveBean;
+import com.crazy.petter.warehouse.app.main.beans.PickWaveDtBean;
 import com.crazy.petter.warehouse.app.main.presenters.DivideDetialsPresenter;
 import com.crazy.petter.warehouse.app.main.views.DivideDetialsView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Method;
 
@@ -33,12 +43,15 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
     ButtonAutoBg mBtnCommit;
     @Bind(R.id.txt_bottom)
     TextView mTxtBottom;
+    PickWaveBean.DataEntity mDataEntity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_divide_detials);
         ButterKnife.bind(this);
+        mDataEntity = JsonFormatter.getInstance().json2object(getIntent().getStringExtra("detials"), PickWaveBean.DataEntity.class);
         mDivideDetialsPresenter = new DivideDetialsPresenter(this, this, "DivideDetialsActivity");
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         try {
@@ -50,10 +63,60 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
         } catch (Exception e) {
             e.printStackTrace();
         }
+        mEdtSkuId.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm.isActive()) {
+                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    }
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("WaveId", mDataEntity.getWaveDocId());
+                        jsonObject.put("SkuId", mEdtSkuId.getText().toString().trim());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    mDivideDetialsPresenter.getOrderOne(jsonObject.toString());
+                    return true;
+                }
+                return false;
+            }
+        });
+        initAll();
+    }
+
+    private void initAll() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("WaveId", mDataEntity.getWaveDocId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mDivideDetialsPresenter.getOrderAll(jsonObject.toString());
     }
 
     @Override
     public void showTips(String s) {
         ToastUtils.showShort(this, s);
+    }
+
+    @Override
+    public void setBottom(int totalQty, int totalPickQty) {
+        mTxtBottom.setText("总数量" + totalQty + "/已经分货数量" + totalPickQty);
+    }
+
+    @Override
+    public void getOrderAllFailure() {
+        ToastUtils.showShort(this, "获取数据失败");
+        mTxtBottom.setText("总数量xx/已经分货数量xx");
+    }
+
+    @Override
+    public void setOne(PickWaveDtBean.DataEntity dataEntity) {
+        mTxtContainer.setText(dataEntity.getContainerId());
+        mTxtQty.setText(dataEntity.getPickQty());
+        mTxtWaveNum.setText(dataEntity.getExtId());
     }
 }

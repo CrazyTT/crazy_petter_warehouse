@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:autofit="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -25,16 +26,24 @@
                 android:text="入库单号:"
                 android:textColor="@color/black_gray"/>
 
-            <EditText
-                android:id="@+id/txt_orderNum"
+            <me.grantland.widget.AutofitLayout
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:background="@drawable/edt_back"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:singleLine="true"
-                android:text="123123213"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/txt_orderNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edt_back"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:text="123123213"
+                    autofit:minTextSize="13sp"/>
+            </me.grantland.widget.AutofitLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -49,16 +58,24 @@
                 android:text="货品代码:"
                 android:textColor="@color/black_gray"/>
 
-            <EditText
-                android:id="@+id/edt_good_id"
+            <me.grantland.widget.AutofitLayout
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:background="@drawable/edt_back"
-                android:hint="请扫描货品代码"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:singleLine="true"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/edt_good_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edt_back"
+                    android:hint="请扫描货品代码"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    autofit:minTextSize="13sp"/>
+            </me.grantland.widget.AutofitLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -73,15 +90,23 @@
                 android:text="货品名称:"
                 android:textColor="@color/black_gray"/>
 
-            <EditText
-                android:id="@+id/edt_good_name"
+            <me.grantland.widget.AutofitLayout
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:background="@drawable/edt_back"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:singleLine="true"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/edt_good_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edt_back"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    autofit:minTextSize="13sp"/>
+            </me.grantland.widget.AutofitLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -99,7 +124,7 @@
             <EditText
                 android:id="@+id/edt_num"
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_height="25dp"
                 android:layout_weight="1"
                 android:background="@drawable/edt_back"
                 android:inputType="numberDecimal"
@@ -123,7 +148,7 @@
             <EditText
                 android:id="@+id/edt_lpn"
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_height="25dp"
                 android:layout_weight="1"
                 android:background="@drawable/edt_back"
                 android:paddingLeft="10dp"
@@ -147,7 +172,7 @@
             <EditText
                 android:id="@+id/edt_date"
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_height="25dp"
                 android:layout_weight="1"
                 android:background="@drawable/edt_back"
                 android:inputType="numberDecimal"
@@ -171,7 +196,7 @@
             <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/sp_good_Property"
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_height="30dp"
                 android:layout_weight="1"
                 android:dropDownVerticalOffset="@dimen/spinner_dropdown_verticaloffset"
                 android:prompt="@string/string_good_Property"

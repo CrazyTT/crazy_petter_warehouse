@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:autofit="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
@@ -27,17 +28,24 @@
                 android:layout_height="wrap_content"
                 android:text="货品代码"/>
 
-            <EditText
-                android:id="@+id/edt_skuid"
+            <me.grantland.widget.AutofitLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/edt_back"
-                android:hint="请扫描输入货品代码"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:singleLine="true"
-                android:text="HP01M0001C"/>
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/edt_skuid"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edt_back"
+                    android:hint="请扫描输入货品代码"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:singleLine="true"
+                    autofit:minTextSize="13sp"/>
+            </me.grantland.widget.AutofitLayout>
 
         </LinearLayout>
 
@@ -54,18 +62,25 @@
                 android:layout_height="wrap_content"
                 android:text="上架数量"/>
 
-            <EditText
-                android:id="@+id/edt_skuqty"
+            <me.grantland.widget.AutofitLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/edt_back"
-                android:gravity="right"
-                android:inputType="numberDecimal"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:singleLine="true"/>
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
 
+                <EditText
+                    android:id="@+id/edt_skuqty"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edt_back"
+                    android:gravity="right"
+                    android:inputType="numberDecimal"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:singleLine="true"
+                    autofit:minTextSize="13sp"/>
+            </me.grantland.widget.AutofitLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -81,16 +96,24 @@
                 android:layout_height="wrap_content"
                 android:text="上架货位"/>
 
-            <EditText
-                android:id="@+id/edt_loc"
+            <me.grantland.widget.AutofitLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/edt_back"
-                android:gravity="right"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:singleLine="true"/>
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/edt_loc"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/edt_back"
+                    android:gravity="right"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:singleLine="true"
+                    autofit:minTextSize="13sp"/>
+            </me.grantland.widget.AutofitLayout>
 
         </LinearLayout>
     </LinearLayout>

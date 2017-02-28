@@ -39,7 +39,7 @@ public class TraySendDetialsPresenter extends BasePresenter {
 
     public void commit(String params) {
         context.showProgress("确认发货中...", false);
-        requestData(Constant.SERVER_URL_BASE + Constant.TRAYSENDDETIALS, params, new DataCallBack() {
+        requestData(Constant.SERVER_URL_BASE + Constant.ConfirmObnShip, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
                 mTraySendDetialsView.commitOK();

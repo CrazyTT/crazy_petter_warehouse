@@ -2,6 +2,7 @@
 <LinearLayout
     android:id="@+id/activity_divide_detials"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:autofit="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -46,17 +47,24 @@
         <TextView
             android:layout_width="80dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:text="货品代码"/>
 
-        <EditText
-            android:id="@+id/edt_sku_id"
+        <me.grantland.widget.AutofitLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/edt_back"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:singleLine="true"/>
+            android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/edt_sku_id"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:background="@drawable/edt_back"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:singleLine="true"
+                autofit:minTextSize="13sp"/>
+        </me.grantland.widget.AutofitLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -89,7 +97,7 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp">
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/txt_container"
             android:layout_width="130dp"
             android:layout_height="40dp"
@@ -102,7 +110,7 @@
             android:textColor="@color/colorBlackTransparent"
             android:textSize="30sp"/>
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/txt_qty"
             android:layout_width="130dp"
             android:layout_height="40dp"
@@ -124,9 +132,9 @@
         android:layout_marginTop="10dp"
         android:text="出库单号"/>
 
-    <TextView
+    <me.grantland.widget.AutofitTextView
         android:id="@+id/txt_wave_num"
-        android:layout_width="130dp"
+        android:layout_width="165dp"
         android:layout_height="40dp"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="10dp"
