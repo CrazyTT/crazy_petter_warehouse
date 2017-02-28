@@ -37,7 +37,7 @@ public class PackBean extends BaseBean {
         public int Width;
         public int Height;
         public int Weight;
-        public int Volume;
+        public double Volume;
 
         public String getCartonTypeId() {
             return CartonTypeId;
@@ -87,11 +87,11 @@ public class PackBean extends BaseBean {
             this.Weight = Weight;
         }
 
-        public int getVolume() {
+        public double getVolume() {
             return Volume;
         }
 
-        public void setVolume(int Volume) {
+        public void setVolume(double Volume) {
             this.Volume = Volume;
         }
     }

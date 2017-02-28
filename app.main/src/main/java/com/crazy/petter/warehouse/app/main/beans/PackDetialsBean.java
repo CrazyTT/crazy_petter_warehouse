@@ -62,7 +62,7 @@ public class PackDetialsBean extends BaseBean {
         public String SkuName;
         public int PackageQty;
         public int PickedQty;
-        public int TotalGrossWeight;
+        public double TotalGrossWeight;
         public String Remark;
 
         public String getOutboundId() {
@@ -113,11 +113,11 @@ public class PackDetialsBean extends BaseBean {
             this.PickedQty = PickedQty;
         }
 
-        public int getTotalGrossWeight() {
+        public double getTotalGrossWeight() {
             return TotalGrossWeight;
         }
 
-        public void setTotalGrossWeight(int TotalGrossWeight) {
+        public void setTotalGrossWeight(double TotalGrossWeight) {
             this.TotalGrossWeight = TotalGrossWeight;
         }
 

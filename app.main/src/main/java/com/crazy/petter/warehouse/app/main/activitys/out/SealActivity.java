@@ -41,7 +41,8 @@ public class SealActivity extends BaseActivity implements SealView {
     String OutboundId = "";
     String CartonId = "";
     String CartonTypeId = "";
-    int weight = 0;
+    double weight = 0;
+    double Volume = 0;
 //    intent.putExtra("OutboundId", mDataEntity.getOutboundId());
 //    intent.putExtra("CartonId", mEdtPackNum.getText().toString().trim());
 
@@ -54,10 +55,12 @@ public class SealActivity extends BaseActivity implements SealView {
         OutboundId = getIntent().getStringExtra("OutboundId");
         CartonId = getIntent().getStringExtra("CartonId");
         CartonTypeId = getIntent().getStringExtra("CartonTypeId");
-        weight = getIntent().getIntExtra("weight", 0);
+        weight = getIntent().getDoubleExtra("weight", 0);
+        Volume = getIntent().getDoubleExtra("Volume", 0);
         mTxtOrderNum.setText(OutboundId);
         mEdtPackNum.setText(CartonId);
         mEdtWeight.setText(weight + "");
+        mEdtVolume.setText(Volume + "");
         initViews();
         try {
             Class<EditText> cls = EditText.class;

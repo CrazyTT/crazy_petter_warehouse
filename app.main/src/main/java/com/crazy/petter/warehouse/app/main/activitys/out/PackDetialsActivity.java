@@ -97,7 +97,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                     ToastUtils.showShort(PackDetialsActivity.this, "还没有添加任何明细");
                     return;
                 }
-                int weight = 0;
+                double weight = 0;
                 for (PackDetialsBean.DataEntity dataEntity : mList) {
                     weight += dataEntity.getTotalGrossWeight();
                 }
@@ -106,6 +106,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                 intent.putExtra("CartonId", mEdtPackNum.getText().toString().trim());
                 intent.putExtra("CartonTypeId", mEdtPackstyle.getText().toString().trim());
                 intent.putExtra("weight", weight);
+                intent.putExtra("Volume", Volume);
                 startActivityForResult(intent, 0x123);
             }
         });
@@ -154,6 +155,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     @Override
     public void showTips(String s) {
         ToastUtils.showShort(this, s);
+        mEdtPackNum.requestFocus();
     }
 
     ArrayList<PackDetialsBean.DataEntity> mList = new ArrayList<>();
@@ -196,15 +198,19 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         mPackDetialsAdapter.notifyDataSetChanged();
     }
 
+    double Volume = 0;
+
     @Override
     public void setPackInfo(ArrayList<PackBean.DataEntity> data) {
         if (data.size() <= 0) {
             ToastUtils.showShort(this, "不存在此箱");
             mEdtPackNum.setText("");
             mEdtPackstyle.setText("");
+            Volume = 0;
             return;
         }
         mEdtPackNum.setText(data.get(0).getCartonTypeId());
+        Volume = data.get(0).getVolume();
         mEdtPackstyle.setText(data.get(0).getCartonTypeDesc());
         mEdtSkuid.requestFocus();
     }
