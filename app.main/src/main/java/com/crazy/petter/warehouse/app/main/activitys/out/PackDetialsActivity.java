@@ -97,10 +97,15 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                     ToastUtils.showShort(PackDetialsActivity.this, "还没有添加任何明细");
                     return;
                 }
+                int weight = 0;
+                for (PackDetialsBean.DataEntity dataEntity : mList) {
+                    weight += dataEntity.getTotalGrossWeight();
+                }
                 Intent intent = new Intent(PackDetialsActivity.this, SealActivity.class);
                 intent.putExtra("OutboundId", mDataEntity.getOutboundId());
                 intent.putExtra("CartonId", mEdtPackNum.getText().toString().trim());
                 intent.putExtra("CartonTypeId", mEdtPackstyle.getText().toString().trim());
+                intent.putExtra("weight", weight);
                 startActivityForResult(intent, 0x123);
             }
         });
