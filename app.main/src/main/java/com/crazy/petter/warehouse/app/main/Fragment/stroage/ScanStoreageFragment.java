@@ -83,6 +83,8 @@ public class ScanStoreageFragment extends Fragment implements ScanStoreageFragme
 
     private void jump(int postion) {
         Intent intent = new Intent(getActivity(), ReceiptActivity.class);
+        mEdtOrderNum.setText(scanOrderAdapter.getList().get(postion).getInboundId());
+        mSharedPreferencesUtil.setString("num", mEdtOrderNum.getText().toString().trim());
         intent.putExtra("detials", JsonFormatter.getInstance().object2Json(scanOrderAdapter.getList().get(postion)));
         startActivity(intent);
     }

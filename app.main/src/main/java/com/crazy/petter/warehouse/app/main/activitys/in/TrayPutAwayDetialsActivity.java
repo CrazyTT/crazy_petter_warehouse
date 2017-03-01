@@ -33,8 +33,6 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static android.R.attr.key;
-
 public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayDetialsView {
     ScanStoreageBean.DataEntity mDataEntity;
     @Bind(R.id.edt_lpn)
@@ -91,23 +89,33 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
         mBtnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (TextUtils.isEmpty(mEdtLpn.getText().toString().trim())) {
+                    ToastUtils.showShort(TrayPutAwayDetialsActivity.this, "请先扫描托盘号");
+                    return;
+                }
+                if (TextUtils.isEmpty(mEdtLoc.getText().toString().trim())) {
+                    ToastUtils.showShort(TrayPutAwayDetialsActivity.this, "请扫描上架货位");
+                    return;
+                }
                 if (datas != null && datas.size() > 0) {
                     PutAwayBean receiptBean = new PutAwayBean();
                     receiptBean.setInboundId(mDataEntity.getInboundId());
                     ArrayList<PutAwayBean.DetailsEntity> entities = new ArrayList<>();
                     for (int i = 0; i < datas.size(); i++) {
                         PutAwayBean.DetailsEntity detailsEntity = new PutAwayBean.DetailsEntity();
-                        detailsEntity.setSeqNo(datas.get(key).getSeqNo());
-                        detailsEntity.setSkuId(datas.get(key).getSkuId());
-                        detailsEntity.setSkuName(datas.get(key).getSkuName());
-                        detailsEntity.setQty(0);
-                        detailsEntity.setIbnReceiveInc(datas.get(key).getIbnReceiveInc());
+                        detailsEntity.setSeqNo(datas.get(i).getSeqNo());
+                        detailsEntity.setSkuId(datas.get(i).getSkuId());
+                        detailsEntity.setSkuName(datas.get(i).getSkuName());
+                        detailsEntity.setQty(datas.get(i).getQty());
+                        detailsEntity.setIbnReceiveInc(datas.get(i).getIbnReceiveInc());
                         detailsEntity.setLpnNo(mEdtLpn.getText().toString().trim());
                         detailsEntity.setToLoc(mEdtLoc.getText().toString().trim());
                         entities.add(detailsEntity);
                     }
                     receiptBean.setDetails(entities);
                     mPutAwayDetialsPresenter.commit(JsonFormatter.getInstance().object2Json(receiptBean));
+                } else {
+                    ToastUtils.showShort(TrayPutAwayDetialsActivity.this, "没有明细，请重新扫描");
                 }
             }
         });
@@ -158,6 +166,7 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
 
     @Override
     public void commitOK() {
+        datas = null;
         getDetials();
     }
 }

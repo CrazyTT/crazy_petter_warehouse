@@ -166,7 +166,7 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="生产日期:"
+                android:text="失效日期:"
                 android:textColor="@color/black_gray"/>
 
             <EditText

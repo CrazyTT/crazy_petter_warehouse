@@ -16,4 +16,6 @@ public interface ReceiptView extends IBaseView {
     void receiptOK();
 
     void showProperty(ArrayList<PropertyBean.DataEntity> data);
+
+    void showNoGoods();
 }

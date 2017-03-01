@@ -107,6 +107,7 @@ public class TrayPutAwayActivity extends BaseActivity implements PutAwayView {
     }
 
     private void jump(int postion) {
+        mEdtOrderNum.setText(scanOrderAdapter.getList().get(postion).getInboundId());
         Intent intent = new Intent(this, TrayPutAwayDetialsActivity.class);
         intent.putExtra("detials", JsonFormatter.getInstance().object2Json(scanOrderAdapter.getList().get(postion)));
         startActivity(intent);

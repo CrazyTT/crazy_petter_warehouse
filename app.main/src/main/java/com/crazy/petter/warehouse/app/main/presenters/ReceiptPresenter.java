@@ -33,6 +33,7 @@ public class ReceiptPresenter extends BasePresenter {
 
             @Override
             public void onFailure(String s) {
+                mReceiptView.showNoGoods();
                 context.stopProgress();
             }
         });

@@ -2,9 +2,7 @@ package com.crazy.petter.warehouse.app.main.activitys.in;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -32,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -88,7 +87,6 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
                     if (!TextUtils.isEmpty(mEdtGoodId.getText().toString().trim())) {
                         mReceiptPresenter.getDetials(jsonObject.toString());
                     }
-
                     InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (imm.isActive()) {
                         imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
@@ -100,7 +98,6 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
         });
         Calendar c = Calendar.getInstance();
         mEdtDate.setText(c.get(Calendar.YEAR) + "");
-        mEdtGoodId.addTextChangedListener(textWatcher);
         mBtnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,6 +117,10 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
 //                }
 //                ]
                 //收货
+                if (goodsBean == null) {
+                    ToastUtils.showShort(ReceiptActivity.this, "请先扫描");
+                    return;
+                }
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 Date curDate = new Date(System.currentTimeMillis());//获取当前时间
                 String str = formatter.format(curDate);
@@ -130,8 +131,24 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
                 ReceiptBean.DetailsEntity detailsEntity = new ReceiptBean.DetailsEntity();
                 detailsEntity.setExtLot(goodsBean.getData().get(0).getExtLot());
                 detailsEntity.setLpnNo(goodsBean.getData().get(0).getLPN());
-                detailsEntity.setExpiredDate(mEdtDate.getText().toString().trim());
-                detailsEntity.setProduceDate(mEdtDate.getText().toString().trim());
+                SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+                boolean dateflag = true;
+                try {
+                    Date date = format.parse(mEdtDate.getText().toString().trim());
+                } catch (ParseException e) {
+                    dateflag = false;
+                } finally {
+                    System.out.println("日期是否满足要求" + dateflag);
+                }
+                if (!dateflag) {
+                    ToastUtils.showShort(ReceiptActivity.this, "请输入正确的日期");
+                    return;
+                }
+                if (!isP) {
+                    detailsEntity.setExpiredDate(mEdtDate.getText().toString().trim());
+                } else {
+                    detailsEntity.setProduceDate(mEdtDate.getText().toString().trim());
+                }
                 detailsEntity.setReceiptQty(mEdtNum.getText().toString().trim());
                 detailsEntity.setSeqNo(goodsBean.getData().get(0).getSeqNo());
                 detailsEntity.setSkuId(goodsBean.getData().get(0).getSkuId());
@@ -168,19 +185,6 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
         mReceiptPresenter.getProperty(jsonObject.toString());
     }
 
-    private TextWatcher textWatcher = new TextWatcher() {
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    };
     String SkuProperty = "";
 
     class SelectedListener implements AdapterView.OnItemSelectedListener {
@@ -212,10 +216,13 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
         ToastUtils.showShort(this, "收货成功");
         mEdtGoodId.setText("");
         mEdtGoodName.setText("");
+        mEdtLpn.setText("");
         Calendar c = Calendar.getInstance();
         mEdtDate.setText(c.get(Calendar.YEAR) + "");
         mEdtNum.setText("");
+        mSpGoodProperty.setSelection(0);
         mEdtGoodId.requestFocus();
+        goodsBean = null;
     }
 
     @Override
@@ -230,12 +237,31 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
         mSpGoodProperty.setAdapter(arrayAdapter);
     }
 
+    @Override
+    public void showNoGoods() {
+        ToastUtils.showShort(this, "请重新扫描");
+        mEdtGoodId.setText("");
+        mEdtGoodName.setText("");
+        mEdtLpn.setText("");
+        Calendar c = Calendar.getInstance();
+        mEdtDate.setText(c.get(Calendar.YEAR) + "");
+        mEdtNum.setText("");
+        mSpGoodProperty.setSelection(0);
+        mEdtGoodId.requestFocus();
+        goodsBean = null;
+    }
+
+    boolean isP = true;
+
     private void init() {
         mEdtGoodName.setText(goodsBean.getData().get(0).getSkuName());
         if ("E".equalsIgnoreCase(goodsBean.getData().get(0).getShelfLifeCtrlType())) {
             mTxtDate.setText("失效日期");
-        } else if ("P".equalsIgnoreCase(goodsBean.getData().get(0).getShelfLifeCtrlType())) {
+            isP = false;
+        } else {
             mTxtDate.setText("生产日期");
+            isP = true;
         }
+        mEdtLpn.setText(goodsBean.getData().get(0).getLPN());
     }
 }

@@ -2,6 +2,7 @@ package com.crazy.petter.warehouse.app.main.activitys.out;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -89,8 +90,10 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
         mBtnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (one == null) {
+                if (TextUtils.isEmpty(mEdtSkuId.getText().toString().trim())) {
                     ToastUtils.showShort(DivideDetialsActivity.this, "请先扫描");
+                } else if (one == null) {
+                    ToastUtils.showShort(DivideDetialsActivity.this, "没有该商品的明细");
                     return;
                 }
                 ConfirmRebinWallWaveBean waveBean = new ConfirmRebinWallWaveBean();
