@@ -26,7 +26,12 @@ public class TraySendPresenter extends BasePresenter {
             @Override
             public void onSuccess(Object o) {
                 ScanSendBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), ScanSendBean.class);
-                mTraySendView.setList(scanStoreageBean.getData());
+                if (scanStoreageBean.getData() != null && scanStoreageBean.getData().size() > 0) {
+                    mTraySendView.setList(scanStoreageBean.getData());
+                } else {
+                    mTraySendView.getOrderFailure();
+                    mTraySendView.showTips(scanStoreageBean.getMessage());
+                }
                 context.stopProgress();
             }
 

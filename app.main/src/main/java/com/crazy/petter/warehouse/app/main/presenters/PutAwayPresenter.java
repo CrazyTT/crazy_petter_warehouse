@@ -20,12 +20,18 @@ public class PutAwayPresenter extends BasePresenter {
         mPutAwayView = iBaseView;
     }
 
-    public void getOrders(String params) {context.showProgress("查询中...", false);
+    public void getOrders(String params) {
+        context.showProgress("查询中...", false);
         requestData(Constant.SERVER_URL_BASE + Constant.PUTAWAY, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
                 ScanStoreageBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), ScanStoreageBean.class);
-                mPutAwayView.setList(scanStoreageBean.getData());
+                if (scanStoreageBean.getData() != null && scanStoreageBean.getData().size() > 0) {
+                    mPutAwayView.setList(scanStoreageBean.getData());
+                } else {
+                    mPutAwayView.getOrderFailure();
+                    mPutAwayView.showTips(scanStoreageBean.getMessage());
+                }
                 context.stopProgress();
             }
 

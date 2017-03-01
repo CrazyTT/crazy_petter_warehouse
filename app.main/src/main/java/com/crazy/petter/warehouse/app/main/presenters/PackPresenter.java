@@ -26,7 +26,12 @@ public class PackPresenter extends BasePresenter {
             @Override
             public void onSuccess(Object o) {
                 QueryObnCartonBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), QueryObnCartonBean.class);
-                mPackView.setList(scanStoreageBean.getData());
+                if (scanStoreageBean.getData() != null && scanStoreageBean.getData().size() > 0) {
+                    mPackView.setList(scanStoreageBean.getData());
+                } else {
+                    mPackView.getOrderFailure();
+                    mPackView.showTips(scanStoreageBean.getMessage());
+                }
                 context.stopProgress();
             }
 

@@ -26,7 +26,12 @@ public class PickPresenter extends BasePresenter {
             @Override
             public void onSuccess(Object o) {
                 PickBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), PickBean.class);
-                mPickView.setList(scanStoreageBean.getData());
+                if (scanStoreageBean.getData() != null && scanStoreageBean.getData().size() > 0) {
+                    mPickView.setList(scanStoreageBean.getData());
+                } else {
+                    mPickView.getOrderFailure();
+                    mPickView.showTips(scanStoreageBean.getMessage());
+                }
                 context.stopProgress();
             }
 

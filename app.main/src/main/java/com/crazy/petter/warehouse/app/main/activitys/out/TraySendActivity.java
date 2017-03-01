@@ -140,7 +140,6 @@ public class TraySendActivity extends BaseActivity implements TraySendView {
     public void getOrderFailure() {
         ArrayList<ScanSendBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
-        mEdtOrderNum.setText("");
         new Handler().postDelayed(new Thread(new Runnable() {
             @Override
             public void run() {

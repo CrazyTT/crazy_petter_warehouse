@@ -136,7 +136,6 @@ public class PackActivity extends BaseActivity implements PackView {
     public void getOrderFailure() {
         ArrayList<QueryObnCartonBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
-        mEdtOrderNum.setText("");
         new Handler().postDelayed(new Thread(new Runnable() {
             @Override
             public void run() {

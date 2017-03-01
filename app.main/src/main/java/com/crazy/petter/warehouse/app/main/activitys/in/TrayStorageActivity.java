@@ -136,7 +136,6 @@ public class TrayStorageActivity extends BaseActivity implements TrayStorageView
     public void getOrderFailure() {
         ArrayList<ScanStoreageBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
-        mEdtOrderNum.setText("");
         new Handler().postDelayed(new Thread(new Runnable() {
             @Override
             public void run() {

@@ -138,7 +138,6 @@ public class PickWaveActivity extends BaseActivity implements PickWaveView {
     public void getOrderFailure() {
         ArrayList<PickWaveBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
-        mEdtOrderNum.setText("");
         new Handler().postDelayed(new Thread(new Runnable() {
             @Override
             public void run() {

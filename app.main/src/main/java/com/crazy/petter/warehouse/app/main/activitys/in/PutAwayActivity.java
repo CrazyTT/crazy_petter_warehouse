@@ -137,7 +137,6 @@ public class PutAwayActivity extends BaseActivity implements PutAwayView {
     public void getOrderFailure() {
         ArrayList<ScanStoreageBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
-        mEdtOrderNum.setText("");
         new Handler().postDelayed(new Thread(new Runnable() {
             @Override
             public void run() {

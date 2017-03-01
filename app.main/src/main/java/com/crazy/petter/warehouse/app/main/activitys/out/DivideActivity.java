@@ -138,7 +138,6 @@ public class DivideActivity extends BaseActivity implements DivideView {
     public void getOrderFailure() {
         ArrayList<PickWaveBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
-        mEdtOrderNum.setText("");
         new Handler().postDelayed(new Thread(new Runnable() {
             @Override
             public void run() {

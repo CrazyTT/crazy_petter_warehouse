@@ -26,7 +26,12 @@ public class DividePresenter extends BasePresenter {
             @Override
             public void onSuccess(Object o) {
                 PickWaveBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), PickWaveBean.class);
-                mDivideView.setList(scanStoreageBean.getData());
+                if (scanStoreageBean.getData() != null && scanStoreageBean.getData().size() > 0) {
+                    mDivideView.setList(scanStoreageBean.getData());
+                } else {
+                    mDivideView.getOrderFailure();
+                    mDivideView.showTips(scanStoreageBean.getMessage());
+                }
                 context.stopProgress();
             }
 

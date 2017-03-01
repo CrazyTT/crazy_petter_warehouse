@@ -85,6 +85,7 @@ public class ScanStoreageFragment extends Fragment implements ScanStoreageFragme
     private void jump(int postion) {
         Intent intent = new Intent(getActivity(), ReceiptActivity.class);
         mEdtOrderNum.setText(scanOrderAdapter.getList().get(postion).getInboundId());
+        mEdtOrderNum.setSelection(scanOrderAdapter.getList().get(postion).getInboundId().length());
         mSharedPreferencesUtil.setString("num", mEdtOrderNum.getText().toString().trim());
         intent.putExtra("detials", JsonFormatter.getInstance().object2Json(scanOrderAdapter.getList().get(postion)));
         startActivity(intent);
@@ -160,7 +161,6 @@ public class ScanStoreageFragment extends Fragment implements ScanStoreageFragme
     public void getOrderFailure() {
         ArrayList<ScanStoreageBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
-        mEdtOrderNum.setText("");
         new Handler().postDelayed(new Thread(new Runnable() {
             @Override
             public void run() {

@@ -168,7 +168,6 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
     @Override
     public void showTips(String s) {
         mEdtOrderNum.requestFocus();
-        mEdtOrderNum.setText("");
         ToastUtils.showShort(this, s);
     }
 

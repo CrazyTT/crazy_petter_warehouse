@@ -138,7 +138,6 @@ public class PickActivity extends BaseActivity implements PickView {
     public void getOrderFailure() {
         ArrayList<PickBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
-        mEdtOrderNum.setText("");
         new Handler().postDelayed(new Thread(new Runnable() {
             @Override
             public void run() {

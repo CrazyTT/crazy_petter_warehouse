@@ -239,7 +239,6 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
 
     @Override
     public void showNoGoods() {
-        ToastUtils.showShort(this, "请重新扫描");
         mEdtGoodId.setText("");
         mEdtGoodName.setText("");
         mEdtLpn.setText("");
@@ -263,5 +262,6 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
             isP = true;
         }
         mEdtLpn.setText(goodsBean.getData().get(0).getLPN());
+        mEdtNum.requestFocus();
     }
 }
