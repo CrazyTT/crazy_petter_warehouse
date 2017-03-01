@@ -42,15 +42,15 @@ public abstract class BasePresenter implements IPresenter<String> {
                 if (baseBean.isSuccess()) {
                     dataCallBack.onSuccess(response);
                 } else {
-                    dataCallBack.onFailure(baseBean.getMessage());//失败提示
                     iBaseView.showTips(baseBean.getMessage());
+                    dataCallBack.onFailure(baseBean.getMessage());//失败提示
                 }
             }
 
             @Override
             public void onErrorResponse(String errorInfo) {
-                dataCallBack.onFailure(errorInfo);
                 iBaseView.showTips(errorInfo);
+                dataCallBack.onFailure(errorInfo);
             }
         };
         mConnection.requestData(url, params, tag, callBack);

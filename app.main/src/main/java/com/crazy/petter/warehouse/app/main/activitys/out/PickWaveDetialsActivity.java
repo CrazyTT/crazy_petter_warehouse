@@ -2,6 +2,7 @@ package com.crazy.petter.warehouse.app.main.activitys.out;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -107,6 +108,16 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
                     if (imm.isActive()) {
                         imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                     }
+                    if (TextUtils.isEmpty(mEdtLoc.getText().toString().trim())) {
+                        ToastUtils.showShort(PickWaveDetialsActivity.this, "请先扫描货位");
+                        new Handler().postDelayed(new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mEdtLoc.requestFocus();
+                            }
+                        }),300);
+                        return true;
+                    }
                     JSONObject jsonObject = new JSONObject();
                     try {
                         jsonObject.put("WaveId", mDataEntity.getWaveDocId());
@@ -193,6 +204,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
             }
             getOrders(jsonObject.toString(), true);
             mEdtQty.setText("");
+            mEdtQty.requestFocus();
         }
     }
 
@@ -249,6 +261,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
         mEdtLoc.setText(dataEntity.getPickLoc());
         mEdtSkuid.setText(dataEntity.getSkuId());
         mEdtSkuname.setText(dataEntity.getSkuName());
+        mEdtQty.requestFocus();
     }
 
     private void setCurrent(int postion) {

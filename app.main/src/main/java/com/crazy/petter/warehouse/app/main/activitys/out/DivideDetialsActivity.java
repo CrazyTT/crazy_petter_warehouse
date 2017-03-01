@@ -54,6 +54,7 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
         setContentView(R.layout.activity_divide_detials);
         ButterKnife.bind(this);
         mDataEntity = JsonFormatter.getInstance().json2object(getIntent().getStringExtra("detials"), PickWaveBean.DataEntity.class);
+        mTxtOrderNum.setText(mDataEntity.getWaveDocId() + "");
         mDivideDetialsPresenter = new DivideDetialsPresenter(this, this, "DivideDetialsActivity");
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         try {

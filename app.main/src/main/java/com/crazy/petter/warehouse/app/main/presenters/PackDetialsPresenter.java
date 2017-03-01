@@ -34,6 +34,7 @@ public class PackDetialsPresenter extends BasePresenter {
             @Override
             public void onFailure(String s) {
                 context.stopProgress();
+                mPackDetialsView.getPackFailure();
             }
         });
     }
@@ -50,6 +51,7 @@ public class PackDetialsPresenter extends BasePresenter {
 
             @Override
             public void onFailure(String s) {
+                mPackDetialsView.addListFailure();
                 context.stopProgress();
             }
         });

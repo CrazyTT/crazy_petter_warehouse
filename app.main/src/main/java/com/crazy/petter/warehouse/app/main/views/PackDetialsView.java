@@ -14,4 +14,8 @@ public interface PackDetialsView extends IBaseView {
     void setPackInfo(ArrayList<PackBean.DataEntity> data);
 
     void setConfirmResult(PackDetialsBean scanStoreageBean);
+
+    void getPackFailure();
+
+    void addListFailure();
 }

@@ -3,6 +3,7 @@ package com.crazy.petter.warehouse.app.main.activitys.out;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -120,6 +121,12 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                     }
                     if (TextUtils.isEmpty(mEdtPackNum.getText().toString().trim())) {
                         ToastUtils.showShort(PackDetialsActivity.this, "请扫描输入箱号");
+                        new Handler().postDelayed(new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mEdtPackNum.requestFocus();
+                            }
+                        }), 300);
                         return true;
                     }
                     JSONObject jsonObject = new JSONObject();
@@ -144,6 +151,12 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                     }
                     if (TextUtils.isEmpty(mEdtPackstyle.getText().toString().trim())) {
                         ToastUtils.showShort(PackDetialsActivity.this, "请扫描输入箱型");
+                        new Handler().postDelayed(new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mEdtPackstyle.requestFocus();
+                            }
+                        }), 300);
                         return true;
                     }
                     JSONObject jsonObject = new JSONObject();
@@ -176,15 +189,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                         return true;
 
                     }
-                    ConfirmObnCartonBean temp = new ConfirmObnCartonBean();
-                    temp.setOutboundId(mDataEntity.getOutboundId());
-                    temp.setAutoCartonId(true);
-                    temp.setBarCode("");
-                    temp.setCartonId(mEdtPackNum.getText().toString().trim());
-                    temp.setCartonTypeId(mEdtPackstyle.getText().toString().trim());
-                    temp.setQty(Integer.parseInt(mEdtQty.getText().toString().trim()));
-                    temp.setSkuId(mEdtSkuid.getText().toString().trim());
-                    mPackDetialsPresenter.addList(JsonFormatter.getInstance().object2Json(temp));
+                    addlist();
                     return true;
                 }
                 return false;
@@ -213,20 +218,23 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                     TextUtils.isEmpty(mEdtSkuid.getText().toString().trim())) {
                 ToastUtils.showShort(PackDetialsActivity.this, "请将信息补充完整");
                 return true;
-
             }
-            ConfirmObnCartonBean temp = new ConfirmObnCartonBean();
-            temp.setOutboundId(mDataEntity.getOutboundId());
-            temp.setAutoCartonId(true);
-            temp.setBarCode("");
-            temp.setCartonId(mEdtPackNum.getText().toString().trim());
-            temp.setCartonTypeId(mEdtPackstyle.getText().toString().trim());
-            temp.setQty(Integer.parseInt(mEdtQty.getText().toString().trim()));
-            temp.setSkuId(mEdtSkuid.getText().toString().trim());
-            mPackDetialsPresenter.addList(JsonFormatter.getInstance().object2Json(temp));
+            addlist();
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void addlist() {
+        ConfirmObnCartonBean temp = new ConfirmObnCartonBean();
+        temp.setOutboundId(mDataEntity.getOutboundId());
+        temp.setAutoCartonId(true);
+        temp.setBarCode("");
+        temp.setCartonId(mEdtPackNum.getText().toString().trim());
+        temp.setCartonTypeId(mEdtPackstyle.getText().toString().trim());
+        temp.setQty(Integer.parseInt(mEdtQty.getText().toString().trim()));
+        temp.setSkuId(mEdtSkuid.getText().toString().trim());
+        mPackDetialsPresenter.addList(JsonFormatter.getInstance().object2Json(temp));
     }
 
     @Override
@@ -238,12 +246,25 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         mPackDetialsAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void getPackFailure() {
+        mEdtPackNum.requestFocus();
+        mEdtPackNum.setText("");
+        mEdtPackstyle.setText("");
+    }
+
+    @Override
+    public void addListFailure() {
+        mEdtQty.requestFocus();
+    }
+
     double Volume = 0;
 
     @Override
     public void setPackInfo(ArrayList<PackBean.DataEntity> data) {
         if (data.size() <= 0) {
             ToastUtils.showShort(this, "不存在此箱");
+            mEdtPackNum.requestFocus();
             mEdtPackNum.setText("");
             mEdtPackstyle.setText("");
             Volume = 0;
