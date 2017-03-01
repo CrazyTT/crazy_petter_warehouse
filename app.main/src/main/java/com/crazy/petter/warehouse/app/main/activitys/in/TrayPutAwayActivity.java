@@ -3,6 +3,7 @@ package com.crazy.petter.warehouse.app.main.activitys.in;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -94,6 +95,12 @@ public class TrayPutAwayActivity extends BaseActivity implements PutAwayView {
 
     private void getDetials() {
         if (TextUtils.isEmpty(mEdtOrderNum.getText().toString().trim())) {
+            new Handler().postDelayed(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mEdtOrderNum.requestFocus();
+                }
+            }), 300);
             ToastUtils.showShort(this, "单号不能为空");
             return;
         }
@@ -127,5 +134,12 @@ public class TrayPutAwayActivity extends BaseActivity implements PutAwayView {
     public void getOrderFailure() {
         ArrayList<ScanStoreageBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
+        mEdtOrderNum.setText("");
+        new Handler().postDelayed(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mEdtOrderNum.requestFocus();
+            }
+        }), 300);
     }
 }

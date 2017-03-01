@@ -2,6 +2,7 @@ package com.crazy.petter.warehouse.app.main.activitys.out;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -81,6 +82,15 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
                     if (imm.isActive()) {
                         imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                     }
+                    if (TextUtils.isEmpty(mEdtOrderNum.getText().toString().trim())) {
+                        new Handler().postDelayed(new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showTips("请扫描托盘号");
+                            }
+                        }), 300);
+                        return true;
+                    }
                     getDetials();
                     return true;
                 }
@@ -157,6 +167,8 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
 
     @Override
     public void showTips(String s) {
+        mEdtOrderNum.requestFocus();
+        mEdtOrderNum.setText("");
         ToastUtils.showShort(this, s);
     }
 

@@ -3,6 +3,7 @@ package com.crazy.petter.warehouse.app.main.activitys.out;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -97,6 +98,12 @@ public class TraySendActivity extends BaseActivity implements TraySendView {
     private void getDetials() {
         if (TextUtils.isEmpty(mEdtOrderNum.getText().toString().trim())) {
             ToastUtils.showShort(this, "单号不能为空");
+            new Handler().postDelayed(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mEdtOrderNum.requestFocus();
+                }
+            }), 300);
             return;
         }
         JSONObject jsonObject = new JSONObject();
@@ -133,5 +140,12 @@ public class TraySendActivity extends BaseActivity implements TraySendView {
     public void getOrderFailure() {
         ArrayList<ScanSendBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
+        mEdtOrderNum.setText("");
+        new Handler().postDelayed(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mEdtOrderNum.requestFocus();
+            }
+        }), 300);
     }
 }

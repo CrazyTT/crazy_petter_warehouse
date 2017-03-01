@@ -3,6 +3,7 @@ package com.crazy.petter.warehouse.app.main.activitys.out;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -94,6 +95,12 @@ public class DivideActivity extends BaseActivity implements DivideView {
 
     private void getDetials() {
         if (TextUtils.isEmpty(mEdtOrderNum.getText().toString().trim())) {
+            new Handler().postDelayed(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mEdtOrderNum.requestFocus();
+                }
+            }), 300);
             ToastUtils.showShort(this, "单号不能为空");
             return;
         }
@@ -131,5 +138,12 @@ public class DivideActivity extends BaseActivity implements DivideView {
     public void getOrderFailure() {
         ArrayList<PickWaveBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
+        mEdtOrderNum.setText("");
+        new Handler().postDelayed(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mEdtOrderNum.requestFocus();
+            }
+        }), 300);
     }
 }
