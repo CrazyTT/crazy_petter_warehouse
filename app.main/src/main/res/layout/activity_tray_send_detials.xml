@@ -118,7 +118,8 @@
             android:layout_weight="1"
             android:background="@drawable/backgroud_gradview"
             android:text="取消"
-            android:textColor="@color/colorWhite"/>
+            android:textColor="@color/colorWhite"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </LinearLayout>

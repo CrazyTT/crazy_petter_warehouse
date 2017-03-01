@@ -118,6 +118,10 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                     if (imm.isActive()) {
                         imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                     }
+                    if (TextUtils.isEmpty(mEdtPackNum.getText().toString().trim())) {
+                        ToastUtils.showShort(PackDetialsActivity.this, "请扫描输入箱号");
+                        return true;
+                    }
                     JSONObject jsonObject = new JSONObject();
                     try {
                         jsonObject.put("TypeId", mEdtPackNum.getText().toString().trim());
@@ -133,10 +137,14 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         mEdtPackstyle.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (imm.isActive()) {
                         imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    }
+                    if (TextUtils.isEmpty(mEdtPackstyle.getText().toString().trim())) {
+                        ToastUtils.showShort(PackDetialsActivity.this, "请扫描输入箱型");
+                        return true;
                     }
                     JSONObject jsonObject = new JSONObject();
                     try {
@@ -145,6 +153,38 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                         e.printStackTrace();
                     }
                     mPackDetialsPresenter.getPackType(jsonObject.toString());
+                    return true;
+                }
+                return false;
+            }
+        });
+        //测试代码
+        mEdtQty.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm.isActive()) {
+                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    }
+                    //加入明细
+                    if (TextUtils.isEmpty(mEdtPackNum.getText().toString().trim()) ||
+                            TextUtils.isEmpty(mEdtPackstyle.getText().toString().trim()) ||
+                            TextUtils.isEmpty(mEdtQty.getText().toString().trim()) ||
+                            TextUtils.isEmpty(mEdtSkuid.getText().toString().trim())) {
+                        ToastUtils.showShort(PackDetialsActivity.this, "请将信息补充完整");
+                        return true;
+
+                    }
+                    ConfirmObnCartonBean temp = new ConfirmObnCartonBean();
+                    temp.setOutboundId(mDataEntity.getOutboundId());
+                    temp.setAutoCartonId(true);
+                    temp.setBarCode("");
+                    temp.setCartonId(mEdtPackNum.getText().toString().trim());
+                    temp.setCartonTypeId(mEdtPackstyle.getText().toString().trim());
+                    temp.setQty(Integer.parseInt(mEdtQty.getText().toString().trim()));
+                    temp.setSkuId(mEdtSkuid.getText().toString().trim());
+                    mPackDetialsPresenter.addList(JsonFormatter.getInstance().object2Json(temp));
                     return true;
                 }
                 return false;
@@ -161,11 +201,11 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     ArrayList<PackDetialsBean.DataEntity> mList = new ArrayList<>();
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_CALL) {
+        if (keyCode == KeyEvent.KEYCODE_CALL && event.getAction() == KeyEvent.ACTION_DOWN) {
             mBtnCommit.performClick();
             return true;
         }
-        if (keyCode == KeyEvent.KEYCODE_ENDCALL) {
+        if (keyCode == KeyEvent.KEYCODE_ENDCALL && event.getAction() == KeyEvent.ACTION_DOWN) {
             //加入明细
             if (TextUtils.isEmpty(mEdtPackNum.getText().toString().trim()) ||
                     TextUtils.isEmpty(mEdtPackstyle.getText().toString().trim()) ||

@@ -112,6 +112,7 @@ public class DivideActivity extends BaseActivity implements DivideView {
     }
 
     private void jump(int postion) {
+        mEdtOrderNum.setText(scanOrderAdapter.getList().get(postion).getWaveDocId());
         Intent intent = new Intent(this, DivideDetialsActivity.class);
         intent.putExtra("detials", JsonFormatter.getInstance().object2Json(scanOrderAdapter.getList().get(postion)));
         startActivity(intent);
