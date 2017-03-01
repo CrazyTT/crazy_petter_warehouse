@@ -2,6 +2,7 @@ package com.crazy.petter.warehouse.app.main.activitys.in;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -20,6 +21,7 @@ import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.adapters.PutAwayDetialsAdapter;
 import com.crazy.petter.warehouse.app.main.beans.GoodsPutAwayBean;
+import com.crazy.petter.warehouse.app.main.beans.LocBean;
 import com.crazy.petter.warehouse.app.main.beans.PutAwayBean;
 import com.crazy.petter.warehouse.app.main.beans.ScanStoreageBean;
 import com.crazy.petter.warehouse.app.main.presenters.PutAwayDetialsPresenter;
@@ -98,6 +100,20 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
                 return false;
             }
         });
+        mEdtLoc.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm.isActive()) {
+                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    }
+                    checkLoc();
+                    return true;
+                }
+                return false;
+            }
+        });
         mBtnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,6 +165,28 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
         }
     }
 
+    private void checkLoc() {
+        if (TextUtils.isEmpty(mEdtLoc.getText().toString().trim())) {
+            ToastUtils.showShort(this, "上架货位不能为空");
+            new Handler().postDelayed(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mEdtLoc.requestFocus();
+                }
+            }), 300);
+            return;
+        }
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("InboundId", mDataEntity.getInboundId());
+            jsonObject.put("Loc", mEdtLoc.getText().toString().trim());
+            jsonObject.put("ZoneId", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mPutAwayDetialsPresenter.checkLoc(jsonObject.toString());
+    }
+
     private void showQTY() {
         HashMap<Integer, Boolean> choiceItem = scanOrderAdapter.getIsSelected();
         Iterator<Integer> iter = choiceItem.keySet().iterator();
@@ -157,7 +195,7 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
             int key = iter.next();
             Boolean val = choiceItem.get(key);
             if (val) {
-                count += datas.get(key).getQty();
+                count += datas.get(key).getWaitPutAwayQty();
             }
         }
         mQty.setText(count + "");
@@ -167,6 +205,12 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
     private void getDetials() {
         if (TextUtils.isEmpty(mEdtSkuid.getText().toString().trim())) {
             ToastUtils.showShort(this, "货品代码不能为空");
+            new Handler().postDelayed(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mEdtSkuid.requestFocus();
+                }
+            }), 300);
             return;
         }
         JSONObject jsonObject = new JSONObject();
@@ -198,7 +242,29 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
 
     @Override
     public void commitOK() {
+        ToastUtils.showShort(this, "收货成功");
         scanOrderAdapter.initIsSelected();
         getDetials();
+    }
+
+    LocBean.DataEntity locEntity;
+
+    @Override
+    public void showLoc(LocBean.DataEntity dataEntity) {
+        locEntity = dataEntity;
+    }
+
+    @Override
+    public void checkLocFailure() {
+        ToastUtils.showShort(this, "该货位无效");
+        mEdtLoc.setText("");
+        mEdtLoc.requestFocus();
+    }
+
+    @Override
+    public void getorderFailure() {
+        datas = new ArrayList<>();
+        scanOrderAdapter.setList(datas);
+        mEdtSkuid.requestFocus();
     }
 }

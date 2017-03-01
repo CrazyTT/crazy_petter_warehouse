@@ -27,4 +27,6 @@ public class Constant {
     public static String ConfirmObnShip = "WebAPI/api/WmsRf/ConfirmObnShip";
     public static String QueryReBinWallWaveDt = "WebAPI/api/WmsRf/QueryReBinWallWaveDt";
     public static String ConfirmRebinWallWave = "WebAPI/api/WmsRf/ConfirmRebinWallWave";
+    public static String QueryPutAwayLocs = "WebAPI/api/WmsRf/QueryPutAwayLocs";
+
 }

@@ -161,6 +161,13 @@
                 android:singleLine="true"
                 autofit:minTextSize="13sp"/>
         </me.grantland.widget.AutofitLayout>
+
+        <com.bjdv.lib.utils.widgets.ButtonAutoBg
+            android:id="@+id/btn_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="加入明细"
+            android:textColor="@color/colorBlackTransparent"/>
     </LinearLayout>
 
 

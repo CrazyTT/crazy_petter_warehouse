@@ -57,6 +57,8 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     @Bind(R.id.btn_commit)
     ButtonAutoBg mBtnCommit;
     PackDetialsAdapter mPackDetialsAdapter;
+    @Bind(R.id.btn_add)
+    ButtonAutoBg mBtnAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +173,21 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                 return false;
             }
         });
+        mBtnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //加入明细
+                if (TextUtils.isEmpty(mEdtPackNum.getText().toString().trim()) ||
+                        TextUtils.isEmpty(mEdtPackstyle.getText().toString().trim()) ||
+                        TextUtils.isEmpty(mEdtQty.getText().toString().trim()) ||
+                        TextUtils.isEmpty(mEdtSkuid.getText().toString().trim())) {
+                    ToastUtils.showShort(PackDetialsActivity.this, "请将信息补充完整");
+                    return;
+
+                }
+                addlist();
+            }
+        });
         //测试代码
         mEdtQty.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -208,18 +225,6 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_CALL && event.getAction() == KeyEvent.ACTION_DOWN) {
             mBtnCommit.performClick();
-            return true;
-        }
-        if (keyCode == KeyEvent.KEYCODE_ENDCALL && event.getAction() == KeyEvent.ACTION_DOWN) {
-            //加入明细
-            if (TextUtils.isEmpty(mEdtPackNum.getText().toString().trim()) ||
-                    TextUtils.isEmpty(mEdtPackstyle.getText().toString().trim()) ||
-                    TextUtils.isEmpty(mEdtQty.getText().toString().trim()) ||
-                    TextUtils.isEmpty(mEdtSkuid.getText().toString().trim())) {
-                ToastUtils.showShort(PackDetialsActivity.this, "请将信息补充完整");
-                return true;
-            }
-            addlist();
             return true;
         }
         return super.onKeyDown(keyCode, event);

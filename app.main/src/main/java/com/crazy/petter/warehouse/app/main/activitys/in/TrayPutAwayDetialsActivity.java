@@ -2,6 +2,7 @@ package com.crazy.petter.warehouse.app.main.activitys.in;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -19,6 +20,7 @@ import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.adapters.TrayPutAwayDetialsAdapter;
 import com.crazy.petter.warehouse.app.main.beans.GoodsPutAwayBean;
+import com.crazy.petter.warehouse.app.main.beans.LocBean;
 import com.crazy.petter.warehouse.app.main.beans.PutAwayBean;
 import com.crazy.petter.warehouse.app.main.beans.ScanStoreageBean;
 import com.crazy.petter.warehouse.app.main.presenters.PutAwayDetialsPresenter;
@@ -86,6 +88,20 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
                 return false;
             }
         });
+        mEdtLoc.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm.isActive()) {
+                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    }
+                    checkLoc();
+                    return true;
+                }
+                return false;
+            }
+        });
         mBtnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,11 +148,40 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
         }
     }
 
+    private void checkLoc() {
+        if (TextUtils.isEmpty(mEdtLoc.getText().toString().trim())) {
+            ToastUtils.showShort(this, "上架货位不能为空");
+            new Handler().postDelayed(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mEdtLoc.requestFocus();
+                }
+            }), 300);
+            return;
+        }
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("InboundId", mDataEntity.getInboundId());
+            jsonObject.put("Loc", mEdtLoc.getText().toString().trim());
+            jsonObject.put("ZoneId", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mPutAwayDetialsPresenter.checkLoc(jsonObject.toString());
+    }
+
     private void getDetials() {
         if (TextUtils.isEmpty(mEdtLpn.getText().toString().trim())) {
             ToastUtils.showShort(this, "托盘号不能为空");
+            new Handler().postDelayed(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    mEdtLpn.requestFocus();
+                }
+            }), 300);
             return;
         }
+
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("InboundId", mDataEntity.getInboundId());
@@ -166,7 +211,29 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
 
     @Override
     public void commitOK() {
-        datas = null;
-        getDetials();
+        ToastUtils.showShort(this, "收货成功");
+        this.finish();
     }
+
+    LocBean.DataEntity locEntity;
+
+    @Override
+    public void showLoc(LocBean.DataEntity dataEntity) {
+        locEntity = dataEntity;
+    }
+
+    @Override
+    public void checkLocFailure() {
+        ToastUtils.showShort(this, "该货位无效");
+        mEdtLoc.setText("");
+        mEdtLoc.requestFocus();
+    }
+
+    @Override
+    public void getorderFailure() {
+        datas = new ArrayList<>();
+        scanOrderAdapter.setList(datas);
+        mEdtLpn.requestFocus();
+    }
+
 }

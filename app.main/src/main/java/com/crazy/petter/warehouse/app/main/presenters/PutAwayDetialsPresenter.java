@@ -6,6 +6,7 @@ import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
 import com.bjdv.lib.utils.util.JsonFormatter;
 import com.crazy.petter.warehouse.app.main.beans.GoodsPutAwayBean;
+import com.crazy.petter.warehouse.app.main.beans.LocBean;
 import com.crazy.petter.warehouse.app.main.views.PutAwayDetialsView;
 
 /**
@@ -32,6 +33,7 @@ public class PutAwayDetialsPresenter extends BasePresenter {
 
             @Override
             public void onFailure(String s) {
+                mPutAwayDetialsView.getorderFailure();
                 context.stopProgress();
             }
         });
@@ -42,8 +44,8 @@ public class PutAwayDetialsPresenter extends BasePresenter {
         requestData(Constant.SERVER_URL_BASE + Constant.ConfirmPutAway, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
-                mPutAwayDetialsView.commitOK();
                 context.stopProgress();
+                mPutAwayDetialsView.commitOK();
             }
 
             @Override
@@ -52,5 +54,27 @@ public class PutAwayDetialsPresenter extends BasePresenter {
             }
         });
 
+    }
+
+    public void checkLoc(String params) {
+        context.showProgress("查询中...", false);
+        requestData(Constant.SERVER_URL_BASE + Constant.QueryPutAwayLocs, params, new DataCallBack() {
+            @Override
+            public void onSuccess(Object o) {
+                LocBean locBean = JsonFormatter.getInstance().json2object(o.toString(), LocBean.class);
+                if (locBean.getData() != null && locBean.getData().size() > 0) {
+                    mPutAwayDetialsView.showLoc(locBean.getData().get(0));
+                } else {
+                    mPutAwayDetialsView.checkLocFailure();
+                }
+                context.stopProgress();
+            }
+
+            @Override
+            public void onFailure(String s) {
+                mPutAwayDetialsView.checkLocFailure();
+                context.stopProgress();
+            }
+        });
     }
 }

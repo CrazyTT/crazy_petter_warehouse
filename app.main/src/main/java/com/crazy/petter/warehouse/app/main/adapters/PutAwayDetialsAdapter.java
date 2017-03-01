@@ -46,9 +46,10 @@ public class PutAwayDetialsAdapter extends RecyclerView.Adapter<PutAwayDetialsAd
     public void onBindViewHolder(final PutAwayDetialsAdapter.ViewHolder viewHolder, final int position) {
         final GoodsPutAwayBean.DataEntity obj = datas.get(position);
         viewHolder.one.setText(obj.getSkuId() + "");
-        viewHolder.two.setText(obj.getQty() + "");
+        viewHolder.two.setText(obj.getWaitPutAwayQty() + "");
         viewHolder.three.setText(obj.getSkuProperty() + "");
         viewHolder.four.setText(obj.getProduceDate() + "");
+        viewHolder.mCheckBox.setChecked(false);
         viewHolder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -66,6 +67,9 @@ public class PutAwayDetialsAdapter extends RecyclerView.Adapter<PutAwayDetialsAd
         if (position == 0 && datas.size() == 1) {
             viewHolder.mLinearLayout.performClick();
         }
+        if (position == 0 && getList().size() == 1) {
+            viewHolder.mCheckBox.setChecked(true);
+        }
     }
 
     @Override
@@ -76,7 +80,6 @@ public class PutAwayDetialsAdapter extends RecyclerView.Adapter<PutAwayDetialsAd
     public void setList(ArrayList<GoodsPutAwayBean.DataEntity> mList) {
         datas = mList;
         notifyDataSetChanged();
-
     }
 
     public void addList(ArrayList<GoodsPutAwayBean.DataEntity> mList) {

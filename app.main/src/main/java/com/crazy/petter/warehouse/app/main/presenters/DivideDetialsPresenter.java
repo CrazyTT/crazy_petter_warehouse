@@ -57,11 +57,11 @@ public class DivideDetialsPresenter extends BasePresenter {
 
     public void commit(String params) {
         context.showProgress("确认分货中...", false);
-        requestData(Constant.SERVER_URL_BASE + Constant.QueryReBinWallWave, params, new DataCallBack() {
+        requestData(Constant.SERVER_URL_BASE + Constant.ConfirmRebinWallWave, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
-                mDivideDetialsView.commitOk();
                 context.stopProgress();
+                mDivideDetialsView.commitOk();
             }
 
             @Override

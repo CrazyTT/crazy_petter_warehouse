@@ -33,7 +33,7 @@ public class TrayPutAwayDetialsAdapter extends RecyclerView.Adapter<TrayPutAwayD
     public void onBindViewHolder(final TrayPutAwayDetialsAdapter.ViewHolder viewHolder, final int position) {
         final GoodsPutAwayBean.DataEntity obj = datas.get(position);
         viewHolder.one.setText(obj.getSkuId() + "");
-        viewHolder.two.setText(obj.getQty() + "");
+        viewHolder.two.setText(obj.getWaitPutAwayQty() + "");
         viewHolder.three.setText(obj.getSkuProperty() + "");
         viewHolder.four.setText(obj.getExtLot() + "");
     }
