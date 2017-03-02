@@ -53,7 +53,7 @@ public class ReceiptBean implements Serializable {
         private String SeqNo;
         private String SkuId;
         private String SkuName;
-        private String ReceiptQty;
+        private int ReceiptQty;
         private String SkuProperty;
         private String LpnNo;
         private String ExtLot;
@@ -84,11 +84,11 @@ public class ReceiptBean implements Serializable {
             this.SkuName = SkuName;
         }
 
-        public String getReceiptQty() {
+        public int getReceiptQty() {
             return ReceiptQty;
         }
 
-        public void setReceiptQty(String ReceiptQty) {
+        public void setReceiptQty(int ReceiptQty) {
             this.ReceiptQty = ReceiptQty;
         }
 

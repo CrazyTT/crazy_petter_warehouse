@@ -2,6 +2,7 @@ package com.crazy.petter.warehouse.app.main.activitys.in;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -42,8 +43,8 @@ import butterknife.ButterKnife;
 public class ReceiptActivity extends BaseActivity implements ReceiptView {
     @Bind(R.id.txt_orderNum)
     EditText mTxtOrderNum;
-    @Bind(R.id.edt_good_id)
-    EditText mEdtGoodId;
+    @Bind(R.id.edt_good_bar)
+    EditText mEdtGoodBar;
     @Bind(R.id.edt_good_name)
     EditText mEdtGoodName;
     @Bind(R.id.edt_num)
@@ -64,6 +65,7 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
     LinearLayout mActivityReceipt;
 
     private String[] SkuPropertyNames = {};
+    private String[] SkuPropertyCodes = {};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,19 +75,27 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
         mReceiptPresenter = new ReceiptPresenter(this, this, "ReceiptActivity");
         mDataEntity = JsonFormatter.getInstance().json2object(getIntent().getStringExtra("detials"), ScanStoreageBean.DataEntity.class);
         mTxtOrderNum.setText(mDataEntity.getInboundId());
-        mEdtGoodId.setOnKeyListener(new View.OnKeyListener() {
+        mEdtGoodBar.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     JSONObject jsonObject = new JSONObject();
                     try {
                         jsonObject.put("InboundId", mDataEntity.getInboundId());
-                        jsonObject.put("SkuId", mEdtGoodId.getText().toString().trim());
+                        jsonObject.put("BarCode", mEdtGoodBar.getText().toString().trim());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    if (!TextUtils.isEmpty(mEdtGoodId.getText().toString().trim())) {
+                    if (!TextUtils.isEmpty(mEdtGoodBar.getText().toString().trim())) {
                         mReceiptPresenter.getDetials(jsonObject.toString());
+                    } else {
+                        ToastUtils.showShort(ReceiptActivity.this, "条码不能为空");
+                        new Handler().postDelayed(new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mEdtGoodBar.requestFocus();
+                            }
+                        }), 300);
                     }
                     InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (imm.isActive()) {
@@ -132,9 +142,11 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
                 detailsEntity.setExtLot(goodsBean.getData().get(0).getExtLot());
                 detailsEntity.setLpnNo(goodsBean.getData().get(0).getLPN());
                 SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+                format.setLenient(false);
                 boolean dateflag = true;
+                Date date = null;
                 try {
-                    Date date = format.parse(mEdtDate.getText().toString().trim());
+                    date = format.parse(mEdtDate.getText().toString().trim());
                 } catch (ParseException e) {
                     dateflag = false;
                 } finally {
@@ -145,11 +157,17 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
                     return;
                 }
                 if (!isP) {
-                    detailsEntity.setExpiredDate(mEdtDate.getText().toString().trim());
+                    detailsEntity.setExpiredDate(formatter.format(date));
+                    detailsEntity.setProduceDate("");
                 } else {
-                    detailsEntity.setProduceDate(mEdtDate.getText().toString().trim());
+                    detailsEntity.setProduceDate(formatter.format(date));
+                    detailsEntity.setExpiredDate("");
                 }
-                detailsEntity.setReceiptQty(mEdtNum.getText().toString().trim());
+                if (TextUtils.isEmpty(mEdtNum.getText().toString().trim())) {
+                    ToastUtils.showShort(ReceiptActivity.this, "请输入数量");
+                    return;
+                }
+                detailsEntity.setReceiptQty(Integer.parseInt(mEdtNum.getText().toString().trim()));
                 detailsEntity.setSeqNo(goodsBean.getData().get(0).getSeqNo());
                 detailsEntity.setSkuId(goodsBean.getData().get(0).getSkuId());
                 detailsEntity.setSkuName(goodsBean.getData().get(0).getSkuName());
@@ -166,7 +184,7 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
             setShowSoftInputOnFocus = cls.getMethod("setShowSoftInputOnFocus", boolean.class);
             setShowSoftInputOnFocus.setAccessible(true);
             setShowSoftInputOnFocus.invoke(mEdtDate, false);
-            setShowSoftInputOnFocus.invoke(mEdtGoodId, false);
+            setShowSoftInputOnFocus.invoke(mEdtGoodBar, false);
             setShowSoftInputOnFocus.invoke(mTxtOrderNum, false);
             setShowSoftInputOnFocus.invoke(mEdtNum, false);
             setShowSoftInputOnFocus.invoke(mEdtGoodName, false);
@@ -174,7 +192,7 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mEdtGoodId.requestFocus();
+        mEdtGoodBar.requestFocus();
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("SkuPropertyCode", "");
@@ -190,7 +208,7 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
     class SelectedListener implements AdapterView.OnItemSelectedListener {
         @Override
         public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-            SkuProperty = SkuPropertyNames[arg2];
+            SkuProperty = SkuPropertyCodes[arg2];
         }
 
         @Override
@@ -214,22 +232,23 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
     @Override
     public void receiptOK() {
         ToastUtils.showShort(this, "收货成功");
-        mEdtGoodId.setText("");
+        mEdtGoodBar.setText("");
         mEdtGoodName.setText("");
         mEdtLpn.setText("");
         Calendar c = Calendar.getInstance();
         mEdtDate.setText(c.get(Calendar.YEAR) + "");
         mEdtNum.setText("");
-        mSpGoodProperty.setSelection(0);
-        mEdtGoodId.requestFocus();
+        mEdtGoodBar.requestFocus();
         goodsBean = null;
     }
 
     @Override
     public void showProperty(ArrayList<PropertyBean.DataEntity> data) {
         SkuPropertyNames = new String[data.size()];
+        SkuPropertyCodes = new String[data.size()];
         for (int i = 0; i < data.size(); i++) {
             SkuPropertyNames[i] = data.get(i).getSkuPropertyDesc();
+            SkuPropertyCodes[i] = data.get(i).getSkuPropertyCode();
         }
         mSpGoodProperty.setOnItemSelectedListener(new SelectedListener());
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(ReceiptActivity.this, R.layout.item_spinner_work_query_center, SkuPropertyNames);
@@ -239,20 +258,21 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
 
     @Override
     public void showNoGoods() {
-        mEdtGoodId.setText("");
+        mEdtGoodBar.setText("");
         mEdtGoodName.setText("");
         mEdtLpn.setText("");
         Calendar c = Calendar.getInstance();
         mEdtDate.setText(c.get(Calendar.YEAR) + "");
         mEdtNum.setText("");
         mSpGoodProperty.setSelection(0);
-        mEdtGoodId.requestFocus();
+        mEdtGoodBar.requestFocus();
         goodsBean = null;
     }
 
     boolean isP = true;
 
     private void init() {
+        mEdtGoodBar.setText(goodsBean.getData().get(0).getSkuId());
         mEdtGoodName.setText(goodsBean.getData().get(0).getSkuName());
         if ("E".equalsIgnoreCase(goodsBean.getData().get(0).getShelfLifeCtrlType())) {
             mTxtDate.setText("失效日期");

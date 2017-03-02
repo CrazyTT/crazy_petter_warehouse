@@ -64,9 +64,9 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void test() {
-        mEdtName.setText("admin");
-        mEdtPsd.setText("123");
-        mBtnLogin.performClick();
+//        mEdtName.setText("admin");
+//        mEdtPsd.setText("123");
+//        mBtnLogin.performClick();
     }
 
     @Override

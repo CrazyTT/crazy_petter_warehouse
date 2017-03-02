@@ -65,12 +65,12 @@
                 android:layout_weight="1">
 
                 <EditText
-                    android:id="@+id/edt_good_id"
+                    android:id="@+id/edt_good_bar"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
                     android:layout_weight="1"
                     android:background="@drawable/edt_back"
-                    android:hint="请扫描货品代码"
+                    android:hint="请扫描货品条码"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:singleLine="true"

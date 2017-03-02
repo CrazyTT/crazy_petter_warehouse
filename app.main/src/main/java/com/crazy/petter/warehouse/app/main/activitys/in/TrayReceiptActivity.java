@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -113,14 +114,15 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
                         ReceiptBean.DetailsEntity detailsEntity = new ReceiptBean.DetailsEntity();
                         detailsEntity.setExtLot(datas.get(i).getExtLot());
                         detailsEntity.setLpnNo(datas.get(i).getLPN());
+                        if (!TextUtils.isEmpty(datas.get(i).getShelfLifeCtrlType()) && "E".equals(datas.get(i).getShelfLifeCtrlType())) {
+                        }
                         detailsEntity.setExpiredDate("");
                         detailsEntity.setProduceDate("");
-                        detailsEntity.setReceiptQty("");
+                        detailsEntity.setReceiptQty(datas.get(i).getReceivedQty());
                         detailsEntity.setSeqNo(datas.get(i).getSeqNo());
                         detailsEntity.setSkuId(datas.get(i).getSkuId());
                         detailsEntity.setSkuName(datas.get(i).getSkuName());
                         detailsEntity.setSkuProperty(datas.get(i).getSkuProperty());
-                        detailsEntity.setReceiptQty(datas.get(i).getReceivedQty() + "");
                         entities.add(detailsEntity);
                     }
                     receiptBean.setDetails(entities);
@@ -153,6 +155,9 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
     public void showGoods(ArrayList<GoodsBean.DataEntity> data) {
         datas = data;
         scanOrderAdapter.setList(datas);
+        if (mCbDefault.isChecked()) {
+            mBtnCommit.performClick();
+        }
     }
 
     @Override

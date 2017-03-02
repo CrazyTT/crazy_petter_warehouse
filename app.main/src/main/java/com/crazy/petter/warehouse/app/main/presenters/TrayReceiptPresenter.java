@@ -26,8 +26,8 @@ public class TrayReceiptPresenter extends BasePresenter {
             @Override
             public void onSuccess(Object o) {
                 GoodsBean goodsBean = JsonFormatter.getInstance().json2object(o.toString(), GoodsBean.class);
-                mTrayReceiptView.showGoods(goodsBean.getData());
                 context.stopProgress();
+                mTrayReceiptView.showGoods(goodsBean.getData());
             }
 
             @Override
