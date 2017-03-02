@@ -111,11 +111,15 @@ public class LoginActivity extends BaseActivity {
                 stopProgress();
                 JSONObject jsonObject1 = JsonUtil.from(s);
                 if (JsonUtil.getBoolean(jsonObject1, "success")) {
-                    sp.setString("userName", userName);
-                    sp.setString("passWord", passWord);
-                    Small.openUri("main", LoginActivity.this);
-                    ToastUtils.showShort(LoginActivity.this, "登录成功");
-                    LoginActivity.this.finish();
+                    if (JsonUtil.jsonArrayToBooleanArray2()) {
+                        sp.setString("userName", userName);
+                        sp.setString("passWord", passWord);
+                        Small.openUri("main", LoginActivity.this);
+                        ToastUtils.showShort(LoginActivity.this, "登录成功");
+                        LoginActivity.this.finish();
+                    } else {
+                        LoginActivity.this.finish();
+                    }
                 } else {
                     ToastUtils.showShort(LoginActivity.this, JsonUtil.getString(jsonObject1, "message"));
                 }

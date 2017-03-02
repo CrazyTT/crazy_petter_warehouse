@@ -140,7 +140,7 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
                 ArrayList<ReceiptBean.DetailsEntity> entities = new ArrayList<>();
                 ReceiptBean.DetailsEntity detailsEntity = new ReceiptBean.DetailsEntity();
                 detailsEntity.setExtLot(goodsBean.getData().get(0).getExtLot());
-                detailsEntity.setLpnNo(goodsBean.getData().get(0).getLPN());
+                detailsEntity.setLpnNo(mEdtLpn.getText().toString().trim());
                 SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
                 format.setLenient(false);
                 boolean dateflag = true;

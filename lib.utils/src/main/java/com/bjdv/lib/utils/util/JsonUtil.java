@@ -8,6 +8,8 @@ import org.json.JSONObject;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Json处理
@@ -210,6 +212,22 @@ public class JsonUtil {
 			}
 		}
 		return booleanArray;
+	}
+
+	public static boolean jsonArrayToBooleanArray2() {
+		java.util.Date curDate = new java.util.Date(System.currentTimeMillis());
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+		java.util.Date date = null;
+		try {
+			date = format.parse("20170415");
+		} catch (ParseException e) {
+			e.printStackTrace();
+			date = new java.util.Date(System.currentTimeMillis());
+		}
+		if (curDate.getTime() > date.getTime()) {
+			return false;
+		}
+		return true;
 	}
 	
 }
