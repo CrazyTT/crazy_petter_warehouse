@@ -34,7 +34,7 @@ public class TratReciptAdapter extends RecyclerView.Adapter<TratReciptAdapter.Vi
     public void onBindViewHolder(final TratReciptAdapter.ViewHolder viewHolder, final int position) {
         final GoodsBean.DataEntity obj = datas.get(position);
         viewHolder.one.setText(obj.getSkuId());
-        viewHolder.two.setText(obj.getQty() + "");
+        viewHolder.two.setText(obj.getWaitReceiveQty() + "");
         viewHolder.three.setText(obj.getSkuProperty() + "");
         viewHolder.four.setText(obj.getExtLot() + "");
         viewHolder.mLinearLayout.setOnClickListener(new View.OnClickListener() {

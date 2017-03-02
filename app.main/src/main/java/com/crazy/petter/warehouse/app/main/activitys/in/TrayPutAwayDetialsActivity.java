@@ -212,7 +212,11 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
     @Override
     public void commitOK() {
         ToastUtils.showShort(this, "收货成功");
-        this.finish();
+        mEdtLpn.setText("");
+        mEdtLpn.requestFocus();
+        mEdtLoc.setText("");
+        datas = new ArrayList<>();
+        scanOrderAdapter.setList(datas);
     }
 
     LocBean.DataEntity locEntity;
@@ -231,6 +235,8 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
 
     @Override
     public void getorderFailure() {
+        mEdtLoc.setText("");
+        mEdtLpn.setText("");
         datas = new ArrayList<>();
         scanOrderAdapter.setList(datas);
         mEdtLpn.requestFocus();

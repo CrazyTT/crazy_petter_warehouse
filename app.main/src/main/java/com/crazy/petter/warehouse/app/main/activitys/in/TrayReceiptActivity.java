@@ -118,7 +118,7 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
                         }
                         detailsEntity.setExpiredDate("");
                         detailsEntity.setProduceDate("");
-                        detailsEntity.setReceiptQty(datas.get(i).getReceivedQty());
+                        detailsEntity.setReceiptQty(datas.get(i).getWaitReceiveQty());
                         detailsEntity.setSeqNo(datas.get(i).getSeqNo());
                         detailsEntity.setSkuId(datas.get(i).getSkuId());
                         detailsEntity.setSkuName(datas.get(i).getSkuName());
@@ -146,7 +146,9 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
 
     @Override
     public void showTips(String s) {
-        ToastUtils.showShort(this, s);
+        ToastUtils.showLong(this, s);
+        mEdtOrderNum.setText("");
+        mEdtOrderNum.requestFocus();
     }
 
     ArrayList<GoodsBean.DataEntity> datas;
@@ -162,6 +164,7 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
 
     @Override
     public void receiptOK() {
+        ToastUtils.showLong(this, "收货成功");
         mEdtOrderNum.setText("");
         datas.clear();
         scanOrderAdapter.notifyDataSetChanged();
