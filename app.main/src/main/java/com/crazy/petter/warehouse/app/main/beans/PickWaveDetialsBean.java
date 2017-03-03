@@ -126,7 +126,16 @@ public class PickWaveDetialsBean extends BaseBean {
             public String SeqNo;
             public String LotCode;
             public String LotValue;
+            public String LotLabel;
             public String RfVisible;
+
+            public String getLotLabel() {
+                return LotLabel;
+            }
+
+            public void setLotLabel(String lotLabel) {
+                LotLabel = lotLabel;
+            }
 
             public String getSeqNo() {
                 return SeqNo;

@@ -14,4 +14,6 @@ public interface PickWaveDetialsView extends IBaseView {
 
     void commitOk();
 
+    void getOrderFailure();
+
 }

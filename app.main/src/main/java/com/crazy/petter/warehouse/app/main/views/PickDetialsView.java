@@ -14,4 +14,5 @@ public interface PickDetialsView extends IBaseView {
 
     void commitOk();
 
+    void getOrderFailure();
 }

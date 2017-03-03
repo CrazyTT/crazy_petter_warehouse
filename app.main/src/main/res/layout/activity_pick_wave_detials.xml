@@ -218,6 +218,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
         android:layout_weight="1"
+        android:orientation="vertical"
         android:paddingLeft="30dp">
 
         <TextView
@@ -225,14 +226,12 @@
             android:layout_height="wrap_content"
             android:text="备注"/>
 
-        <android.support.v7.widget.RecyclerView
+        <ListView
             android:id="@+id/rl_remark"
-            android:layout_width="70dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/txt_back_actual"
-            android:gravity="center"
-            android:textColor="@color/colorBlackTransparent"/>
+            android:layout_marginRight="10dp"/>
     </LinearLayout>
 
     <com.bjdv.lib.utils.widgets.ButtonAutoBg

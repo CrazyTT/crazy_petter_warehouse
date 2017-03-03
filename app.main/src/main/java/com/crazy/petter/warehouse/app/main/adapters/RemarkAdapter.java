@@ -33,9 +33,6 @@ public class RemarkAdapter extends RecyclerView.Adapter<RemarkAdapter.ViewHolder
         final PickDetialsBean.DataEntity.LotPropertyEntity obj = datas.get(position);
         viewHolder.one.setText(obj.getLotValue());
         viewHolder.two.setText(obj.getLotCode());
-        if ("N".equalsIgnoreCase(obj.getRfVisible())) {
-            viewHolder.mLinearLayout.setVisibility(View.GONE);
-        }
     }
 
     @Override

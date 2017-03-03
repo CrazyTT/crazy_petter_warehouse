@@ -3,13 +3,13 @@ package com.crazy.petter.warehouse.app.main.activitys.out;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bjdv.lib.utils.base.BaseActivity;
@@ -17,7 +17,7 @@ import com.bjdv.lib.utils.util.JsonFormatter;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.adapters.RemarkAdapter;
+import com.crazy.petter.warehouse.app.main.adapters.RemarkAdapter2;
 import com.crazy.petter.warehouse.app.main.beans.ConfirmObnPickBean;
 import com.crazy.petter.warehouse.app.main.beans.PickBean;
 import com.crazy.petter.warehouse.app.main.beans.PickDetialsBean;
@@ -60,8 +60,8 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
     PickBean.DataEntity mDataEntity;
     PickDetialsPresenter mPickDetialsPresenter;
     @Bind(R.id.rl_remark)
-    RecyclerView mRlRemark;
-    RemarkAdapter mRemarkAdapter;
+    ListView mRlRemark;
+    RemarkAdapter2 mRemarkAdapter;
     ArrayList<PickDetialsBean.DataEntity> datas = new ArrayList<>();
     ArrayList<PickDetialsBean.DataEntity.LotPropertyEntity> reMarks = new ArrayList<>();
     boolean isFirst = true;
@@ -206,6 +206,12 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
 
     }
 
+    @Override
+    public void getOrderFailure() {
+        mEdtLoc.setText("");
+        mEdtLoc.requestFocus();
+    }
+
     private void getOrders(String params, boolean isFirst) {
         this.isFirst = isFirst;
         mPickDetialsPresenter.getOrders(params);
@@ -234,6 +240,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
             }
             setCurrent(current);
             initBottom();
+            showRemark(0);
         } else {
             temp = data.get(0);
             showInfo(temp);
@@ -244,15 +251,23 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
                     setCurrent(current);
                 }
             }
+            showRemark(current);
         }
-        showRemark(0);
+
     }
 
     private void showRemark(int postion) {
-        mRemarkAdapter = new RemarkAdapter(this);
-        reMarks = datas.get(postion).getLotProperty();
-        mRemarkAdapter.setList(reMarks);
+        mRemarkAdapter = new RemarkAdapter2(this);
+        ArrayList<PickDetialsBean.DataEntity.LotPropertyEntity> temp = new ArrayList<>();
+        temp = datas.get(postion).getLotProperty();
         mRlRemark.setAdapter(mRemarkAdapter);
+        reMarks.clear();
+        for (PickDetialsBean.DataEntity.LotPropertyEntity lotPropertyEntity : temp) {
+            if ("Y".equalsIgnoreCase(lotPropertyEntity.getRfVisible())) {
+                reMarks.add(lotPropertyEntity);
+            }
+        }
+        mRemarkAdapter.setList(reMarks);
     }
 
     private void showInfo(PickDetialsBean.DataEntity dataEntity) {

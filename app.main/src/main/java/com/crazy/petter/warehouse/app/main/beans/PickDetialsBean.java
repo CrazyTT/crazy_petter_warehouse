@@ -206,15 +206,19 @@ public class PickDetialsBean extends BaseBean {
         }
 
         public static class LotPropertyEntity {
+
+
             /**
              * SeqNo : sample string 1
              * LotCode : sample string 2
-             * LotValue : sample string 3
-             * RfVisible : sample string 4
+             * LotLabel : sample string 3
+             * LotValue : sample string 4
+             * RfVisible : sample string 5
              */
 
             public String SeqNo;
             public String LotCode;
+            public String LotLabel;
             public String LotValue;
             public String RfVisible;
 
@@ -234,6 +238,14 @@ public class PickDetialsBean extends BaseBean {
                 this.LotCode = LotCode;
             }
 
+            public String getLotLabel() {
+                return LotLabel;
+            }
+
+            public void setLotLabel(String LotLabel) {
+                this.LotLabel = LotLabel;
+            }
+
             public String getLotValue() {
                 return LotValue;
             }
@@ -250,5 +262,6 @@ public class PickDetialsBean extends BaseBean {
                 this.RfVisible = RfVisible;
             }
         }
+
     }
 }

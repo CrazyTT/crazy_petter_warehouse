@@ -31,6 +31,7 @@ public class PickDetialsPresenter extends BasePresenter {
 
             @Override
             public void onFailure(String s) {
+                mPickDetialsView.getOrderFailure();
                 context.stopProgress();
             }
         });

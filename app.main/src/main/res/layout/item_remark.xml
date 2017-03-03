@@ -2,20 +2,23 @@
 <LinearLayout android:id="@+id/ll_content"
               xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="60dp"
+              android:layout_height="wrap_content"
               android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/one"
-        android:layout_width="90dp"
-        android:layout_height="fill_parent"
-        android:textColor="@color/black_gray"/>
+        android:id="@+id/one2"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:gravity="right|center_vertical"
+        android:textColor="@color/actionbar_bg"/>
 
     <TextView
-        android:id="@+id/two"
+        android:id="@+id/two2"
         android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_marginLeft="10dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="30dp"
         android:layout_weight="1"
-        android:textColor="@color/black_gray"/>
+        android:gravity="left|center_vertical"
+        android:textColor="@color/actionbar_bg"/>
 </LinearLayout>

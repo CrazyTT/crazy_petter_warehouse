@@ -33,9 +33,6 @@ public class RemarkWaveAdapter extends RecyclerView.Adapter<RemarkWaveAdapter.Vi
         final PickWaveDetialsBean.DataEntity.LotPropertyEntity obj = datas.get(position);
         viewHolder.one.setText(obj.getLotValue());
         viewHolder.two.setText(obj.getLotCode());
-        if ("N".equalsIgnoreCase(obj.getRfVisible())) {
-            viewHolder.mLinearLayout.setVisibility(View.GONE);
-        }
     }
 
     @Override
