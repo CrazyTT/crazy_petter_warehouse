@@ -106,11 +106,11 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(mEdtLpn.getText().toString().trim())) {
-                    ToastUtils.showShort(TrayPutAwayDetialsActivity.this, "请先扫描托盘号");
+                    ToastUtils.showLong(TrayPutAwayDetialsActivity.this, "请先扫描托盘号");
                     return;
                 }
                 if (TextUtils.isEmpty(mEdtLoc.getText().toString().trim())) {
-                    ToastUtils.showShort(TrayPutAwayDetialsActivity.this, "请扫描上架货位");
+                    ToastUtils.showLong(TrayPutAwayDetialsActivity.this, "请扫描上架货位");
                     return;
                 }
                 if (datas != null && datas.size() > 0) {
@@ -131,7 +131,7 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
                     receiptBean.setDetails(entities);
                     mPutAwayDetialsPresenter.commit(JsonFormatter.getInstance().object2Json(receiptBean));
                 } else {
-                    ToastUtils.showShort(TrayPutAwayDetialsActivity.this, "没有明细，请重新扫描");
+                    ToastUtils.showLong(TrayPutAwayDetialsActivity.this, "没有明细，请重新扫描");
                 }
             }
         });
@@ -150,7 +150,7 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
 
     private void checkLoc() {
         if (TextUtils.isEmpty(mEdtLoc.getText().toString().trim())) {
-            ToastUtils.showShort(this, "上架货位不能为空");
+            ToastUtils.showLong(this, "上架货位不能为空");
             new Handler().postDelayed(new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -172,7 +172,7 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
 
     private void getDetials() {
         if (TextUtils.isEmpty(mEdtLpn.getText().toString().trim())) {
-            ToastUtils.showShort(this, "托盘号不能为空");
+            ToastUtils.showLong(this, "托盘号不能为空");
             new Handler().postDelayed(new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -198,7 +198,7 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
 
     @Override
     public void showTips(String s) {
-        ToastUtils.showShort(this, s);
+        ToastUtils.showLong(this, s);
     }
 
     ArrayList<GoodsPutAwayBean.DataEntity> datas;
@@ -211,7 +211,7 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
 
     @Override
     public void commitOK() {
-        ToastUtils.showShort(this, "收货成功");
+        ToastUtils.showLong(this, "收货成功");
         mEdtLpn.setText("");
         mEdtLpn.requestFocus();
         mEdtLoc.setText("");
@@ -224,11 +224,12 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
     @Override
     public void showLoc(LocBean.DataEntity dataEntity) {
         locEntity = dataEntity;
+        ToastUtils.showLong(this, "货位可用");
     }
 
     @Override
     public void checkLocFailure() {
-        ToastUtils.showShort(this, "该货位无效");
+        ToastUtils.showLong(this, "该货位无效");
         mEdtLoc.setText("");
         mEdtLoc.requestFocus();
     }

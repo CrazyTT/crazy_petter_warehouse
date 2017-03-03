@@ -54,6 +54,7 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
     ButtonAutoBg mBtnCommit;
     PutAwayDetialsAdapter scanOrderAdapter;
     PutAwayDetialsPresenter mPutAwayDetialsPresenter;
+    private String barCode = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,7 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
                     if (imm.isActive()) {
                         imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                     }
+                    barCode = mEdtSkuid.getText().toString().trim();
                     getDetials();
                     return true;
                 }
@@ -132,11 +134,11 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
                             detailsEntity.setSkuId(datas.get(key).getSkuId());
                             detailsEntity.setSkuName(datas.get(key).getSkuName());
                             if (TextUtils.isEmpty(mEdtSkuqty.getText().toString().trim())) {
-                                ToastUtils.showShort(PutAwayDetialsActivity.this, "请输入上架数量");
+                                ToastUtils.showLong(PutAwayDetialsActivity.this, "请输入上架数量");
                                 return;
                             }
                             if (TextUtils.isEmpty(mEdtLoc.getText().toString().trim())) {
-                                ToastUtils.showShort(PutAwayDetialsActivity.this, "请输入上架货位");
+                                ToastUtils.showLong(PutAwayDetialsActivity.this, "请输入上架货位");
                                 return;
                             }
                             detailsEntity.setQty(Integer.parseInt(mEdtSkuqty.getText().toString().trim()));
@@ -167,7 +169,7 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
 
     private void checkLoc() {
         if (TextUtils.isEmpty(mEdtLoc.getText().toString().trim())) {
-            ToastUtils.showShort(this, "上架货位不能为空");
+            ToastUtils.showLong(this, "上架货位不能为空");
             new Handler().postDelayed(new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -204,7 +206,7 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
 
     private void getDetials() {
         if (TextUtils.isEmpty(mEdtSkuid.getText().toString().trim())) {
-            ToastUtils.showShort(this, "货品代码不能为空");
+            ToastUtils.showLong(this, "货品代码不能为空");
             new Handler().postDelayed(new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -216,7 +218,7 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("InboundId", mDataEntity.getInboundId());
-            jsonObject.put("SkuId", mEdtSkuid.getText().toString().trim());
+            jsonObject.put("BarCode", barCode);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -229,7 +231,7 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
 
     @Override
     public void showTips(String s) {
-        ToastUtils.showShort(this, s);
+        ToastUtils.showLong(this, s);
     }
 
     ArrayList<GoodsPutAwayBean.DataEntity> datas;
@@ -238,11 +240,12 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
     public void showGoods(ArrayList<GoodsPutAwayBean.DataEntity> data) {
         datas = data;
         scanOrderAdapter.setList(datas);
+        mEdtSkuid.setText(data.get(0).getSkuId());
     }
 
     @Override
     public void commitOK() {
-        ToastUtils.showShort(this, "收货成功");
+        ToastUtils.showLong(this, "收货成功");
         scanOrderAdapter.initIsSelected();
         getDetials();
     }
@@ -252,11 +255,12 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
     @Override
     public void showLoc(LocBean.DataEntity dataEntity) {
         locEntity = dataEntity;
+        ToastUtils.showLong(this, "货位可用");
     }
 
     @Override
     public void checkLocFailure() {
-        ToastUtils.showShort(this, "该货位无效");
+        ToastUtils.showLong(this, "该货位无效");
         mEdtLoc.setText("");
         mEdtLoc.requestFocus();
     }
@@ -266,5 +270,9 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
         datas = new ArrayList<>();
         scanOrderAdapter.setList(datas);
         mEdtSkuid.requestFocus();
+        mEdtSkuid.setText("");
+        mEdtSkuqty.setText("");
+        mEdtLoc.setText("");
+        mQty.setText("0");
     }
 }
