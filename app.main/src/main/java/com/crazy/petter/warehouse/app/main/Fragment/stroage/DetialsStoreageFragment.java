@@ -118,6 +118,9 @@ public class DetialsStoreageFragment extends Fragment implements DetialsStoreage
         mEdtOrderNum.requestFocus();
         sp = new SharedPreferencesUtil(getActivity());
         mEdtOrderNum.setText(sp.getString("num"));
+        if (!TextUtils.isEmpty(sp.getString("num"))) {
+            mEdtOrderNum.setSelection(sp.getString("num").length());
+        }
         if (!TextUtils.isEmpty(sp.getString("num")) && sp.getBoolean("isRefresh")) {
             JSONObject jsonObject = new JSONObject();
             try {

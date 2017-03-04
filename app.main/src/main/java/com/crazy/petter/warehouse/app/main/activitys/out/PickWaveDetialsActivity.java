@@ -109,7 +109,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
                         imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                     }
                     if (TextUtils.isEmpty(mEdtLoc.getText().toString().trim())) {
-                        ToastUtils.showShort(PickWaveDetialsActivity.this, "请先扫描货位");
+                        ToastUtils.showLong(PickWaveDetialsActivity.this, "请先扫描货位");
                         new Handler().postDelayed(new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -160,7 +160,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
                 ArrayList<ConfirmWavePickBean.DetailsEntity> detailsEntities = new ArrayList<>();
                 ConfirmWavePickBean.DetailsEntity detailsEntity = new ConfirmWavePickBean.DetailsEntity();
                 if (TextUtils.isEmpty(mEdtQty.getText().toString().trim())) {
-                    ToastUtils.showShort(PickWaveDetialsActivity.this, "数量不能为空");
+                    ToastUtils.showLong(PickWaveDetialsActivity.this, "数量不能为空");
                     return;
                 }
                 detailsEntity.setQty(Integer.parseInt(mEdtQty.getText().toString().trim()));
@@ -188,6 +188,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
             mEdtSkuid.setText("");
             mEdtLoc.setText("");
             mEdtQty.setText("");
+            mEdtLoc.requestFocus();
             current++;
             if (current >= datas.size()) {
                 current = 0;
@@ -203,6 +204,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
                 e.printStackTrace();
             }
             getOrders(jsonObject.toString(), true);
+            mTxtQty.setText(Integer.parseInt(mTxtQty.getText().toString().trim()) - Integer.parseInt(mEdtQty.getText().toString().trim()) + "");
             mEdtQty.setText("");
             mEdtQty.requestFocus();
         }
@@ -211,7 +213,13 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
     @Override
     public void getOrderFailure() {
         mEdtLoc.setText("");
+        mEdtSkuid.setText("");
+        mEdtSkuname.setText("");
+        mEdtQty.setText("");
         mEdtLoc.requestFocus();
+        if (isFirst) {
+            mTxtBottom.setText("共计" + "xx" + "条/待处理" + "xx" + "条/已完成" + "xx" + "条");
+        }
     }
 
     private void getOrders(String params, boolean isFirst) {
@@ -221,7 +229,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
 
     @Override
     public void showTips(String s) {
-        ToastUtils.showShort(this, s);
+        ToastUtils.showLong(this, s);
     }
 
     int current = 0;
@@ -229,7 +237,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
     @Override
     public void setList(ArrayList<PickWaveDetialsBean.DataEntity> data) {
         if (data == null || data.size() <= 0) {
-            ToastUtils.showShort(this, "此单没有明细");
+            ToastUtils.showLong(this, "此单没有明细");
             return;
         }
         if (isFirst) {
@@ -288,6 +296,9 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
     int finish = 0;
 
     private void initBottom() {
+        if (all == finish) {
+            ToastUtils.showLong(this, "全部拣货完成");
+        }
         mTxtBottom.setText("共计" + all + "条/待处理" + (all - finish) + "条/已完成" + finish + "条");
     }
 }

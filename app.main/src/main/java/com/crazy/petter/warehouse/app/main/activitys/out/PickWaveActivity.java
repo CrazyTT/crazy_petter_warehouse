@@ -120,6 +120,7 @@ public class PickWaveActivity extends BaseActivity implements PickWaveView {
 
     private void jump(int postion) {
         mEdtOrderNum.setText(scanOrderAdapter.getList().get(postion).getWaveDocId());
+        mEdtOrderNum.setSelection(scanOrderAdapter.getList().get(postion).getWaveDocId().length());
         Intent intent = new Intent(this, PickWaveDetialsActivity.class);
         intent.putExtra("detials", JsonFormatter.getInstance().object2Json(scanOrderAdapter.getList().get(postion)));
         startActivity(intent);

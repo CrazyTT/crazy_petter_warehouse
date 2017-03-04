@@ -123,6 +123,7 @@ public class TraySendActivity extends BaseActivity implements TraySendView {
 
     private void jump(int postion) {
         mEdtOrderNum.setText(scanOrderAdapter.getList().get(postion).getOutboundId());
+        mEdtOrderNum.setSelection(scanOrderAdapter.getList().get(postion).getOutboundId().length());
         Intent intent = new Intent(this, TraySendDetialsActivity.class);
         intent.putExtra("detials", JsonFormatter.getInstance().object2Json(scanOrderAdapter.getList().get(postion)));
         startActivity(intent);

@@ -116,6 +116,7 @@ public class PutAwayActivity extends BaseActivity implements PutAwayView {
 
     private void jump(int postion) {
         mEdtOrderNum.setText(scanOrderAdapter.getList().get(postion).getInboundId());
+        mEdtOrderNum.setSelection(scanOrderAdapter.getList().get(postion).getInboundId().length());
         Intent intent = new Intent(this, PutAwayDetialsActivity.class);
         intent.putExtra("detials", JsonFormatter.getInstance().object2Json(scanOrderAdapter.getList().get(postion)));
         startActivity(intent);

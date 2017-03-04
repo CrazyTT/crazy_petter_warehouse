@@ -106,6 +106,7 @@ public class Connection {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> sendHeader = new HashMap<>();
                     if (true) {
+                        sendHeader.put("Content-Type","application/json; charset=UTF-8");
                         sendHeader.put("userName", sp.getString("userName"));
                         sendHeader.put("apiKey", sp.getString("passWord"));
                     }

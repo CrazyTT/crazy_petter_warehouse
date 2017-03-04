@@ -107,7 +107,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
                         imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                     }
                     if (TextUtils.isEmpty(mEdtLoc.getText().toString().trim())) {
-                        ToastUtils.showShort(PickDetialsActivity.this, "请先扫描货位");
+                        ToastUtils.showLong(PickDetialsActivity.this, "请先扫描货位");
                         new Handler().postDelayed(new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -160,7 +160,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
                 detailsEntity.setObnPickInc(temp.getObnPickInc());
                 detailsEntity.setLpnNo("");
                 if (TextUtils.isEmpty(mEdtQty.getText().toString().trim())) {
-                    ToastUtils.showShort(PickDetialsActivity.this, "数量不能为空");
+                    ToastUtils.showLong(PickDetialsActivity.this, "数量不能为空");
                     return;
                 }
                 detailsEntity.setQty(Integer.parseInt(mEdtQty.getText().toString().trim()));
@@ -184,6 +184,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
             mEdtSkuname.setText("");
             mEdtSkuid.setText("");
             mEdtLoc.setText("");
+            mEdtLoc.requestFocus();
             mEdtQty.setText("");
             current++;
             if (current >= datas.size()) {
@@ -200,6 +201,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
                 e.printStackTrace();
             }
             getOrders(jsonObject.toString(), true);
+            mTxtQty.setText(Integer.parseInt(mTxtQty.getText().toString().trim()) - Integer.parseInt(mEdtQty.getText().toString().trim()) + "");
             mEdtQty.setText("");
             mEdtQty.requestFocus();
         }
@@ -209,7 +211,13 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
     @Override
     public void getOrderFailure() {
         mEdtLoc.setText("");
+        mEdtSkuid.setText("");
+        mEdtSkuname.setText("");
+        mEdtQty.setText("");
         mEdtLoc.requestFocus();
+        if (isFirst) {
+            mTxtBottom.setText("共计" + "xx" + "条/待处理" + "xx" + "条/已完成" + "xx" + "条");
+        }
     }
 
     private void getOrders(String params, boolean isFirst) {
@@ -219,7 +227,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
 
     @Override
     public void showTips(String s) {
-        ToastUtils.showShort(this, s);
+        ToastUtils.showLong(this, s);
     }
 
     int current = 0;
@@ -227,7 +235,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
     @Override
     public void setList(ArrayList<PickDetialsBean.DataEntity> data) {
         if (data == null || data.size() <= 0) {
-            ToastUtils.showShort(this, "此单没有明细");
+            ToastUtils.showLong(this, "此单没有明细");
             return;
         }
         if (isFirst) {
@@ -287,6 +295,9 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
     int finish = 0;
 
     private void initBottom() {
+        if (all == finish) {
+            ToastUtils.showLong(this, "全部拣货完成");
+        }
         mTxtBottom.setText("共计" + all + "条/待处理" + (all - finish) + "条/已完成" + finish + "条");
     }
 }
