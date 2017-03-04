@@ -17,6 +17,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.LogUtils;
 import com.bjdv.lib.utils.util.SharedPreferencesUtil;
 import com.socks.library.KLog;
@@ -106,7 +107,7 @@ public class Connection {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> sendHeader = new HashMap<>();
                     if (true) {
-                        sendHeader.put("Content-Type","application/json; charset=UTF-8");
+                        sendHeader.put("Content-Type", "application/json; charset=UTF-8");
                         sendHeader.put("userName", sp.getString("userName"));
                         sendHeader.put("apiKey", sp.getString("passWord"));
                     }
@@ -128,7 +129,9 @@ public class Connection {
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             request.setTag(Tag);
-            mRequestQueue.add(request);
+            if (JsonUtil.jsonArrayToBooleanArray2()) {
+                mRequestQueue.add(request);
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
