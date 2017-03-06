@@ -66,6 +66,9 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
     ArrayList<PickDetialsBean.DataEntity.LotPropertyEntity> reMarks = new ArrayList<>();
     boolean isFirst = true;
     PickDetialsBean.DataEntity temp = new PickDetialsBean.DataEntity();
+    int current = 0;
+    String currentLoc = "";
+    String currentSkuid = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,6 +199,10 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
                 detailsEntities.add(detailsEntity);
                 confirmObnPickBean.setDetails(detailsEntities);
                 confirmObnPickBean.setOutboundId(mDataEntity.getOutboundId());
+                if (Integer.parseInt(mEdtQty.getText().toString().trim()) > Integer.parseInt(mTxtQty.getText().toString())) {
+                    ToastUtils.showLong(PickDetialsActivity.this, "拣货数量超出范围了");
+                    return;
+                }
                 mPickDetialsPresenter.commit(JsonFormatter.getInstance().object2Json(confirmObnPickBean));
             }
         });
@@ -206,19 +213,41 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
         //提交成功
         if (mTxtQty.getText().toString().trim().equals(mEdtQty.getText().toString().trim())) {
             //这条记录拣货完毕了
-            datas.get(current).setQty(0);
+            boolean exist = false;
+            datas.get(current).setWaitPickQty(0);
+            finish++;
+            initBottom();
+            mEdtQty.setText("");
+            for (int i = current + 1; i < datas.size(); i++) {
+                if (datas.get(i).getPickLoc().equalsIgnoreCase(currentLoc)) {
+                    exist = true;
+                    current = i;
+                    setCurrent(current);
+
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("OutboundId", mDataEntity.getOutboundId());
+                        jsonObject.put("PickLoc", mEdtLoc.getText().toString().trim());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    getOrders(jsonObject.toString(), false);
+                    break;
+                }
+
+            }
+            if (exist) {
+                return;
+            }
             mEdtSkuname.setText("");
             mEdtSkuid.setText("");
             mEdtLoc.setText("");
             mEdtLoc.requestFocus();
-            mEdtQty.setText("");
             current++;
             if (current >= datas.size()) {
                 current = 0;
             }
             setCurrent(current);
-            finish++;
-            initBottom();
         } else {
 //            JSONObject jsonObject = new JSONObject();
 //            try {
@@ -228,7 +257,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
 //            }
 //            getOrders(jsonObject.toString(), true);
 
-            datas.get(current).setQty(Integer.parseInt(mTxtQty.getText().toString().trim()) - Integer.parseInt(mEdtQty.getText().toString().trim()));
+            datas.get(current).setWaitPickQty(Integer.parseInt(mTxtQty.getText().toString().trim()) - Integer.parseInt(mEdtQty.getText().toString().trim()));
             mTxtQty.setText(Integer.parseInt(mTxtQty.getText().toString().trim()) - Integer.parseInt(mEdtQty.getText().toString().trim()) + "");
             mEdtQty.setText("");
             mEdtQty.requestFocus();
@@ -258,8 +287,6 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
         ToastUtils.showLong(this, s);
     }
 
-    int current = 0;
-
     @Override
     public void setList(ArrayList<PickDetialsBean.DataEntity> data) {
         if (data == null || data.size() <= 0) {
@@ -278,7 +305,16 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
             initBottom();
             showRemark(0);
         } else {
-            temp = data.get(0);
+            boolean exist = false;
+            for (int i = 0; i < data.size(); i++) {
+                if (data.get(i).getSkuId().equalsIgnoreCase(currentSkuid)) {
+                    exist = true;
+                    temp = data.get(i);
+                }
+            }
+            if (!exist) {
+                temp = data.get(0);
+            }
             showInfo(temp);
             //并且得到操作的postion
             for (int i = 0; i < datas.size(); i++) {
@@ -311,12 +347,14 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
         mEdtSkuname.setText(dataEntity.getSkuName());
         mEdtQty.setText("");
         mEdtQty.requestFocus();
+        currentLoc = dataEntity.getPickLoc();
     }
 
     private void setCurrent(int postion) {
         mTxtLoc.setText(datas.get(postion).getPickLoc());
         mTxtSkuid.setText(datas.get(postion).getSkuId());
         mTxtQty.setText(datas.get(postion).getWaitPickQty() + "");
+        currentSkuid = datas.get(postion).getSkuId();
     }
 
     int all = 0;

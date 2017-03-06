@@ -146,6 +146,7 @@ public class LoginActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.btn_setting:
                 SettingDialog settingDialog = new SettingDialog(LoginActivity.this, R.style.dialog);
+                settingDialog.setCanceledOnTouchOutside(false);
                 settingDialog.show();
                 break;
             case R.id.btn_about:

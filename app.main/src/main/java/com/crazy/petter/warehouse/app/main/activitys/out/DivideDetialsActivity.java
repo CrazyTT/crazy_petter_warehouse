@@ -95,6 +95,7 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
                     ToastUtils.showShort(DivideDetialsActivity.this, "请先扫描");
                 } else if (one == null) {
                     ToastUtils.showShort(DivideDetialsActivity.this, "没有该商品的明细");
+                    mEdtSkuId.setText("");
                     return;
                 }
                 ConfirmRebinWallWaveBean waveBean = new ConfirmRebinWallWaveBean();
@@ -148,6 +149,7 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
         mTxtContainer.setText(dataEntity.getContainerId());
         mTxtQty.setText(dataEntity.getPickQty());
         mTxtWaveNum.setText(dataEntity.getExtId());
+        mEdtSkuId.setText(dataEntity.getSkuId());
         one = dataEntity;
     }
 
