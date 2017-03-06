@@ -101,7 +101,7 @@
         <com.bjdv.lib.utils.widgets.ButtonAutoBg
             android:id="@+id/btn_setting"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginTop="40dp"
             android:layout_weight="1"
             android:background="@drawable/backgroud_gradview"
@@ -112,7 +112,7 @@
         <com.bjdv.lib.utils.widgets.ButtonAutoBg
             android:id="@+id/btn_about"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="40dp"
             android:layout_weight="1"

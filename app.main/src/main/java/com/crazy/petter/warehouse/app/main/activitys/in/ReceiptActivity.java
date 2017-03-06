@@ -201,6 +201,14 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
             e.printStackTrace();
         }
         mReceiptPresenter.getProperty(jsonObject.toString());
+        mEdtDate.setOnFocusChangeListener(new android.view.View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    mEdtDate.setSelection(mEdtDate.getText().toString().trim().length());
+                }
+            }
+        });
     }
 
     String SkuProperty = "";
