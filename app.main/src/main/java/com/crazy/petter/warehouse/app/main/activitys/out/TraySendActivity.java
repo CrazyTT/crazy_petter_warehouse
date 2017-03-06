@@ -97,14 +97,14 @@ public class TraySendActivity extends BaseActivity implements TraySendView {
 
     private void getDetials() {
         if (TextUtils.isEmpty(mEdtOrderNum.getText().toString().trim())) {
-            ToastUtils.showShort(this, "单号不能为空");
             new Handler().postDelayed(new Thread(new Runnable() {
                 @Override
                 public void run() {
                     mEdtOrderNum.requestFocus();
                 }
             }), 300);
-            return;
+//            ToastUtils.showShort(this, "单号不能为空");
+//            return;
         }
         JSONObject jsonObject = new JSONObject();
         try {

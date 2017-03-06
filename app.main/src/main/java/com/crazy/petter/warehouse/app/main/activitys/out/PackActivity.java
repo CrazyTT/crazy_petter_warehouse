@@ -100,8 +100,8 @@ public class PackActivity extends BaseActivity implements PackView {
                     mEdtOrderNum.requestFocus();
                 }
             }), 300);
-            ToastUtils.showShort(this, "单号不能为空");
-            return;
+//            ToastUtils.showShort(this, "单号不能为空");
+//            return;
         }
         JSONObject jsonObject = new JSONObject();
         try {

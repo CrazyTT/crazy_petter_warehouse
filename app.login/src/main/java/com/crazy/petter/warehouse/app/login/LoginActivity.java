@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
@@ -18,6 +19,8 @@ import com.bjdv.lib.utils.util.SharedPreferencesUtil;
 import com.bjdv.lib.utils.util.StringUtils;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
+import com.crazy.petter.warehouse.app.login.views.AboutDialog;
+import com.crazy.petter.warehouse.app.login.views.SettingDialog;
 
 import net.wequick.small.Small;
 
@@ -26,6 +29,7 @@ import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity {
 
@@ -35,6 +39,10 @@ public class LoginActivity extends BaseActivity {
     EditText mEdtPsd;
     @Bind(R.id.btn_login)
     ButtonAutoBg mBtnLogin;
+    @Bind(R.id.btn_setting)
+    ButtonAutoBg mBtnSetting;
+    @Bind(R.id.btn_about)
+    ButtonAutoBg mBtnAbout;
     private SharedPreferencesUtil sp;
     String szImei = "";//设备唯一标识Imei
 
@@ -50,10 +58,10 @@ public class LoginActivity extends BaseActivity {
                 login();
             }
         });
-
-
+        if (!TextUtils.isEmpty(sp.getString("baseUrl"))) {
+            Constant.SERVER_URL_BASE = sp.getString("baseUrl");
+        }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
         } else {
             TelephonyManager TelephonyMgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
@@ -131,5 +139,19 @@ public class LoginActivity extends BaseActivity {
                 ToastUtils.showShort(LoginActivity.this, s);
             }
         });
+    }
+
+    @OnClick({R.id.btn_setting, R.id.btn_about})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_setting:
+                SettingDialog settingDialog = new SettingDialog(LoginActivity.this, R.style.dialog);
+                settingDialog.show();
+                break;
+            case R.id.btn_about:
+                AboutDialog aboutDialog = new AboutDialog(LoginActivity.this, R.style.dialog);
+                aboutDialog.show();
+                break;
+        }
     }
 }

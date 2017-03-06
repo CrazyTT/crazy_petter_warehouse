@@ -95,18 +95,18 @@ public class PickWaveActivity extends BaseActivity implements PickWaveView {
 
     private void getDetials() {
         if (TextUtils.isEmpty(mEdtOrderNum.getText().toString().trim())) {
-            ToastUtils.showShort(this, "单号不能为空");
             new Handler().postDelayed(new Thread(new Runnable() {
                 @Override
                 public void run() {
                     mEdtOrderNum.requestFocus();
                 }
             }), 300);
-            return;
+//            ToastUtils.showShort(this, "单号不能为空");
+//            return;
         }
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("DocNo", mEdtOrderNum.getText().toString().trim());
+            jsonObject.put("WaveId", mEdtOrderNum.getText().toString().trim());
         } catch (JSONException e) {
             e.printStackTrace();
         }

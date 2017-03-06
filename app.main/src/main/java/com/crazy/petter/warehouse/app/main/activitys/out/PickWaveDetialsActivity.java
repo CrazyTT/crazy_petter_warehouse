@@ -131,6 +131,26 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
                 return false;
             }
         });
+        mEdtQty.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm.isActive()) {
+                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    }
+                    new Handler().postDelayed(new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mBtnCommit.requestFocus();
+                            mBtnCommit.performClick();
+                        }
+                    }), 300);
+                    return true;
+                }
+                return false;
+            }
+        });
 //        mEdtSkuid.setOnKeyListener(new View.OnKeyListener() {
 //            @Override
 //            public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -156,6 +176,11 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
             @Override
             public void onClick(View v) {
                 //提交数据
+                if (TextUtils.isEmpty(mEdtLoc.getText().toString().trim())) {
+                    ToastUtils.showLong(PickWaveDetialsActivity.this, "货位不能为空,请重新扫描");
+                    mEdtLoc.requestFocus();
+                    return;
+                }
                 ConfirmWavePickBean confirmObnPickBean = new ConfirmWavePickBean();
                 ArrayList<ConfirmWavePickBean.DetailsEntity> detailsEntities = new ArrayList<>();
                 ConfirmWavePickBean.DetailsEntity detailsEntity = new ConfirmWavePickBean.DetailsEntity();
@@ -184,6 +209,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
         //提交成功
         if (mTxtQty.getText().toString().trim().equals(mEdtQty.getText().toString().trim())) {
             //这条记录拣货完毕了
+            datas.get(current).setQty(0);
             mEdtSkuname.setText("");
             mEdtSkuid.setText("");
             mEdtLoc.setText("");
@@ -197,13 +223,14 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
             finish++;
             initBottom();
         } else {
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("WaveId", mDataEntity.getWaveDocId());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            getOrders(jsonObject.toString(), true);
+//            JSONObject jsonObject = new JSONObject();
+//            try {
+//                jsonObject.put("WaveId", mDataEntity.getWaveDocId());
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            getOrders(jsonObject.toString(), true);
+            datas.get(current).setQty(Integer.parseInt(mTxtQty.getText().toString().trim()) - Integer.parseInt(mEdtQty.getText().toString().trim()));
             mTxtQty.setText(Integer.parseInt(mTxtQty.getText().toString().trim()) - Integer.parseInt(mEdtQty.getText().toString().trim()) + "");
             mEdtQty.setText("");
             mEdtQty.requestFocus();
@@ -267,8 +294,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
 
     private void showRemark(int postion) {
         mRemarkAdapter = new RemarkWaveAdapter2(this);
-        ArrayList<PickWaveDetialsBean.DataEntity.LotPropertyEntity> temp = new ArrayList<>();
-        temp = datas.get(postion).getLotProperty();
+        ArrayList<PickWaveDetialsBean.DataEntity.LotPropertyEntity> temp = datas.get(postion).getLotProperty();
         mRlRemark.setAdapter(mRemarkAdapter);
         reMarks.clear();
         for (PickWaveDetialsBean.DataEntity.LotPropertyEntity lotPropertyEntity : temp) {
@@ -283,6 +309,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
         mEdtLoc.setText(dataEntity.getPickLoc());
         mEdtSkuid.setText(dataEntity.getSkuId());
         mEdtSkuname.setText(dataEntity.getSkuName());
+        mEdtQty.setText("");
         mEdtQty.requestFocus();
     }
 

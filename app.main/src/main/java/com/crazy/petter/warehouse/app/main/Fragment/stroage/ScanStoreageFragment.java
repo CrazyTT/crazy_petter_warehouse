@@ -126,8 +126,8 @@ public class ScanStoreageFragment extends Fragment implements ScanStoreageFragme
                     mEdtOrderNum.requestFocus();
                 }
             }), 300);
-            ToastUtils.showShort(getActivity(), "单号不能为空");
-            return;
+//            ToastUtils.showShort(getActivity(), "单号不能为空");
+//            return;
         }
         mSharedPreferencesUtil.setString("num", mEdtOrderNum.getText().toString().trim());
         JSONObject jsonObject = new JSONObject();

@@ -87,6 +87,7 @@ public class Connection {
                     if (callback != null) {
                         String resp = s;
                         KLog.json(resp);
+                        KLog.i(resp);
                         callback.onResponse(resp);
                     }
                 }
