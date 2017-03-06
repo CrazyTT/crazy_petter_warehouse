@@ -20,20 +20,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="作者：一个码农"/>
+        android:text="作者：一个码农"
+        android:textColor="@color/colorBlackTransparent"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:autoLink="phone"
-        android:text="电话:17712394972"/>
+        android:text="电话:17712394972"
+        android:textColor="@color/colorBlackTransparent"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:autoLink="email"
-        android:text="邮箱: chenliuliu123@126.com"/>
+        android:text="邮箱: chenliuliu123@126.com"
+        android:textColor="@color/colorBlackTransparent"/>
 
 </LinearLayout>

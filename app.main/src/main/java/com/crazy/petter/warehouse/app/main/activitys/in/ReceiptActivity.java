@@ -128,7 +128,7 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
 //                ]
                 //收货
                 if (goodsBean == null) {
-                    ToastUtils.showShort(ReceiptActivity.this, "请先扫描");
+                    ToastUtils.showShort(ReceiptActivity.this, "请先扫描货品条码");
                     return;
                 }
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -201,14 +201,14 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
             e.printStackTrace();
         }
         mReceiptPresenter.getProperty(jsonObject.toString());
-        mEdtDate.setOnFocusChangeListener(new android.view.View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    mEdtDate.setSelection(mEdtDate.getText().toString().trim().length());
-                }
-            }
-        });
+//        mEdtDate.setOnFocusChangeListener(new android.view.View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    mEdtDate.setSelection(mEdtDate.getText().toString().trim().length());
+//                }
+//            }
+//        });
     }
 
     String SkuProperty = "";

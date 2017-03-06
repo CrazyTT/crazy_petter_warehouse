@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_sku_id"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"

@@ -50,7 +50,7 @@
                 android:gravity="center"
                 android:text="箱号"/>
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_packNum"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                 android:gravity="center"
                 android:text="箱重"/>
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_weight"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
                 android:gravity="center"
                 android:text="箱体积"/>
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_volume"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

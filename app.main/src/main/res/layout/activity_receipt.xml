@@ -32,7 +32,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1">
 
-                <EditText
+                <com.bjdv.lib.utils.widgets.EditTextAuto
                     android:id="@+id/txt_orderNum"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
@@ -64,7 +64,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1">
 
-                <EditText
+                <com.bjdv.lib.utils.widgets.EditTextAuto
                     android:id="@+id/edt_good_bar"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
@@ -96,7 +96,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1">
 
-                <EditText
+                <com.bjdv.lib.utils.widgets.EditTextAuto
                     android:id="@+id/edt_good_name"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
@@ -121,7 +121,7 @@
                 android:text="接收数量:"
                 android:textColor="@color/black_gray"/>
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_num"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
@@ -145,7 +145,7 @@
                 android:text="LPN:"
                 android:textColor="@color/black_gray"/>
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_lpn"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
@@ -169,7 +169,7 @@
                 android:text="失效日期:"
                 android:textColor="@color/black_gray"/>
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_date"
                 android:layout_width="0dp"
                 android:layout_height="25dp"
@@ -202,7 +202,7 @@
                 android:prompt="@string/string_good_Property"
                 android:spinnerMode="dialog"/>
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"/>
         </LinearLayout>

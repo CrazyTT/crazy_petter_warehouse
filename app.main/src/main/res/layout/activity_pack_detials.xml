@@ -52,7 +52,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_packNum"
                 android:layout_width="fill_parent"
                 android:layout_height="25dp"
@@ -84,7 +84,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_packstyle"
                 android:layout_width="fill_parent"
                 android:layout_height="25dp"
@@ -116,7 +116,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_skuid"
                 android:layout_width="fill_parent"
                 android:layout_height="25dp"
@@ -149,7 +149,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_qty"
                 android:layout_width="fill_parent"
                 android:layout_height="25dp"

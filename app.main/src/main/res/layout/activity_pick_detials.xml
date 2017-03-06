@@ -84,7 +84,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_loc"
                 android:layout_width="80dp"
                 android:layout_height="25dp"
@@ -125,7 +125,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_skuid"
                 android:layout_width="80dp"
                 android:layout_height="25dp"
@@ -156,7 +156,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_skuname"
                 android:layout_width="190dp"
                 android:layout_height="25dp"
@@ -197,7 +197,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_qty"
                 android:layout_width="80dp"
                 android:layout_height="25dp"

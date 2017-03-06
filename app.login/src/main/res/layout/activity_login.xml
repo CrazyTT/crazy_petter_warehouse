@@ -37,7 +37,7 @@
                 android:scaleType="fitXY"
                 android:src="@mipmap/user"/>
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_name"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
@@ -64,7 +64,7 @@
                 android:scaleType="fitXY"
                 android:src="@mipmap/psd"/>
 
-            <EditText
+            <com.bjdv.lib.utils.widgets.EditTextAuto
                 android:id="@+id/edt_psd"
                 android:layout_width="0dp"
                 android:layout_height="fill_parent"
