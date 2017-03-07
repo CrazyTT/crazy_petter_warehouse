@@ -259,11 +259,13 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     public void showSkuInfo(ArrayList<SkuBean.DataEntity> data) {
         SkuBean.DataEntity temp = data.get(0);
         mEdtSkuid.setText(temp.getSkuId());
+        mEdtQty.requestFocus();
     }
 
     @Override
     public void getSkuFailure() {
         mEdtSkuid.setText("");
+        ToastUtils.showLong(this, "查询不到此条码的商品");
         mEdtSkuid.requestFocus();
     }
 

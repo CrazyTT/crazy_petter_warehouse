@@ -297,7 +297,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
             datas = data;
             all = datas.size();
             for (PickDetialsBean.DataEntity temp : datas) {
-                if (temp.getWaitPickQty() == 0) {
+                if (temp.getWaitPickQty() <= 0) {
                     finish++;
                 }
             }

@@ -297,7 +297,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
             datas = data;
             all = datas.size();
             for (PickWaveDetialsBean.DataEntity temp : datas) {
-                if (temp.getWaitPickQty() == 0) {
+                if (temp.getWaitPickQty() <= 0) {
                     finish++;
                 }
             }
