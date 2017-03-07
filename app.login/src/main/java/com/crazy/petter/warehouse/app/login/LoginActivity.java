@@ -123,7 +123,7 @@ public class LoginActivity extends BaseActivity {
                         sp.setString("userName", userName);
                         sp.setString("passWord", passWord);
                         Small.openUri("main", LoginActivity.this);
-                        ToastUtils.showLong(LoginActivity.this, "登录成功");
+                        ToastUtils.showShort(LoginActivity.this, "登录成功");
                         LoginActivity.this.finish();
                     } else {
                         LoginActivity.this.finish();
