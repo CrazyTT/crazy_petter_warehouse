@@ -152,27 +152,6 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
                 return false;
             }
         });
-//        mEdtSkuid.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)  {
-//                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    if (imm.isActive()) {
-//                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
-//                    }
-//                    JSONObject jsonObject = new JSONObject();
-//                    try {
-//                        jsonObject.put("OutboundId", mDataEntity.getOutboundId());
-//                        jsonObject.put("SkuId", mEdtSkuid.getText().toString().trim());
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                    getOrders(jsonObject.toString(), false);
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
         mBtnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,8 +197,8 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
             finish++;
             initBottom();
             mEdtQty.setText("");
-            for (int i = current + 1; i < datas.size(); i++) {
-                if (datas.get(i).getPickLoc().equalsIgnoreCase(currentLoc)) {
+            for (int i = 0; i < datas.size(); i++) {
+                if (datas.get(i).getPickLoc().equalsIgnoreCase(currentLoc) && datas.get(i).getWaitPickQty() > 0) {
                     exist = true;
                     current = i;
                     setCurrent(current);
@@ -243,20 +222,29 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
             mEdtSkuid.setText("");
             mEdtLoc.setText("");
             mEdtLoc.requestFocus();
-            current++;
+            //判断吓下一跳数据
+            int count = 0;
+            boolean exist2 = false;
+            while (count <= datas.size()) {
+                current++;
+                if (current >= datas.size()) {
+                    current = 0;
+                }
+                if (datas.get(current).getWaitPickQty() > 0) {
+                    exist2 = true;
+                    break;
+                }
+                count++;
+            }
             if (current >= datas.size()) {
                 current = 0;
             }
-            setCurrent(current);
+            if (exist2) {
+                setCurrent(current);
+            } else {
+                setCurrent(0);
+            }
         } else {
-//            JSONObject jsonObject = new JSONObject();
-//            try {
-//                jsonObject.put("OutboundId", mDataEntity.getOutboundId());
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//            getOrders(jsonObject.toString(), true);
-
             datas.get(current).setWaitPickQty(Integer.parseInt(mTxtQty.getText().toString().trim()) - Integer.parseInt(mEdtQty.getText().toString().trim()));
             mTxtQty.setText(Integer.parseInt(mTxtQty.getText().toString().trim()) - Integer.parseInt(mEdtQty.getText().toString().trim()) + "");
             mEdtQty.setText("");
@@ -301,26 +289,46 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
                     finish++;
                 }
             }
-            setCurrent(current);
             initBottom();
-            showRemark(0);
+            int temp = -1;
+            for (int i = 0; i < datas.size(); i++) {
+                if (datas.get(i).getWaitPickQty() > 0) {
+                    temp = i;
+                    break;
+                }
+            }
+            if (temp != -1) {
+                current = temp;
+                setCurrent(current);
+                showRemark(temp);
+            } else {
+                current = 0;
+                setCurrent(current);
+                showRemark(0);
+            }
         } else {
             boolean exist = false;
+            String skuName = "";
+            int count = -1;
             for (int i = 0; i < data.size(); i++) {
-                if (data.get(i).getSkuId().equalsIgnoreCase(currentSkuid)) {
+                if (data.get(i).getSkuId().equalsIgnoreCase(currentSkuid) && data.get(i).getWaitPickQty() > 0) {
                     exist = true;
                     temp = data.get(i);
+                    break;
                 }
             }
             if (!exist) {
                 temp = data.get(0);
             }
+            skuName = temp.getSkuName();
+            count = temp.getWaitPickQty();
             showInfo(temp);
             //并且得到操作的postion
             for (int i = 0; i < datas.size(); i++) {
-                if (datas.get(i).getPickLoc().equalsIgnoreCase(temp.getPickLoc()) && datas.get(i).getSkuId().equalsIgnoreCase(temp.getSkuId())) {
+                if (datas.get(i).getWaitPickQty() == count && datas.get(i).getPickLoc().equalsIgnoreCase(temp.getPickLoc()) && datas.get(i).getSkuId().equalsIgnoreCase(temp.getSkuId()) && datas.get(i).getSkuName().equalsIgnoreCase(skuName)) {
                     current = i;
                     setCurrent(current);
+                    break;
                 }
             }
             showRemark(current);
@@ -363,7 +371,13 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
     private void initBottom() {
         if (all == finish) {
             ToastUtils.showLong(this, "全部拣货完成");
+            PickDetialsActivity.this.finish();
+        } else if (finish > all) {
+            finish = all;
+            mTxtBottom.setText("共计" + all + "条/待处理" + (all - finish) + "条/已完成" + finish + "条");
+
+        } else {
+            mTxtBottom.setText("共计" + all + "条/待处理" + (all - finish) + "条/已完成" + finish + "条");
         }
-        mTxtBottom.setText("共计" + all + "条/待处理" + (all - finish) + "条/已完成" + finish + "条");
     }
 }

@@ -86,6 +86,14 @@
             android:gravity="center"
             android:text="总单数"
             android:textColor="@color/black_gray"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="拣货状态"
+            android:textColor="@color/black_gray"/>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

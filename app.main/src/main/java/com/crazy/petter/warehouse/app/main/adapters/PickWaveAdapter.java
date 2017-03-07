@@ -26,7 +26,7 @@ public class PickWaveAdapter extends RecyclerView.Adapter<PickWaveAdapter.ViewHo
 
     @Override
     public PickWaveAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_order_scan_storeage, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_order_scan_storeage_five, viewGroup, false);
         return new PickWaveAdapter.ViewHolder(view);
     }
 
@@ -37,6 +37,7 @@ public class PickWaveAdapter extends RecyclerView.Adapter<PickWaveAdapter.ViewHo
         viewHolder.two.setText(obj.getStatusDesc());//状态还不确定
         viewHolder.three.setText(obj.getStatus() + "");
         viewHolder.four.setText(obj.getTotalCount() + "");
+        viewHolder.five.setText(obj.getTotalCount() + "");
         viewHolder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +72,7 @@ public class PickWaveAdapter extends RecyclerView.Adapter<PickWaveAdapter.ViewHo
         TextView two;
         TextView three;
         TextView four;
+        TextView five;
 
         public ViewHolder(View view) {
             super(view);
@@ -78,6 +80,7 @@ public class PickWaveAdapter extends RecyclerView.Adapter<PickWaveAdapter.ViewHo
             two = (TextView) view.findViewById(R.id.two);
             three = (TextView) view.findViewById(R.id.three);
             four = (TextView) view.findViewById(R.id.four);
+            five = (TextView) view.findViewById(R.id.five);
             mLinearLayout = (LinearLayout) view.findViewById(R.id.ll_content);
         }
     }
