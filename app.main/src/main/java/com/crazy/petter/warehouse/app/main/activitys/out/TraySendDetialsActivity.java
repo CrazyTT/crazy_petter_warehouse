@@ -112,11 +112,11 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
             public void onClick(View v) {
                 //确认发货
                 if (TextUtils.isEmpty(mEdtOrderNum.getText().toString().trim())) {
-                    ToastUtils.showShort(TraySendDetialsActivity.this, "请输入托盘号");
+                    ToastUtils.showLong(TraySendDetialsActivity.this, "请输入托盘号");
                     return;
                 }
                 if (datas.size() <= 0) {
-                    ToastUtils.showShort(TraySendDetialsActivity.this, "没有明细，无法发货");
+                    ToastUtils.showLong(TraySendDetialsActivity.this, "没有明细，无法发货");
                     return;
                 }
                 TraySendCommitBean traySendCommitBean = new TraySendCommitBean();
@@ -150,7 +150,7 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
 
     @Override
     public void commitOK() {
-        ToastUtils.showShort(this, "发货成功");
+        ToastUtils.showLong(this, "发货成功");
 
     }
 
@@ -168,7 +168,7 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
     @Override
     public void showTips(String s) {
         mEdtOrderNum.requestFocus();
-        ToastUtils.showShort(this, s);
+        ToastUtils.showLong(this, s);
     }
 
     ArrayList<TraySendDetialsBean.DataEntity> datas = new ArrayList<>();
@@ -176,7 +176,7 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
     @Override
     public void showGoods(ArrayList<TraySendDetialsBean.DataEntity> data) {
         if (data == null || data.size() == 0) {
-            ToastUtils.showShort(TraySendDetialsActivity.this, "没有查询到明细");
+            ToastUtils.showLong(TraySendDetialsActivity.this, "没有查询到明细");
             return;
         }
         datas = data;

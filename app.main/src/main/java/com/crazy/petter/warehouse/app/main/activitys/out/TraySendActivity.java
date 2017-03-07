@@ -103,7 +103,7 @@ public class TraySendActivity extends BaseActivity implements TraySendView {
                     mEdtOrderNum.requestFocus();
                 }
             }), 300);
-//            ToastUtils.showShort(this, "单号不能为空");
+//            ToastUtils.showLong(this, "单号不能为空");
 //            return;
         }
         JSONObject jsonObject = new JSONObject();
@@ -118,7 +118,7 @@ public class TraySendActivity extends BaseActivity implements TraySendView {
 
     @Override
     public void showTips(String s) {
-        ToastUtils.showShort(this, s);
+        ToastUtils.showLong(this, s);
     }
 
     private void jump(int postion) {

@@ -23,6 +23,7 @@ import com.crazy.petter.warehouse.app.main.beans.ConfirmObnCartonBean;
 import com.crazy.petter.warehouse.app.main.beans.PackBean;
 import com.crazy.petter.warehouse.app.main.beans.PackDetialsBean;
 import com.crazy.petter.warehouse.app.main.beans.QueryObnCartonBean;
+import com.crazy.petter.warehouse.app.main.beans.SkuBean;
 import com.crazy.petter.warehouse.app.main.presenters.PackDetialsPresenter;
 import com.crazy.petter.warehouse.app.main.views.PackDetialsView;
 
@@ -59,6 +60,8 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     PackDetialsAdapter mPackDetialsAdapter;
     @Bind(R.id.btn_add)
     ButtonAutoBg mBtnAdd;
+    private String barCode = "";
+    double Volume = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +100,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
             @Override
             public void onClick(View v) {
                 if (mList.size() <= 0) {
-                    ToastUtils.showShort(PackDetialsActivity.this, "还没有添加任何明细");
+                    ToastUtils.showLong(PackDetialsActivity.this, "还没有添加任何明细");
                     return;
                 }
                 double weight = 0;
@@ -122,7 +125,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                         imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                     }
                     if (TextUtils.isEmpty(mEdtPackNum.getText().toString().trim())) {
-                        ToastUtils.showShort(PackDetialsActivity.this, "请扫描输入箱号");
+                        ToastUtils.showLong(PackDetialsActivity.this, "请扫描输入箱号");
                         new Handler().postDelayed(new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -152,7 +155,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                         imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                     }
                     if (TextUtils.isEmpty(mEdtPackstyle.getText().toString().trim())) {
-                        ToastUtils.showShort(PackDetialsActivity.this, "请扫描输入箱型");
+                        ToastUtils.showLong(PackDetialsActivity.this, "请扫描输入箱型");
                         new Handler().postDelayed(new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -181,7 +184,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                         TextUtils.isEmpty(mEdtPackstyle.getText().toString().trim()) ||
                         TextUtils.isEmpty(mEdtQty.getText().toString().trim()) ||
                         TextUtils.isEmpty(mEdtSkuid.getText().toString().trim())) {
-                    ToastUtils.showShort(PackDetialsActivity.this, "请将信息补充完整");
+                    ToastUtils.showLong(PackDetialsActivity.this, "请将信息补充完整");
                     return;
 
                 }
@@ -202,7 +205,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                             TextUtils.isEmpty(mEdtPackstyle.getText().toString().trim()) ||
                             TextUtils.isEmpty(mEdtQty.getText().toString().trim()) ||
                             TextUtils.isEmpty(mEdtSkuid.getText().toString().trim())) {
-                        ToastUtils.showShort(PackDetialsActivity.this, "请将信息补充完整");
+                        ToastUtils.showLong(PackDetialsActivity.this, "请将信息补充完整");
                         return true;
 
                     }
@@ -212,11 +215,61 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                 return false;
             }
         });
+        mEdtSkuid.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm.isActive()) {
+                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    }
+                    //获取商品信息
+                    if (TextUtils.isEmpty(mEdtSkuid.getText().toString().trim())) {
+                        new Handler().postDelayed(new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ToastUtils.showLong(PackDetialsActivity.this, "商品条码不能为空");
+                                mEdtSkuid.requestFocus();
+                            }
+                        }), 300);
+                        return true;
+                    }
+                    getSkuInfo();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void getSkuInfo() {
+        barCode = mEdtSkuid.getText().toString().trim();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("OwnerId", mDataEntity.getOwnerId());
+            jsonObject.put("BarCode", barCode);
+            jsonObject.put("SkuId", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mPackDetialsPresenter.getSkuInfo(jsonObject.toString());
+    }
+
+    @Override
+    public void showSkuInfo(ArrayList<SkuBean.DataEntity> data) {
+        SkuBean.DataEntity temp = data.get(0);
+        mEdtSkuid.setText(temp.getSkuId());
+    }
+
+    @Override
+    public void getSkuFailure() {
+        mEdtSkuid.setText("");
+        mEdtSkuid.requestFocus();
     }
 
     @Override
     public void showTips(String s) {
-        ToastUtils.showShort(this, s);
+        ToastUtils.showLong(this, s);
         mEdtPackNum.requestFocus();
     }
 
@@ -234,12 +287,17 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         ConfirmObnCartonBean temp = new ConfirmObnCartonBean();
         temp.setOutboundId(mDataEntity.getOutboundId());
         temp.setAutoCartonId(true);
-        temp.setBarCode("");
+        temp.setBarCode(barCode);
         temp.setCartonId(mEdtPackNum.getText().toString().trim());
         temp.setCartonTypeId(mEdtPackstyle.getText().toString().trim());
         temp.setQty(Integer.parseInt(mEdtQty.getText().toString().trim()));
         temp.setSkuId(mEdtSkuid.getText().toString().trim());
         mPackDetialsPresenter.addList(JsonFormatter.getInstance().object2Json(temp));
+    }
+
+    @Override
+    public void addListFailure() {
+        mEdtQty.requestFocus();
     }
 
     @Override
@@ -249,6 +307,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         mEdtSkuid.setText("");
         mEdtQty.setText("");
         mPackDetialsAdapter.notifyDataSetChanged();
+        mTxtReminder.setText(scanStoreageBean.getTotalPackageQty() + "    /   " + scanStoreageBean.getTotalPickedQty());
     }
 
     @Override
@@ -259,16 +318,9 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     }
 
     @Override
-    public void addListFailure() {
-        mEdtQty.requestFocus();
-    }
-
-    double Volume = 0;
-
-    @Override
     public void setPackInfo(ArrayList<PackBean.DataEntity> data) {
         if (data.size() <= 0) {
-            ToastUtils.showShort(this, "不存在此箱");
+            ToastUtils.showLong(this, "不存在此箱");
             mEdtPackNum.requestFocus();
             mEdtPackNum.setText("");
             mEdtPackstyle.setText("");

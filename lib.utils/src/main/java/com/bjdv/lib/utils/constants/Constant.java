@@ -30,4 +30,5 @@ public class Constant {
     public static String QueryReBinWallWaveDt = "WmsRf/QueryReBinWallWaveDt";
     public static String ConfirmRebinWallWave = "WmsRf/ConfirmRebinWallWave";
     public static String QueryPutAwayLocs = "WmsRf/QueryPutAwayLocs";
+    public static String QuerySkuData = "WmsRf/QuerySkuData";
 }

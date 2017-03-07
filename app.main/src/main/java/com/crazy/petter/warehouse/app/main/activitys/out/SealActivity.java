@@ -81,7 +81,7 @@ public class SealActivity extends BaseActivity implements SealView {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(mEdtVolume.getText().toString().trim()) || TextUtils.isEmpty(mEdtWeight.getText().toString().trim())) {
-                    ToastUtils.showShort(SealActivity.this, "请将信息补充完整");
+                    ToastUtils.showLong(SealActivity.this, "请将信息补充完整");
                     return;
                 }
                 SealBean sealBean = new SealBean();
@@ -98,12 +98,12 @@ public class SealActivity extends BaseActivity implements SealView {
 
     @Override
     public void showTips(String s) {
-        ToastUtils.showShort(this, s);
+        ToastUtils.showLong(this, s);
     }
 
     @Override
     public void sealOK() {
-        ToastUtils.showShort(this, "装箱成功");
+        ToastUtils.showLong(this, "装箱成功");
         setResult(RESULT_OK);
         this.finish();
     }

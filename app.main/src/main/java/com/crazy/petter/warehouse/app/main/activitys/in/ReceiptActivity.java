@@ -89,7 +89,7 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
                     if (!TextUtils.isEmpty(mEdtGoodBar.getText().toString().trim())) {
                         mReceiptPresenter.getDetials(jsonObject.toString());
                     } else {
-                        ToastUtils.showShort(ReceiptActivity.this, "条码不能为空");
+                        ToastUtils.showLong(ReceiptActivity.this, "条码不能为空");
                         new Handler().postDelayed(new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -128,7 +128,7 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
 //                ]
                 //收货
                 if (goodsBean == null) {
-                    ToastUtils.showShort(ReceiptActivity.this, "请先扫描货品条码");
+                    ToastUtils.showLong(ReceiptActivity.this, "请先扫描货品条码");
                     return;
                 }
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -153,7 +153,7 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
                     System.out.println("日期是否满足要求" + dateflag);
                 }
                 if (!dateflag) {
-                    ToastUtils.showShort(ReceiptActivity.this, "请输入正确的日期");
+                    ToastUtils.showLong(ReceiptActivity.this, "请输入正确的日期");
                     return;
                 }
                 if (!isP) {
@@ -164,7 +164,7 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
                     detailsEntity.setExpiredDate("");
                 }
                 if (TextUtils.isEmpty(mEdtNum.getText().toString().trim())) {
-                    ToastUtils.showShort(ReceiptActivity.this, "请输入数量");
+                    ToastUtils.showLong(ReceiptActivity.this, "请输入数量");
                     return;
                 }
                 detailsEntity.setReceiptQty(Integer.parseInt(mEdtNum.getText().toString().trim()));
@@ -226,7 +226,7 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
 
     @Override
     public void showTips(String s) {
-        ToastUtils.showShort(this, s);
+        ToastUtils.showLong(this, s);
     }
 
     GoodsBean goodsBean;
@@ -239,7 +239,7 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
 
     @Override
     public void receiptOK() {
-        ToastUtils.showShort(this, "收货成功");
+        ToastUtils.showLong(this, "收货成功");
         mEdtGoodBar.setText("");
         mEdtGoodName.setText("");
         mEdtLpn.setText("");

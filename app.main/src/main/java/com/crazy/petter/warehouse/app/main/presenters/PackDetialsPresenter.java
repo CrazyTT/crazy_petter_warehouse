@@ -7,6 +7,7 @@ import com.bjdv.lib.utils.constants.Constant;
 import com.bjdv.lib.utils.util.JsonFormatter;
 import com.crazy.petter.warehouse.app.main.beans.PackBean;
 import com.crazy.petter.warehouse.app.main.beans.PackDetialsBean;
+import com.crazy.petter.warehouse.app.main.beans.SkuBean;
 import com.crazy.petter.warehouse.app.main.views.PackDetialsView;
 
 /**
@@ -52,6 +53,29 @@ public class PackDetialsPresenter extends BasePresenter {
             @Override
             public void onFailure(String s) {
                 mPackDetialsView.addListFailure();
+                context.stopProgress();
+            }
+        });
+
+    }
+
+    public void getSkuInfo(String params) {
+        context.showProgress("查询商品中...", false);
+        requestData(Constant.SERVER_URL_BASE + Constant.QuerySkuData, params, new DataCallBack() {
+            @Override
+            public void onSuccess(Object o) {
+                SkuBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), SkuBean.class);
+                if (scanStoreageBean.getData() != null && scanStoreageBean.getData().size() > 0) {
+                    mPackDetialsView.showSkuInfo(scanStoreageBean.getData());
+                } else {
+                    mPackDetialsView.getSkuFailure();
+                }
+                context.stopProgress();
+            }
+
+            @Override
+            public void onFailure(String s) {
+                mPackDetialsView.getSkuFailure();
                 context.stopProgress();
             }
         });

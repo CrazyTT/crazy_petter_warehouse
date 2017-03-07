@@ -87,7 +87,7 @@ public class LoginActivity extends BaseActivity {
                     //测试代码
                     test();
                 } else {
-                    ToastUtils.showShort(this, "授权失败");
+                    ToastUtils.showLong(this, "授权失败");
                 }
                 return;
             }
@@ -98,10 +98,10 @@ public class LoginActivity extends BaseActivity {
         final String userName = mEdtName.getText().toString().trim();
         final String passWord = mEdtPsd.getText().toString().trim();
         if (StringUtils.isBlank(userName)) {
-            ToastUtils.showShort(LoginActivity.this, getResources().getString(R.string.hint_account));
+            ToastUtils.showLong(LoginActivity.this, getResources().getString(R.string.hint_account));
             return;
         } else if (StringUtils.isBlank(passWord)) {
-            ToastUtils.showShort(LoginActivity.this, getResources().getString(R.string.hint_pwd));
+            ToastUtils.showLong(LoginActivity.this, getResources().getString(R.string.hint_pwd));
             return;
         }
         JSONObject jsonObject = new JSONObject();
@@ -123,20 +123,20 @@ public class LoginActivity extends BaseActivity {
                         sp.setString("userName", userName);
                         sp.setString("passWord", passWord);
                         Small.openUri("main", LoginActivity.this);
-                        ToastUtils.showShort(LoginActivity.this, "登录成功");
+                        ToastUtils.showLong(LoginActivity.this, "登录成功");
                         LoginActivity.this.finish();
                     } else {
                         LoginActivity.this.finish();
                     }
                 } else {
-                    ToastUtils.showShort(LoginActivity.this, JsonUtil.getString(jsonObject1, "message"));
+                    ToastUtils.showLong(LoginActivity.this, JsonUtil.getString(jsonObject1, "message"));
                 }
             }
 
             @Override
             public void onErrorResponse(String s) {
                 stopProgress();
-                ToastUtils.showShort(LoginActivity.this, s);
+                ToastUtils.showLong(LoginActivity.this, s);
             }
         });
     }

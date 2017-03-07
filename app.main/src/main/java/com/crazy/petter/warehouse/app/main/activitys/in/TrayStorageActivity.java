@@ -101,7 +101,7 @@ public class TrayStorageActivity extends BaseActivity implements TrayStorageView
                     mEdtOrderNum.requestFocus();
                 }
             }), 300);
-//            ToastUtils.showShort(this, "单号不能为空");
+//            ToastUtils.showLong(this, "单号不能为空");
 //            return;
         }
         JSONObject jsonObject = new JSONObject();
@@ -125,7 +125,7 @@ public class TrayStorageActivity extends BaseActivity implements TrayStorageView
 
     @Override
     public void showTips(String s) {
-        ToastUtils.showShort(this, s);
+        ToastUtils.showLong(this, s);
     }
 
     @Override

@@ -92,9 +92,9 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(mEdtSkuId.getText().toString().trim())) {
-                    ToastUtils.showShort(DivideDetialsActivity.this, "请先扫描");
+                    ToastUtils.showLong(DivideDetialsActivity.this, "请先扫描");
                 } else if (one == null) {
-                    ToastUtils.showShort(DivideDetialsActivity.this, "没有该商品的明细");
+                    ToastUtils.showLong(DivideDetialsActivity.this, "没有该商品的明细");
                     mEdtSkuId.setText("");
                     return;
                 }
@@ -124,13 +124,13 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
     @Override
     public void showTips(String s) {
         mEdtSkuId.requestFocus();
-        ToastUtils.showShort(this, s);
+        ToastUtils.showLong(this, s);
     }
 
     @Override
     public void setBottom(int totalQty, int totalPickQty) {
         if (totalQty == totalPickQty) {
-            ToastUtils.showShort(this, "此单已经分获完毕");
+            ToastUtils.showLong(this, "此单已经分获完毕");
         }
         mTxtBottom.setText("总数量" + totalQty + "/已经分货数量" + totalPickQty);
     }
@@ -138,7 +138,6 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
     @Override
     public void getOrderAllFailure() {
         mEdtSkuId.requestFocus();
-        ToastUtils.showShort(this, "获取数据失败");
         mTxtBottom.setText("总数量xx/已经分货数量xx");
     }
 
