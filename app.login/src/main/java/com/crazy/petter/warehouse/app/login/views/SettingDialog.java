@@ -42,6 +42,7 @@ public class SettingDialog extends Dialog {
         } else {
             mEditText.setText(sp.getString("baseUrl"));
         }
+        mEditText.setSelection(mEditText.getText().toString().trim().length());
         btnCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

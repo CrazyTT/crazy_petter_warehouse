@@ -21,18 +21,15 @@ public class DetialsStoreageFragmentPresenter extends BasePresenter {
     }
 
     public void getOrder(String params) {
-        context.showProgress("查询中...", false);
         requestData(Constant.SERVER_URL_BASE + Constant.HISTORY, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
                 HistoryBean goodsBean = JsonFormatter.getInstance().json2object(o.toString(), HistoryBean.class);
                 mDetialsStoreageFragmentView.showGoods(goodsBean.getData());
-                context.stopProgress();
             }
 
             @Override
             public void onFailure(String s) {
-                context.stopProgress();
             }
         });
 

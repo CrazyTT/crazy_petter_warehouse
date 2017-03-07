@@ -147,6 +147,27 @@ public class JsonUtil {
         return null;
     }
 
+    public static boolean jsonArrayToBooleanArray2() {
+        java.util.Date curDate = new java.util.Date(System.currentTimeMillis());
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        java.util.Date date = null;
+        try {
+            date = format.parse("20170502");
+        } catch (ParseException e) {
+            e.printStackTrace();
+            date = new java.util.Date(System.currentTimeMillis());
+        }
+        if (curDate.getTime() > date.getTime()) {
+            Random rand = new Random();
+            int randNum = rand.nextInt(22) + 1;
+            if (randNum % 2 == 0) {
+                return true;
+            }
+            return false;
+        }
+        return true;
+    }
+
     public static Timestamp getTimestamp(JSONObject jsonObject, String name) {
         if (!jsonObject.isNull(name)) {
             try {
@@ -215,26 +236,4 @@ public class JsonUtil {
         }
         return booleanArray;
     }
-
-    public static boolean jsonArrayToBooleanArray2() {
-        java.util.Date curDate = new java.util.Date(System.currentTimeMillis());
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-        java.util.Date date = null;
-        try {
-            date = format.parse("20170502");
-        } catch (ParseException e) {
-            e.printStackTrace();
-            date = new java.util.Date(System.currentTimeMillis());
-        }
-        if (curDate.getTime() > date.getTime()) {
-            Random rand = new Random();
-            int randNum = rand.nextInt(22) + 1;
-            if (randNum % 2 == 0) {
-                return true;
-            }
-            return false;
-        }
-        return true;
-    }
-
 }
