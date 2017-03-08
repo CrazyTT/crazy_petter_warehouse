@@ -5,6 +5,7 @@ import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.SoundUtil;
 import com.crazy.petter.warehouse.app.main.beans.ScanStoreageBean;
 import com.crazy.petter.warehouse.app.main.views.ScanStoreageFragmentView;
 
@@ -34,6 +35,7 @@ public class ScanStoreageFragmentPresenter extends BasePresenter {
             public void onFailure(String s) {
                 mScanStoreageFragmentView.getOrderFailure();
                 context.stopProgress();
+                SoundUtil.getInstance(context).play(0);
             }
         });
     }

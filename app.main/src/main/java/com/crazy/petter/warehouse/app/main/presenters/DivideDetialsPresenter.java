@@ -5,6 +5,7 @@ import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.SoundUtil;
 import com.crazy.petter.warehouse.app.main.beans.PickWaveDtBean;
 import com.crazy.petter.warehouse.app.main.views.DivideDetialsView;
 
@@ -45,12 +46,14 @@ public class DivideDetialsPresenter extends BasePresenter {
                     mDivideDetialsView.setOne(scanStoreageBean.getData().get(0));
                 } else {
                     mDivideDetialsView.showTips("没有查到明细");
+                    SoundUtil.getInstance(context).play(0);
                 }
 
             }
 
             @Override
             public void onFailure(String s) {
+                SoundUtil.getInstance(context).play(0);
             }
         });
     }
@@ -62,10 +65,12 @@ public class DivideDetialsPresenter extends BasePresenter {
             public void onSuccess(Object o) {
                 context.stopProgress();
                 mDivideDetialsView.commitOk();
+                SoundUtil.getInstance(context).play(1);
             }
 
             @Override
             public void onFailure(String s) {
+                SoundUtil.getInstance(context).play(0);
                 context.stopProgress();
             }
         });

@@ -5,6 +5,7 @@ import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.SoundUtil;
 import com.crazy.petter.warehouse.app.main.beans.TraySendDetialsBean;
 import com.crazy.petter.warehouse.app.main.views.TraySendDetialsView;
 
@@ -33,6 +34,7 @@ public class TraySendDetialsPresenter extends BasePresenter {
             @Override
             public void onFailure(String s) {
                 context.stopProgress();
+                SoundUtil.getInstance(context).play(0);
             }
         });
     }
@@ -43,12 +45,14 @@ public class TraySendDetialsPresenter extends BasePresenter {
             @Override
             public void onSuccess(Object o) {
                 mTraySendDetialsView.commitOK();
+                SoundUtil.getInstance(context).play(1);
                 context.stopProgress();
             }
 
             @Override
             public void onFailure(String s) {
                 context.stopProgress();
+                SoundUtil.getInstance(context).play(0);
             }
         });
     }

@@ -16,6 +16,7 @@ import com.bjdv.lib.utils.network.Connection;
 import com.bjdv.lib.utils.network.RequestCallBack;
 import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.SharedPreferencesUtil;
+import com.bjdv.lib.utils.util.SoundUtil;
 import com.bjdv.lib.utils.util.StringUtils;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
@@ -129,6 +130,7 @@ public class LoginActivity extends BaseActivity {
                         LoginActivity.this.finish();
                     }
                 } else {
+                    SoundUtil.getInstance(LoginActivity.this).play(0);
                     ToastUtils.showLong(LoginActivity.this, JsonUtil.getString(jsonObject1, "message"));
                 }
             }

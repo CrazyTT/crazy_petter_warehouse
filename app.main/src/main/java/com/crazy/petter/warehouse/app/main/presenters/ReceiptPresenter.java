@@ -5,6 +5,7 @@ import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.SoundUtil;
 import com.crazy.petter.warehouse.app.main.beans.GoodsBean;
 import com.crazy.petter.warehouse.app.main.beans.PropertyBean;
 import com.crazy.petter.warehouse.app.main.views.ReceiptView;
@@ -28,6 +29,7 @@ public class ReceiptPresenter extends BasePresenter {
             public void onSuccess(Object o) {
                 GoodsBean goodsBean = JsonFormatter.getInstance().json2object(o.toString(), GoodsBean.class);
                 mReceiptView.showGoods(goodsBean);
+                SoundUtil.getInstance(context).play(1);
                 context.stopProgress();
             }
 
@@ -35,6 +37,7 @@ public class ReceiptPresenter extends BasePresenter {
             public void onFailure(String s) {
                 mReceiptView.showNoGoods();
                 context.stopProgress();
+                SoundUtil.getInstance(context).play(0);
             }
         });
     }
@@ -46,11 +49,13 @@ public class ReceiptPresenter extends BasePresenter {
             public void onSuccess(Object o) {
                 mReceiptView.receiptOK();
                 context.stopProgress();
+                SoundUtil.getInstance(context).play(1);
             }
 
             @Override
             public void onFailure(String s) {
                 context.stopProgress();
+                SoundUtil.getInstance(context).play(0);
             }
         });
     }

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.SoundUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.crazy.petter.warehouse.app.main.R;
@@ -327,6 +328,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
             mEdtPackNum.setText("");
             mEdtPackstyle.setText("");
             Volume = 0;
+            SoundUtil.getInstance(PackDetialsActivity.this).play(0);
             return;
         }
         mEdtPackNum.setText(data.get(0).getCartonTypeId());

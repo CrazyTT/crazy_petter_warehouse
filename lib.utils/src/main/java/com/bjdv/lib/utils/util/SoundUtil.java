@@ -36,8 +36,11 @@ public class SoundUtil {
         SoundPool pool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);
         int sourceid = pool.load(mContext, R.raw.ok, 0);
         switch (type) {
-            case PlayType.typeone:
+            case PlayType.yes:
                 sourceid = pool.load(mContext, R.raw.ok, 0);
+                break;
+            case PlayType.no:
+                sourceid = pool.load(mContext, R.raw.fauilar, 0);
                 break;
         }
         final int finalSourceid = sourceid;
@@ -51,7 +54,8 @@ public class SoundUtil {
 
 
     public interface PlayType {
-        int typeone = 1;
+        int yes = 1;
+        int no = 0;
     }
 
 

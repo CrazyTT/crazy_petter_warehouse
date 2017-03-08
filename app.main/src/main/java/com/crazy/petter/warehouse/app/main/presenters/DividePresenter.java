@@ -5,6 +5,7 @@ import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.SoundUtil;
 import com.crazy.petter.warehouse.app.main.beans.PickWaveBean;
 import com.crazy.petter.warehouse.app.main.views.DivideView;
 
@@ -31,6 +32,7 @@ public class DividePresenter extends BasePresenter {
                 } else {
                     mDivideView.getOrderFailure();
                     mDivideView.showTips(scanStoreageBean.getMessage());
+                    SoundUtil.getInstance(context).play(0);
                 }
                 context.stopProgress();
             }
@@ -38,6 +40,7 @@ public class DividePresenter extends BasePresenter {
             @Override
             public void onFailure(String s) {
                 mDivideView.getOrderFailure();
+                SoundUtil.getInstance(context).play(0);
                 context.stopProgress();
             }
         });

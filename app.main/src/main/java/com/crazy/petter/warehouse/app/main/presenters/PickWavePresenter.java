@@ -5,6 +5,7 @@ import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.SoundUtil;
 import com.crazy.petter.warehouse.app.main.beans.PickWaveBean;
 import com.crazy.petter.warehouse.app.main.views.PickWaveView;
 
@@ -31,6 +32,7 @@ public class PickWavePresenter extends BasePresenter {
                 } else {
                     mPickView.getOrderFailure();
                     mPickView.showTips(scanStoreageBean.getMessage());
+                    SoundUtil.getInstance(context).play(0);
                 }
                 context.stopProgress();
                 context.stopProgress();
@@ -40,6 +42,7 @@ public class PickWavePresenter extends BasePresenter {
             public void onFailure(String s) {
                 mPickView.getOrderFailure();
                 context.stopProgress();
+                SoundUtil.getInstance(context).play(0);
             }
         });
     }

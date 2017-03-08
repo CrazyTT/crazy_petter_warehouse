@@ -5,6 +5,7 @@ import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.SoundUtil;
 import com.crazy.petter.warehouse.app.main.beans.PackBean;
 import com.crazy.petter.warehouse.app.main.beans.PackDetialsBean;
 import com.crazy.petter.warehouse.app.main.beans.SkuBean;
@@ -34,6 +35,7 @@ public class PackDetialsPresenter extends BasePresenter {
 
             @Override
             public void onFailure(String s) {
+                SoundUtil.getInstance(context).play(0);
                 context.stopProgress();
                 mPackDetialsView.getPackFailure();
             }
@@ -48,10 +50,12 @@ public class PackDetialsPresenter extends BasePresenter {
                 PackDetialsBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), PackDetialsBean.class);
                 mPackDetialsView.setConfirmResult(scanStoreageBean);
                 context.stopProgress();
+                SoundUtil.getInstance(context).play(1);
             }
 
             @Override
             public void onFailure(String s) {
+                SoundUtil.getInstance(context).play(0);
                 mPackDetialsView.addListFailure();
                 context.stopProgress();
             }
@@ -68,6 +72,7 @@ public class PackDetialsPresenter extends BasePresenter {
                 if (scanStoreageBean.getData() != null && scanStoreageBean.getData().size() > 0) {
                     mPackDetialsView.showSkuInfo(scanStoreageBean.getData());
                 } else {
+                    SoundUtil.getInstance(context).play(0);
                     mPackDetialsView.getSkuFailure();
                 }
                 context.stopProgress();
@@ -75,6 +80,7 @@ public class PackDetialsPresenter extends BasePresenter {
 
             @Override
             public void onFailure(String s) {
+                SoundUtil.getInstance(context).play(0);
                 mPackDetialsView.getSkuFailure();
                 context.stopProgress();
             }

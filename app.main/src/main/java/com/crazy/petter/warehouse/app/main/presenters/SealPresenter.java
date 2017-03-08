@@ -4,6 +4,7 @@ import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
+import com.bjdv.lib.utils.util.SoundUtil;
 import com.crazy.petter.warehouse.app.main.views.SealView;
 
 /**
@@ -24,12 +25,14 @@ public class SealPresenter extends BasePresenter {
             @Override
             public void onSuccess(Object o) {
                 mSealView.sealOK();
+                SoundUtil.getInstance(context).play(1);
                 context.stopProgress();
             }
 
             @Override
             public void onFailure(String s) {
                 context.stopProgress();
+                SoundUtil.getInstance(context).play(0);
             }
         });
     }

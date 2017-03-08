@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.SoundUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.bjdv.lib.utils.widgets.MyDecoration;
@@ -177,6 +178,7 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
     public void showGoods(ArrayList<TraySendDetialsBean.DataEntity> data) {
         if (data == null || data.size() == 0) {
             ToastUtils.showLong(TraySendDetialsActivity.this, "没有查询到明细");
+            SoundUtil.getInstance(TraySendDetialsActivity.this).play(0);
             return;
         }
         datas = data;
