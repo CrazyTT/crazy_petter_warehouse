@@ -376,7 +376,9 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
     private void initBottom() {
         if (all == finish) {
             ToastUtils.showLong(this, "全部拣货完成");
-            PickWaveDetialsActivity.this.finish();
+            if (!isFirst) {
+                PickWaveDetialsActivity.this.finish();
+            }
         } else if (finish > all) {
             finish = all;
             mTxtBottom.setText("共计" + all + "条/待处理" + (all - finish) + "条/已完成" + finish + "条");

@@ -10,15 +10,23 @@ import java.io.IOException;
 
 @SuppressWarnings("ALL")
 public class JsonFormatter {
-    private static JsonFormatter jsonUtil = new JsonFormatter();
+    private volatile static JsonFormatter jsonUtil = null;
     private static ObjectMapper mapper;
 
     private JsonFormatter() {
         mapper = new ObjectMapper();
         mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        jsonUtil = this;
     }
 
     public static JsonFormatter getInstance() {
+        if (jsonUtil == null) {
+            synchronized (JsonFormatter.class) {
+                if (jsonUtil == null) {
+                    jsonUtil = new JsonFormatter();
+                }
+            }
+        }
         return jsonUtil;
     }
 

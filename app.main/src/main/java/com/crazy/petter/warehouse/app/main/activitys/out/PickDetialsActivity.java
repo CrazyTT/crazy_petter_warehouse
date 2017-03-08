@@ -371,7 +371,9 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
     private void initBottom() {
         if (all == finish) {
             ToastUtils.showLong(this, "全部拣货完成");
-            PickDetialsActivity.this.finish();
+            if (!isFirst) {
+                PickDetialsActivity.this.finish();
+            }
         } else if (finish > all) {
             finish = all;
             mTxtBottom.setText("共计" + all + "条/待处理" + (all - finish) + "条/已完成" + finish + "条");

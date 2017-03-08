@@ -2,6 +2,9 @@ package com.bjdv.lib.utils.util;
 
 import android.util.Log;
 
+import com.bjdv.lib.utils.entity.OrderBean;
+import com.bjdv.lib.utils.entity.TitleBean;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +13,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -235,5 +239,37 @@ public class JsonUtil {
             }
         }
         return booleanArray;
+    }
+
+    public static TitleBean getTitle(String str) {
+        TitleBean titleBean = new TitleBean();
+        OrderBean orderBean = JsonFormatter.getInstance().json2object(str, OrderBean.class);
+        ArrayList<OrderBean.CaptionEntity> mCaptionEntity = orderBean.getCaption();
+        JSONObject jsonObject = JsonUtil.from(str);
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = jsonObject.getJSONArray("value");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (mCaptionEntity.size() <= 0 || jsonArray.length() <= 0) {
+            return titleBean;
+        }
+        ArrayList<JSONObject> orders = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                JSONObject temp = (JSONObject) jsonArray.get(i);
+                JSONObject object = new JSONObject();
+                for (int i1 = 0; i1 < mCaptionEntity.size(); i1++) {
+                    object.put(mCaptionEntity.get(i1).getFIELD_NAME(), JsonUtil.getString(temp, mCaptionEntity.get(i1).getFIELD_NAME()));
+                }
+                orders.add(object);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        titleBean.setCaptionEntities(mCaptionEntity);
+        titleBean.setOrders(orders);
+        return titleBean;
     }
 }

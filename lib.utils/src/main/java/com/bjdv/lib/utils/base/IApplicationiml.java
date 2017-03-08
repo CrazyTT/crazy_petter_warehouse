@@ -7,7 +7,7 @@ import android.app.Application;
  */
 
 public class IApplicationiml extends Application {
-    protected static IApplicationiml instance;
+    protected volatile static IApplicationiml instance = null;
 
     @Override
     public void onCreate() {
@@ -16,8 +16,13 @@ public class IApplicationiml extends Application {
     }
 
     public static IApplicationiml getInstance() {
+        if (instance == null) {
+            synchronized (IApplicationiml.class) {
+                if (instance == null) {
+                    instance = new IApplicationiml();
+                }
+            }
+        }
         return instance;
     }
-
-
 }

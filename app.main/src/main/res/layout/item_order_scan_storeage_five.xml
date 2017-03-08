@@ -37,12 +37,4 @@
         android:gravity="center"
         android:textColor="@color/black_gray"/>
 
-    <TextView
-        android:id="@+id/five"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:textColor="@color/black_gray"/>
-
 </LinearLayout>

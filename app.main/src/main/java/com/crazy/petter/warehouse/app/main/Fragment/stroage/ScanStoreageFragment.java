@@ -14,15 +14,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bjdv.lib.utils.base.BaseActivity;
+import com.bjdv.lib.utils.entity.TitleBean;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.SharedPreferencesUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.activitys.in.ReceiptActivity;
+import com.crazy.petter.warehouse.app.main.adapters.OrderAdapter;
 import com.crazy.petter.warehouse.app.main.adapters.ScanOrderAdapter;
 import com.crazy.petter.warehouse.app.main.beans.ScanStoreageBean;
 import com.crazy.petter.warehouse.app.main.presenters.ScanStoreageFragmentPresenter;
@@ -50,6 +55,9 @@ public class ScanStoreageFragment extends Fragment implements ScanStoreageFragme
     ScanOrderAdapter scanOrderAdapter;
     SharedPreferencesUtil mSharedPreferencesUtil;
     ScanStoreageFragmentPresenter mScanStoreageFragmentPresenter;
+    @Bind(R.id.ll_title)
+    LinearLayout mLlTitle;
+    OrderAdapter mOrderAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -116,7 +124,75 @@ public class ScanStoreageFragment extends Fragment implements ScanStoreageFragme
                 getDetials();
             }
         });
+        // test();
     }
+
+    private void test() {
+        String str = "{\n" +
+                "    \"success\": true,\n" +
+                "    \"message\": \"\",\n" +
+                "    \"count\": 1,\n" +
+                "    \"caption\": [\n" +
+                "        {\n" +
+                "            \"SEQ_NO\": 10,\n" +
+                "            \"FIELD_NAME\": \"OWNER_ID\",\n" +
+                "            \"CAPTION\": \"货主\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"SEQ_NO\": 20,\n" +
+                "            \"FIELD_NAME\": \"IBN_EXT_ID\",\n" +
+                "            \"CAPTION\": \"外部单号\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"SEQ_NO\": 30,\n" +
+                "            \"FIELD_NAME\": \"IBN_ID\",\n" +
+                "            \"CAPTION\": \"入库单号\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"SEQ_NO\": 40,\n" +
+                "            \"FIELD_NAME\": \"IBN_PLAN_ID\",\n" +
+                "            \"CAPTION\": \"计划单号\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"SEQ_NO\": 50,\n" +
+                "            \"FIELD_NAME\": \"TRADE_PARTNER_ID\",\n" +
+                "            \"CAPTION\": \"供应商\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"SEQ_NO\": 60,\n" +
+                "            \"FIELD_NAME\": \"ORDER_DATE\",\n" +
+                "            \"CAPTION\": \"订单日期\"\n" +
+                "        }\n" +
+                "    ],\n" +
+                "    \"value\": [\n" +
+                "        {\n" +
+                "            \"OWNER_ID\": \"MTS01\",\n" +
+                "            \"IBN_EXT_ID\": \"DD00022\",\n" +
+                "            \"IBN_ID\": \"IB160612000001\",\n" +
+                "            \"IBN_PLAN_ID\": \"IP160606000004\",\n" +
+                "            \"TRADE_PARTNER_ID\": \"ARST\",\n" +
+                "            \"ORDER_DATE\": \"2016-05-31T23:30:12\"\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}\n";
+
+        TitleBean titleBean = JsonUtil.getTitle(str);
+        for (int i = 0; i < titleBean.getCaptionEntities().size(); i++) {
+            TextView temp = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.item_title, null).findViewById(R.id.txt_title);
+            temp.setText(titleBean.getCaptionEntities().get(i).getCAPTION());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(170, LinearLayout.LayoutParams.WRAP_CONTENT);
+            mLlTitle.addView(temp, layoutParams);
+        }
+        mOrderAdapter = new OrderAdapter(getActivity(), new OrderAdapter.OrderTodoAdapterCallBack() {
+            @Override
+            public void click(int postion) {
+
+            }
+        }, titleBean.getCaptionEntities());
+        mOrderList.setAdapter(mOrderAdapter);
+        mOrderAdapter.setList(titleBean.getOrders());
+    }
+
 
     private void getDetials() {
         if (TextUtils.isEmpty(mEdtOrderNum.getText().toString().trim())) {
