@@ -57,6 +57,27 @@ public class ReceiptMixActivity extends BaseActivity {
         mMainTab.setupWithViewPager(mMainViewpager);
         mMainViewpager.setAdapter(tabAdapter);
         mEdtOrderNum.setText(sp.getString("num"));
+        mMainViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 1) {
+                    tabTwo.onResume();
+                } else {
+                    sp.setBoolean("isRefresh", false);
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
