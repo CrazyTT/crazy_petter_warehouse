@@ -1,19 +1,13 @@
 package com.crazy.petter.warehouse.app.main.Fragment.stroage;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,16 +17,18 @@ import com.bjdv.lib.utils.util.JsonFormatter;
 import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.SharedPreferencesUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
-import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.activitys.in.ReceiptActivity;
+import com.crazy.petter.warehouse.app.main.activitys.in.ReceiptMixActivity;
 import com.crazy.petter.warehouse.app.main.adapters.OrderAdapter;
 import com.crazy.petter.warehouse.app.main.adapters.ScanOrderAdapter;
+import com.crazy.petter.warehouse.app.main.beans.EventClick;
 import com.crazy.petter.warehouse.app.main.beans.ScanStoreageBean;
 import com.crazy.petter.warehouse.app.main.presenters.ScanStoreageFragmentPresenter;
 import com.crazy.petter.warehouse.app.main.views.ScanStoreageFragmentView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,10 +42,6 @@ import butterknife.ButterKnife;
  */
 
 public class ScanStoreageFragment extends Fragment implements ScanStoreageFragmentView {
-    @Bind(R.id.edt_order_num)
-    EditText mEdtOrderNum;
-    @Bind(R.id.btn_query)
-    ButtonAutoBg mBtnQuery;
     @Bind(R.id.order_list)
     RecyclerView mOrderList;
     ScanOrderAdapter scanOrderAdapter;
@@ -84,46 +76,22 @@ public class ScanStoreageFragment extends Fragment implements ScanStoreageFragme
         mOrderList.setLayoutManager(layoutManager);
         mOrderList.addItemDecoration(new MyDecoration(getActivity(), MyDecoration.VERTICAL_LIST));
         mOrderList.setAdapter(scanOrderAdapter);
-        InputMethodManager imm = (InputMethodManager) mEdtOrderNum.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm.isActive()) {
-            imm.hideSoftInputFromWindow(mEdtOrderNum.getApplicationWindowToken(), 0);
-        }
+        EventBus.getDefault().register(this);
+
     }
 
     private void jump(int postion) {
-        Intent intent = new Intent(getActivity(), ReceiptActivity.class);
-        mEdtOrderNum.setText(scanOrderAdapter.getList().get(postion).getInboundId());
-        mEdtOrderNum.setSelection(scanOrderAdapter.getList().get(postion).getInboundId().length());
-        mSharedPreferencesUtil.setString("num", mEdtOrderNum.getText().toString().trim());
+        EventClick eventClick=new EventClick();
+        Intent intent = new Intent(getActivity(), ReceiptMixActivity.class);
+        eventClick.setOrder(scanOrderAdapter.getList().get(postion).getInboundId());
+        EventBus.getDefault().post(eventClick);
+//        mEdtOrderNum.setSelection(scanOrderAdapter.getList().get(postion).getInboundId().length());
+        mSharedPreferencesUtil.setString("num", scanOrderAdapter.getList().get(postion).getInboundId());
         intent.putExtra("detials", JsonFormatter.getInstance().object2Json(scanOrderAdapter.getList().get(postion)));
         startActivity(intent);
     }
 
     private void initView() {
-        mEdtOrderNum.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (imm.isActive()) {
-                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
-                    }
-                    getDetials();
-                    return true;
-                }
-                return false;
-            }
-        });
-        mBtnQuery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm.isActive()) {
-                    imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
-                }
-                getDetials();
-            }
-        });
         // test();
     }
 
@@ -194,21 +162,11 @@ public class ScanStoreageFragment extends Fragment implements ScanStoreageFragme
     }
 
 
-    private void getDetials() {
-        if (TextUtils.isEmpty(mEdtOrderNum.getText().toString().trim())) {
-            new Handler().postDelayed(new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    mEdtOrderNum.requestFocus();
-                }
-            }), 300);
-//            ToastUtils.showShort(getActivity(), "单号不能为空");
-//            return;
-        }
-        mSharedPreferencesUtil.setString("num", mEdtOrderNum.getText().toString().trim());
+    private void getDetials(String string) {
+        mSharedPreferencesUtil.setString("num", string);
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("DocNo", mEdtOrderNum.getText().toString().trim());
+            jsonObject.put("DocNo", string);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -220,6 +178,12 @@ public class ScanStoreageFragment extends Fragment implements ScanStoreageFragme
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void onEventMainThread(String event) {
+        getDetials(event);
     }
 
     @Override
@@ -237,11 +201,5 @@ public class ScanStoreageFragment extends Fragment implements ScanStoreageFragme
     public void getOrderFailure() {
         ArrayList<ScanStoreageBean.DataEntity> data = new ArrayList<>();
         scanOrderAdapter.setList(data);
-        new Handler().postDelayed(new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mEdtOrderNum.requestFocus();
-            }
-        }), 300);
     }
 }

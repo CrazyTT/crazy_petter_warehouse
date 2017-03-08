@@ -1,18 +1,27 @@
 package com.crazy.petter.warehouse.app.main.activitys.in;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
 import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.util.SharedPreferencesUtil;
+import com.bjdv.lib.utils.widgets.EditTextAuto;
 import com.crazy.petter.warehouse.app.main.Fragment.stroage.DetialsStoreageFragment;
 import com.crazy.petter.warehouse.app.main.Fragment.stroage.ScanStoreageFragment;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.adapters.FragAdapter;
+import com.crazy.petter.warehouse.app.main.beans.EventClick;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
@@ -27,6 +36,8 @@ public class StorageActivity extends BaseActivity {
     ViewPager mMainViewpager;
     @Bind(R.id.activity_storage)
     LinearLayout mActivityStorage;
+    @Bind(R.id.edt_order_num)
+    EditTextAuto mEdtOrderNum;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private ArrayList<String> rbs = new ArrayList<>();
     FragAdapter tabAdapter;
@@ -46,7 +57,7 @@ public class StorageActivity extends BaseActivity {
 
     private void initViews() {
         rbs.add("扫描收货");
-        rbs.add("扫描收货");
+        rbs.add("收货明细");
         tabOne = new ScanStoreageFragment();
         tabTwo = new DetialsStoreageFragment();
         fragments.add(tabOne);
@@ -76,6 +87,34 @@ public class StorageActivity extends BaseActivity {
 
             }
         });
+        mEdtOrderNum.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm.isActive()) {
+                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    }
+                    EventBus.getDefault().post(mEdtOrderNum.getText().toString().trim());
+                    new Handler().postDelayed(new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mEdtOrderNum.requestFocus();
+                        }
+                    }), 300);
+                    return true;
+                }
+                return false;
+            }
+        });
+        mEdtOrderNum.requestFocus();
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe
+    public void onEventMainThread(EventClick event) {
+        mEdtOrderNum.setText(event.getOrder());
+        mEdtOrderNum.setSelection(mEdtOrderNum.getText().toString().trim().length());
     }
 
     @Override
@@ -94,4 +133,10 @@ public class StorageActivity extends BaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+
+    }
 }

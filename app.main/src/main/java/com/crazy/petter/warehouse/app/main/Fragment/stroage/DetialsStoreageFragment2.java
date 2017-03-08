@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
  * Created by liuliuchen on 2017/2/11.
  */
 
-public class DetialsStoreageFragment extends Fragment implements DetialsStoreageFragmentView {
+public class DetialsStoreageFragment2 extends Fragment implements DetialsStoreageFragmentView {
     SharedPreferencesUtil sp;
     DetialsStoreageFragmentPresenter mDetialsStoreageFragmentPresenter;
     @Bind(R.id.order_list)
@@ -88,7 +88,7 @@ public class DetialsStoreageFragment extends Fragment implements DetialsStoreage
     public void onResume() {
         super.onResume();
         sp = new SharedPreferencesUtil(getActivity());
-        if (!TextUtils.isEmpty(sp.getString("num")) && sp.getBoolean("isRefresh")) {
+        if (!TextUtils.isEmpty(sp.getString("num"))) {
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.put("InboundId", sp.getString("num"));
