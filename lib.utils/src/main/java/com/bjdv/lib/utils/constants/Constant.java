@@ -1,9 +1,9 @@
 package com.bjdv.lib.utils.constants;
 
 public class Constant {
-    //public static String SERVER_URL_BASE = "http://115.159.197.221:9898/WebAPI/api/";//上海测试地址
-    public static String SERVER_URL_BASE ="http://172.16.1.125/wmsAPIQ/api/";//无锡内网地址
-    //public static String SERVER_URL_BASE = "http://222.191.244.156:8090/wmsAPIQ/api/";//无锡测试地址
+    public static String SERVER_URL_BASE = "http://115.159.197.221:9898/WebAPI/api/";//上海测试地址
+    //public static String SERVER_URL_BASE ="http://172.16.1.125/wmsAPIQ/api/";//无锡内网地址
+   // public static String SERVER_URL_BASE = "http://222.191.244.156:8090/wmsAPIQ/api/";//无锡测试地址
     public static String LOGIN = "WmsRf/LoginWmsRf";//登录
     public static String SACNSTOREAGEDETIALS = "WmsRf/QueryInbound";//入库明细
     public static String GOODDETIALS = "WmsRf/QueryInboundDt";

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +13,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bjdv.lib.utils.base.BaseActivity;
+import com.bjdv.lib.utils.entity.OrderBean;
 import com.bjdv.lib.utils.entity.TitleBean;
-import com.bjdv.lib.utils.util.JsonFormatter;
 import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.SharedPreferencesUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
-import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.activitys.in.ReceiptMixActivity;
 import com.crazy.petter.warehouse.app.main.adapters.OrderAdapter;
-import com.crazy.petter.warehouse.app.main.adapters.ScanOrderAdapter;
 import com.crazy.petter.warehouse.app.main.beans.EventClick;
-import com.crazy.petter.warehouse.app.main.beans.ScanStoreageBean;
 import com.crazy.petter.warehouse.app.main.presenters.ScanStoreageFragmentPresenter;
 import com.crazy.petter.warehouse.app.main.views.ScanStoreageFragmentView;
 
@@ -44,7 +42,6 @@ import butterknife.ButterKnife;
 public class ScanStoreageFragment extends Fragment implements ScanStoreageFragmentView {
     @Bind(R.id.order_list)
     RecyclerView mOrderList;
-    ScanOrderAdapter scanOrderAdapter;
     SharedPreferencesUtil mSharedPreferencesUtil;
     ScanStoreageFragmentPresenter mScanStoreageFragmentPresenter;
     @Bind(R.id.ll_title)
@@ -64,30 +61,28 @@ public class ScanStoreageFragment extends Fragment implements ScanStoreageFragme
         mSharedPreferencesUtil = new SharedPreferencesUtil(getActivity());
         mScanStoreageFragmentPresenter = new ScanStoreageFragmentPresenter(this, (BaseActivity) getActivity(), "ScanStoreageFragment");
         initView();
-        scanOrderAdapter = new ScanOrderAdapter(getActivity(), new ScanOrderAdapter.OrderTodoAdapterCallBack() {
-            @Override
-            public void click(int postion) {
-                jump(postion);
-
-            }
-        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mOrderAdapter = new OrderAdapter(getActivity(), new OrderAdapter.OrderTodoAdapterCallBack() {
+            @Override
+            public void click(int postion) {
+
+            }
+        }, new ArrayList<OrderBean.CaptionEntity>());
         mOrderList.setLayoutManager(layoutManager);
-        mOrderList.addItemDecoration(new MyDecoration(getActivity(), MyDecoration.VERTICAL_LIST));
-        mOrderList.setAdapter(scanOrderAdapter);
+//        mOrderList.addItemDecoration(new MyDecoration(getActivity(), MyDecoration.VERTICAL_LIST));
+//        mOrderList.setAdapter(scanOrderAdapter);
         EventBus.getDefault().register(this);
 
     }
 
     private void jump(int postion) {
-        EventClick eventClick=new EventClick();
+        EventClick eventClick = new EventClick();
         Intent intent = new Intent(getActivity(), ReceiptMixActivity.class);
-        eventClick.setOrder(scanOrderAdapter.getList().get(postion).getInboundId());
+        eventClick.setOrder(JsonUtil.getString(mOrderAdapter.getList().get(postion), "IBN_ID"));
         EventBus.getDefault().post(eventClick);
-//        mEdtOrderNum.setSelection(scanOrderAdapter.getList().get(postion).getInboundId().length());
-        mSharedPreferencesUtil.setString("num", scanOrderAdapter.getList().get(postion).getInboundId());
-        intent.putExtra("detials", JsonFormatter.getInstance().object2Json(scanOrderAdapter.getList().get(postion)));
+        mSharedPreferencesUtil.setString("num", JsonUtil.getString(mOrderAdapter.getList().get(postion), "IBN_ID"));
+        intent.putExtra("detials", mOrderAdapter.getList().get(postion).toString());
         startActivity(intent);
     }
 
@@ -145,10 +140,12 @@ public class ScanStoreageFragment extends Fragment implements ScanStoreageFragme
                 "}\n";
 
         TitleBean titleBean = JsonUtil.getTitle(str);
+        mLlTitle.removeAllViews();
         for (int i = 0; i < titleBean.getCaptionEntities().size(); i++) {
             TextView temp = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.item_title, null).findViewById(R.id.txt_title);
+            temp.setGravity(Gravity.CENTER);
             temp.setText(titleBean.getCaptionEntities().get(i).getCAPTION());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(170, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(210, LinearLayout.LayoutParams.WRAP_CONTENT);
             mLlTitle.addView(temp, layoutParams);
         }
         mOrderAdapter = new OrderAdapter(getActivity(), new OrderAdapter.OrderTodoAdapterCallBack() {
@@ -193,13 +190,37 @@ public class ScanStoreageFragment extends Fragment implements ScanStoreageFragme
     }
 
     @Override
-    public void setList(ArrayList<ScanStoreageBean.DataEntity> data) {
-        scanOrderAdapter.setList(data);
+    public void setList(String data) {
+        TitleBean titleBean = JsonUtil.getTitle(data);
+        if (titleBean == null) {
+            getOrderFailure();
+            return;
+        }
+        mLlTitle.removeAllViews();
+        for (int i = 0; i < titleBean.getCaptionEntities().size(); i++) {
+            if (titleBean.getCaptionEntities().get(i).getVISIBLE() != null && titleBean.getCaptionEntities().get(i).getVISIBLE().equalsIgnoreCase("N")) {
+                continue;
+            }
+            TextView temp = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.item_title, null).findViewById(R.id.txt_title);
+            temp.setGravity(Gravity.CENTER);
+            temp.setText(titleBean.getCaptionEntities().get(i).getCAPTION());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(210, LinearLayout.LayoutParams.WRAP_CONTENT);
+            mLlTitle.addView(temp, layoutParams);
+        }
+        mOrderAdapter = new OrderAdapter(getActivity(), new OrderAdapter.OrderTodoAdapterCallBack() {
+            @Override
+            public void click(int postion) {
+                jump(postion);
+
+            }
+        }, titleBean.getCaptionEntities());
+        mOrderList.setAdapter(mOrderAdapter);
+        mOrderAdapter.setList(titleBean.getOrders());
     }
 
     @Override
     public void getOrderFailure() {
-        ArrayList<ScanStoreageBean.DataEntity> data = new ArrayList<>();
-        scanOrderAdapter.setList(data);
+        ArrayList<JSONObject> temp = new ArrayList<>();
+        mOrderAdapter.setList(temp);
     }
 }

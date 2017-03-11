@@ -4,8 +4,6 @@ import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
-import com.bjdv.lib.utils.util.JsonFormatter;
-import com.crazy.petter.warehouse.app.main.beans.HistoryBean;
 import com.crazy.petter.warehouse.app.main.views.DetialsStoreageFragmentView;
 
 /**
@@ -24,12 +22,12 @@ public class DetialsStoreageFragmentPresenter extends BasePresenter {
         requestData(Constant.SERVER_URL_BASE + Constant.HISTORY, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
-                HistoryBean goodsBean = JsonFormatter.getInstance().json2object(o.toString(), HistoryBean.class);
-                mDetialsStoreageFragmentView.showGoods(goodsBean.getData());
+                mDetialsStoreageFragmentView.showGoods(o.toString());
             }
 
             @Override
             public void onFailure(String s) {
+                mDetialsStoreageFragmentView.showFailure();
             }
         });
 

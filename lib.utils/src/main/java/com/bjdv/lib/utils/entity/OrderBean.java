@@ -31,6 +31,16 @@ public class OrderBean extends BaseBean {
         public String FIELD_NAME;
         public String CAPTION;
 
+        public String getVISIBLE() {
+            return VISIBLE;
+        }
+
+        public void setVISIBLE(String VISIBLE) {
+            this.VISIBLE = VISIBLE;
+        }
+
+        public String VISIBLE;
+
         public int getSEQ_NO() {
             return SEQ_NO;
         }

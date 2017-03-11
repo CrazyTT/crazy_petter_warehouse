@@ -2,6 +2,7 @@ package com.crazy.petter.warehouse.app.main.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,10 +40,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     public void onBindViewHolder(final OrderAdapter.ViewHolder viewHolder, final int position) {
         final JSONObject obj = datas.get(position);
         for (int i = 0; i < titles.size(); i++) {
+            if (titles.get(i).getVISIBLE() != null && titles.get(i).getVISIBLE().equalsIgnoreCase("N")) {
+                continue;
+            }
             TextView temp = (TextView) LayoutInflater.from(mContext).inflate(R.layout.item_title, null).findViewById(R.id.txt_title);
             temp.setText(JsonUtil.getString(obj, titles.get(i).getFIELD_NAME()));
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(170, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(210, LinearLayout.LayoutParams.WRAP_CONTENT);
             temp.setPadding(3, 0, 3, 0);
+            temp.setGravity(Gravity.CENTER);
             viewHolder.mLinearLayout.addView(temp, layoutParams);
         }
         viewHolder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +64,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     }
 
     public void setList(ArrayList<JSONObject> mList) {
+        if (mList.size() <= 0) {
+            titles = new ArrayList<>();
+        }
         datas = mList;
         notifyDataSetChanged();
 

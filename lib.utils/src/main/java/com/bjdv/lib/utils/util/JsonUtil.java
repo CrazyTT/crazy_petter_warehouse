@@ -2,6 +2,7 @@ package com.bjdv.lib.utils.util;
 
 import android.util.Log;
 
+import com.bjdv.lib.utils.base.IApplicationiml;
 import com.bjdv.lib.utils.entity.OrderBean;
 import com.bjdv.lib.utils.entity.TitleBean;
 
@@ -244,6 +245,10 @@ public class JsonUtil {
     public static TitleBean getTitle(String str) {
         TitleBean titleBean = new TitleBean();
         OrderBean orderBean = JsonFormatter.getInstance().json2object(str, OrderBean.class);
+        if (orderBean.getCount() <= 0) {
+            ToastUtils.showLong(IApplicationiml.getInstance(), "没有数据");
+            return null;
+        }
         ArrayList<OrderBean.CaptionEntity> mCaptionEntity = orderBean.getCaption();
         JSONObject jsonObject = JsonUtil.from(str);
         JSONArray jsonArray = null;

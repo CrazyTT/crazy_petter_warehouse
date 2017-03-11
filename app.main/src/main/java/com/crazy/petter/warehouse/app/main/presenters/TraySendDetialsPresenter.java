@@ -33,6 +33,7 @@ public class TraySendDetialsPresenter extends BasePresenter {
 
             @Override
             public void onFailure(String s) {
+                mTraySendDetialsView.getOrderFailure();
                 context.stopProgress();
                 SoundUtil.getInstance(context).play(0);
             }

@@ -14,4 +14,5 @@ public interface TraySendDetialsView extends IBaseView {
 
     void commitOK();
 
+    void getOrderFailure();
 }

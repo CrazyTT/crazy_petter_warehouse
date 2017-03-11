@@ -4,9 +4,9 @@ import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
+import com.bjdv.lib.utils.entity.OrderBean;
 import com.bjdv.lib.utils.util.JsonFormatter;
 import com.bjdv.lib.utils.util.SoundUtil;
-import com.crazy.petter.warehouse.app.main.beans.GoodsBean;
 import com.crazy.petter.warehouse.app.main.views.TrayReceiptView;
 
 /**
@@ -23,17 +23,23 @@ public class TrayReceiptPresenter extends BasePresenter {
 
     public void getOrder(String params) {
         context.showProgress("查询中...", false);
-        requestData(Constant.SERVER_URL_BASE + Constant.GOODDETIALS, params, new DataCallBack() {
+        requestData(Constant.SERVER_URL_BASE + "WmsRf/QueryInboundDtByLpn", params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
-                GoodsBean goodsBean = JsonFormatter.getInstance().json2object(o.toString(), GoodsBean.class);
+                OrderBean orderBean = JsonFormatter.getInstance().json2object(o.toString(), OrderBean.class);
+                if (orderBean.getCount() <= 0) {
+                    context.stopProgress();
+                    mTrayReceiptView.failure();
+                    SoundUtil.getInstance(context).play(0);
+                }
                 context.stopProgress();
-                mTrayReceiptView.showGoods(goodsBean.getData());
+                mTrayReceiptView.showGoods(o.toString());
             }
 
             @Override
             public void onFailure(String s) {
                 context.stopProgress();
+                mTrayReceiptView.failure();
                 SoundUtil.getInstance(context).play(0);
             }
         });

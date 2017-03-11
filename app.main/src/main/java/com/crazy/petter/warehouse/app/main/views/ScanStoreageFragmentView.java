@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 
 public interface ScanStoreageFragmentView extends IBaseView {
-    void setList(ArrayList<ScanStoreageBean.DataEntity> data);
+    void setList(String data);
 
     void getOrderFailure();
 

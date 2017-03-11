@@ -4,9 +4,7 @@ import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
-import com.bjdv.lib.utils.util.JsonFormatter;
 import com.bjdv.lib.utils.util.SoundUtil;
-import com.crazy.petter.warehouse.app.main.beans.ScanStoreageBean;
 import com.crazy.petter.warehouse.app.main.views.TrayStorageView;
 
 /**
@@ -26,8 +24,7 @@ public class TrayStoragePresenter extends BasePresenter {
         requestData(Constant.SERVER_URL_BASE + Constant.SACNSTOREAGEDETIALS, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
-                ScanStoreageBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), ScanStoreageBean.class);
-                mTrayStorageView.setList(scanStoreageBean.getData());
+                mTrayStorageView.setList(o.toString());
                 context.stopProgress();
             }
 

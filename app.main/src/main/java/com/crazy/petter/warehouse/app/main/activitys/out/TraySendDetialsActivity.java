@@ -105,6 +105,15 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
                 if (imm.isActive()) {
                     imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                 }
+                if (TextUtils.isEmpty(mEdtOrderNum.getText().toString().trim())) {
+                    new Handler().postDelayed(new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showTips("请扫描托盘号");
+                        }
+                    }), 300);
+                    return;
+                }
                 getDetials();
             }
         });
@@ -153,6 +162,12 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
     public void commitOK() {
         ToastUtils.showLong(this, "发货成功");
 
+    }
+
+    @Override
+    public void getOrderFailure() {
+        datas = new ArrayList<>();
+        scanOrderAdapter.setList(datas);
     }
 
     private void getDetials() {

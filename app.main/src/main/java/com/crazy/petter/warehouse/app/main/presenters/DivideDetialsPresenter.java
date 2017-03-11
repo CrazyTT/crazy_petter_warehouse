@@ -31,6 +31,7 @@ public class DivideDetialsPresenter extends BasePresenter {
 
             @Override
             public void onFailure(String s) {
+                SoundUtil.getInstance(context).play(0);
                 mDivideDetialsView.getOrderAllFailure();
             }
         });
