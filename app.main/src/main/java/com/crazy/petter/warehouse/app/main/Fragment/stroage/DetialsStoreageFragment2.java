@@ -20,6 +20,7 @@ import com.bjdv.lib.utils.entity.TitleBean;
 import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.SharedPreferencesUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
+import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.adapters.OrderAdapter;
 import com.crazy.petter.warehouse.app.main.presenters.DetialsStoreageFragmentPresenter;
@@ -60,6 +61,7 @@ public class DetialsStoreageFragment2 extends Fragment implements DetialsStoreag
         super.onActivityCreated(savedInstanceState);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mOrderList.addItemDecoration(new MyDecoration(getActivity(), MyDecoration.VERTICAL_LIST));
         mOrderList.setLayoutManager(layoutManager);
         mOrderAdapter = new OrderAdapter(getActivity(), new OrderAdapter.OrderTodoAdapterCallBack() {
             @Override
@@ -118,7 +120,7 @@ public class DetialsStoreageFragment2 extends Fragment implements DetialsStoreag
             TextView temp = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.item_title, null).findViewById(R.id.txt_title);
             temp.setGravity(Gravity.CENTER);
             temp.setText(titleBean.getCaptionEntities().get(i).getCAPTION());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(210, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(120, LinearLayout.LayoutParams.WRAP_CONTENT);
             mLlTitle.addView(temp, layoutParams);
         }
         mOrderAdapter = new OrderAdapter(getActivity(), new OrderAdapter.OrderTodoAdapterCallBack() {

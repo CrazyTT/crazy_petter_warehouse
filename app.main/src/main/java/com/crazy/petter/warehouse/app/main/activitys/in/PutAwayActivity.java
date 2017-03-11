@@ -7,19 +7,23 @@ import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bjdv.lib.utils.base.BaseActivity;
-import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.entity.TitleBean;
+import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.adapters.ScanOrderAdapter;
-import com.crazy.petter.warehouse.app.main.beans.ScanStoreageBean;
+import com.crazy.petter.warehouse.app.main.adapters.OrderAdapter;
 import com.crazy.petter.warehouse.app.main.presenters.PutAwayPresenter;
 import com.crazy.petter.warehouse.app.main.views.PutAwayView;
 
@@ -39,7 +43,9 @@ public class PutAwayActivity extends BaseActivity implements PutAwayView {
     ButtonAutoBg mBtnQuery;
     @Bind(R.id.order_list)
     RecyclerView mOrderList;
-    ScanOrderAdapter scanOrderAdapter;
+    @Bind(R.id.ll_title)
+    LinearLayout mLlTitle;
+    OrderAdapter mOrderAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +57,10 @@ public class PutAwayActivity extends BaseActivity implements PutAwayView {
     }
 
     private void initView() {
-        scanOrderAdapter = new ScanOrderAdapter(this, new ScanOrderAdapter.OrderTodoAdapterCallBack() {
-            @Override
-            public void click(int postion) {
-                jump(postion);
-
-            }
-        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mOrderList.setLayoutManager(layoutManager);
         mOrderList.addItemDecoration(new MyDecoration(this, MyDecoration.VERTICAL_LIST));
-        mOrderList.setAdapter(scanOrderAdapter);
         InputMethodManager imm = (InputMethodManager) mEdtOrderNum.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm.isActive()) {
             imm.hideSoftInputFromWindow(mEdtOrderNum.getApplicationWindowToken(), 0);
@@ -115,13 +113,11 @@ public class PutAwayActivity extends BaseActivity implements PutAwayView {
     }
 
     private void jump(int postion) {
-        mEdtOrderNum.setText(scanOrderAdapter.getList().get(postion).getInboundId());
-        mEdtOrderNum.setSelection(scanOrderAdapter.getList().get(postion).getInboundId().length());
+        mEdtOrderNum.setText(JsonUtil.getString(mOrderAdapter.getList().get(postion), "IBN_ID"));
+        mEdtOrderNum.setSelection(JsonUtil.getString(mOrderAdapter.getList().get(postion), "IBN_ID").length());
         Intent intent = new Intent(this, PutAwayDetialsActivity.class);
-        intent.putExtra("detials", JsonFormatter.getInstance().object2Json(scanOrderAdapter.getList().get(postion)));
+        intent.putExtra("detials", mOrderAdapter.getList().get(postion).toString());
         startActivity(intent);
-
-
     }
 
     @Override
@@ -130,14 +126,38 @@ public class PutAwayActivity extends BaseActivity implements PutAwayView {
     }
 
     @Override
-    public void setList(ArrayList<ScanStoreageBean.DataEntity> data) {
-        scanOrderAdapter.setList(data);
+    public void setList(String data) {
+        TitleBean titleBean = JsonUtil.getTitle(data);
+        if (titleBean == null) {
+            getOrderFailure();
+            return;
+        }
+        mLlTitle.removeAllViews();
+        for (int i = 0; i < titleBean.getCaptionEntities().size(); i++) {
+            if (titleBean.getCaptionEntities().get(i).getVISIBLE() != null && titleBean.getCaptionEntities().get(i).getVISIBLE().equalsIgnoreCase("N")) {
+                continue;
+            }
+            TextView temp = (TextView) LayoutInflater.from(PutAwayActivity.this).inflate(R.layout.item_title, null).findViewById(R.id.txt_title);
+            temp.setGravity(Gravity.CENTER);
+            temp.setText(titleBean.getCaptionEntities().get(i).getCAPTION());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(120, LinearLayout.LayoutParams.WRAP_CONTENT);
+            mLlTitle.addView(temp, layoutParams);
+        }
+        mOrderAdapter = new OrderAdapter(PutAwayActivity.this, new OrderAdapter.OrderTodoAdapterCallBack() {
+            @Override
+            public void click(int postion) {
+                jump(postion);
+
+            }
+        }, titleBean.getCaptionEntities());
+        mOrderList.setAdapter(mOrderAdapter);
+        mOrderAdapter.setList(titleBean.getOrders());
     }
 
     @Override
     public void getOrderFailure() {
-        ArrayList<ScanStoreageBean.DataEntity> data = new ArrayList<>();
-        scanOrderAdapter.setList(data);
+        ArrayList<JSONObject> temp = new ArrayList<>();
+        mOrderAdapter.setList(temp);
         new Handler().postDelayed(new Thread(new Runnable() {
             @Override
             public void run() {

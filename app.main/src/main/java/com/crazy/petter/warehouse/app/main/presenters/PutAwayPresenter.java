@@ -4,9 +4,9 @@ import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
+import com.bjdv.lib.utils.entity.OrderBean;
 import com.bjdv.lib.utils.util.JsonFormatter;
 import com.bjdv.lib.utils.util.SoundUtil;
-import com.crazy.petter.warehouse.app.main.beans.ScanStoreageBean;
 import com.crazy.petter.warehouse.app.main.views.PutAwayView;
 
 /**
@@ -26,13 +26,13 @@ public class PutAwayPresenter extends BasePresenter {
         requestData(Constant.SERVER_URL_BASE + Constant.PUTAWAY, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
-                ScanStoreageBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), ScanStoreageBean.class);
-                if (scanStoreageBean.getData() != null && scanStoreageBean.getData().size() > 0) {
-                    mPutAwayView.setList(scanStoreageBean.getData());
-                } else {
+                OrderBean orderBean = JsonFormatter.getInstance().json2object(o.toString(), OrderBean.class);
+                if (orderBean.getCount() <= 0) {
                     mPutAwayView.getOrderFailure();
-                    mPutAwayView.showTips(scanStoreageBean.getMessage());
+                    mPutAwayView.showTips(orderBean.getMessage());
                     SoundUtil.getInstance(context).play(0);
+                } else {
+                    mPutAwayView.setList(o.toString());
                 }
                 context.stopProgress();
             }

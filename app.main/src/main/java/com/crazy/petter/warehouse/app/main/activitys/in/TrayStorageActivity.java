@@ -22,6 +22,7 @@ import com.bjdv.lib.utils.entity.TitleBean;
 import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
+import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.adapters.OrderAdapter;
 import com.crazy.petter.warehouse.app.main.presenters.TrayStoragePresenter;
@@ -61,6 +62,7 @@ public class TrayStorageActivity extends BaseActivity implements TrayStorageView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mOrderList.setLayoutManager(layoutManager);
+        mOrderList.addItemDecoration(new MyDecoration(this, MyDecoration.VERTICAL_LIST));
         mOrderAdapter = new OrderAdapter(this, new OrderAdapter.OrderTodoAdapterCallBack() {
             @Override
             public void click(int postion) {

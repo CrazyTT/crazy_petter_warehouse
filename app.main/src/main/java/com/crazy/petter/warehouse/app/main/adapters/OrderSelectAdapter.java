@@ -6,6 +6,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,28 +18,40 @@ import com.crazy.petter.warehouse.app.main.R;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
+public class OrderSelectAdapter extends RecyclerView.Adapter<OrderSelectAdapter.ViewHolder> {
     public ArrayList<JSONObject> datas = new ArrayList<>();
     public ArrayList<OrderBean.CaptionEntity> titles = new ArrayList<>();
     private Context mContext;
     OrderTodoAdapterCallBack mOrderTodoAdapterCallBack;
 
-    public OrderAdapter(Context context, OrderAdapter.OrderTodoAdapterCallBack orderTodoAdapterCallBack, ArrayList<OrderBean.CaptionEntity> captionEntities) {
+    private HashMap<Integer, Boolean> isSelected;
+
+    public HashMap<Integer, Boolean> getIsSelected() {
+        return isSelected;
+    }
+
+    public void initIsSelected() {
+        isSelected.clear();
+    }
+
+    public OrderSelectAdapter(Context context, OrderSelectAdapter.OrderTodoAdapterCallBack orderTodoAdapterCallBack, ArrayList<OrderBean.CaptionEntity> captionEntities) {
         this.mContext = context;
         this.mOrderTodoAdapterCallBack = orderTodoAdapterCallBack;
+        isSelected = new HashMap<>();
         this.titles = captionEntities;
     }
 
 
     @Override
-    public OrderAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_order, viewGroup, false);
-        return new OrderAdapter.ViewHolder(view);
+    public OrderSelectAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_put_away_detial, viewGroup, false);
+        return new OrderSelectAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final OrderAdapter.ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(final OrderSelectAdapter.ViewHolder viewHolder, final int position) {
         final JSONObject obj = datas.get(position);
         for (int i = 0; i < titles.size(); i++) {
             if (titles.get(i).getVISIBLE() != null && titles.get(i).getVISIBLE().equalsIgnoreCase("N")) {
@@ -56,6 +70,24 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
                 mOrderTodoAdapterCallBack.click(position);
             }
         });
+        viewHolder.mCheckBox.setChecked(false);
+        viewHolder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                getIsSelected().put(position, isChecked);
+                mOrderTodoAdapterCallBack.change();
+            }
+        });
+        viewHolder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewHolder.mCheckBox.toggle();
+                mOrderTodoAdapterCallBack.change();
+            }
+        });
+        if (position == 0 && datas.size() == 1) {
+            viewHolder.mLinearLayout.performClick();
+        }
     }
 
     @Override
@@ -83,9 +115,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout mLinearLayout;
+        CheckBox mCheckBox;
+
 
         public ViewHolder(View view) {
             super(view);
+            mCheckBox = (CheckBox) view.findViewById(R.id.cb_check);
             mLinearLayout = (LinearLayout) view.findViewById(R.id.ll_content);
         }
     }
@@ -102,5 +137,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     public interface OrderTodoAdapterCallBack {
         void click(int postion);
+
+        void change();
     }
 }

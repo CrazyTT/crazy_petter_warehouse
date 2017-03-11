@@ -18,6 +18,7 @@ import com.bjdv.lib.utils.entity.TitleBean;
 import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.SharedPreferencesUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
+import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.activitys.in.ReceiptMixActivity;
 import com.crazy.petter.warehouse.app.main.adapters.OrderAdapter;
@@ -63,6 +64,7 @@ public class ScanStoreageFragment extends Fragment implements ScanStoreageFragme
         initView();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mOrderList.addItemDecoration(new MyDecoration(getActivity(), MyDecoration.VERTICAL_LIST));
         mOrderAdapter = new OrderAdapter(getActivity(), new OrderAdapter.OrderTodoAdapterCallBack() {
             @Override
             public void click(int postion) {
@@ -204,7 +206,7 @@ public class ScanStoreageFragment extends Fragment implements ScanStoreageFragme
             TextView temp = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.item_title, null).findViewById(R.id.txt_title);
             temp.setGravity(Gravity.CENTER);
             temp.setText(titleBean.getCaptionEntities().get(i).getCAPTION());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(210, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(120, LinearLayout.LayoutParams.WRAP_CONTENT);
             mLlTitle.addView(temp, layoutParams);
         }
         mOrderAdapter = new OrderAdapter(getActivity(), new OrderAdapter.OrderTodoAdapterCallBack() {

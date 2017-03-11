@@ -6,23 +6,28 @@ import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bjdv.lib.utils.base.BaseActivity;
+import com.bjdv.lib.utils.entity.OrderBean;
+import com.bjdv.lib.utils.entity.TitleBean;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.adapters.TrayPutAwayDetialsAdapter;
-import com.crazy.petter.warehouse.app.main.beans.GoodsPutAwayBean;
+import com.crazy.petter.warehouse.app.main.adapters.OrderAdapter;
 import com.crazy.petter.warehouse.app.main.beans.LocBean;
 import com.crazy.petter.warehouse.app.main.beans.PutAwayBean;
-import com.crazy.petter.warehouse.app.main.beans.ScanStoreageBean;
 import com.crazy.petter.warehouse.app.main.presenters.PutAwayDetialsPresenter;
 import com.crazy.petter.warehouse.app.main.views.PutAwayDetialsView;
 
@@ -36,7 +41,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayDetialsView {
-    ScanStoreageBean.DataEntity mDataEntity;
+    JSONObject mDataEntity;
     @Bind(R.id.edt_lpn)
     EditText mEdtLpn;
     @Bind(R.id.edt_loc)
@@ -45,8 +50,10 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
     RecyclerView mOrderList;
     @Bind(R.id.btn_commit)
     ButtonAutoBg mBtnCommit;
-    TrayPutAwayDetialsAdapter scanOrderAdapter;
     PutAwayDetialsPresenter mPutAwayDetialsPresenter;
+    @Bind(R.id.ll_title)
+    LinearLayout mLlTitle;
+    OrderAdapter mOrderAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,22 +61,21 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
         setContentView(R.layout.activity_tray_put_away_detials);
         ButterKnife.bind(this);
         mPutAwayDetialsPresenter = new PutAwayDetialsPresenter(this, this, "mPutAwayDetialsPresenter");
-        mDataEntity = JsonFormatter.getInstance().json2object(getIntent().getStringExtra("detials"), ScanStoreageBean.DataEntity.class);
+        mDataEntity = JsonUtil.from(getIntent().getStringExtra("detials"));
         initView();
     }
 
     private void initView() {
-        scanOrderAdapter = new TrayPutAwayDetialsAdapter(this, new TrayPutAwayDetialsAdapter.OrderTodoAdapterCallBack() {
-            @Override
-            public void click(int postion) {
-                jump(postion);
-            }
-        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mOrderList.setLayoutManager(layoutManager);
         mOrderList.addItemDecoration(new MyDecoration(this, MyDecoration.VERTICAL_LIST));
-        mOrderList.setAdapter(scanOrderAdapter);
+        mOrderAdapter = new OrderAdapter(this, new OrderAdapter.OrderTodoAdapterCallBack() {
+            @Override
+            public void click(int postion) {
+
+            }
+        }, new ArrayList<OrderBean.CaptionEntity>());
         InputMethodManager imm = (InputMethodManager) mEdtLpn.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm.isActive()) {
             imm.hideSoftInputFromWindow(mEdtLpn.getApplicationWindowToken(), 0);
@@ -115,15 +121,15 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
                 }
                 if (datas != null && datas.size() > 0) {
                     PutAwayBean receiptBean = new PutAwayBean();
-                    receiptBean.setInboundId(mDataEntity.getInboundId());
+                    receiptBean.setInboundId(JsonUtil.getString(mDataEntity, "IBN_ID"));
                     ArrayList<PutAwayBean.DetailsEntity> entities = new ArrayList<>();
                     for (int i = 0; i < datas.size(); i++) {
                         PutAwayBean.DetailsEntity detailsEntity = new PutAwayBean.DetailsEntity();
-                        detailsEntity.setSeqNo(datas.get(i).getSeqNo());
-                        detailsEntity.setSkuId(datas.get(i).getSkuId());
-                        detailsEntity.setSkuName(datas.get(i).getSkuName());
-                        detailsEntity.setQty(datas.get(i).getQty());
-                        detailsEntity.setIbnReceiveInc(datas.get(i).getIbnReceiveInc());
+                        detailsEntity.setSeqNo(JsonUtil.getInt(datas.get(i), "IBN_SEQ"));
+                        detailsEntity.setSkuId(JsonUtil.getString(datas.get(i), "SKU_ID"));
+                        detailsEntity.setSkuName(JsonUtil.getString(datas.get(i), "SKU_NAME"));
+                        detailsEntity.setQty(JsonUtil.getInt(datas.get(i), "WAIT_PTED_QTY"));
+                        detailsEntity.setIbnReceiveInc(JsonUtil.getInt(datas.get(i), "IBN_RECEIVE_INC"));//需要确定
                         detailsEntity.setLpnNo(mEdtLpn.getText().toString().trim());
                         detailsEntity.setToLoc(mEdtLoc.getText().toString().trim());
                         entities.add(detailsEntity);
@@ -161,7 +167,7 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
         }
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("InboundId", mDataEntity.getInboundId());
+            jsonObject.put("InboundId", JsonUtil.getString(mDataEntity, "IBN_ID"));
             jsonObject.put("Loc", mEdtLoc.getText().toString().trim());
             jsonObject.put("ZoneId", "");
         } catch (JSONException e) {
@@ -184,7 +190,7 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("InboundId", mDataEntity.getInboundId());
+            jsonObject.put("InboundId", JsonUtil.getString(mDataEntity, "IBN_ID"));
             jsonObject.put("LpnNo", mEdtLpn.getText().toString().trim());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -201,22 +207,40 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
         ToastUtils.showLong(this, s);
     }
 
-    ArrayList<GoodsPutAwayBean.DataEntity> datas;
+    ArrayList<JSONObject> datas;
 
     @Override
-    public void showGoods(ArrayList<GoodsPutAwayBean.DataEntity> data) {
-        datas = data;
-        scanOrderAdapter.setList(datas);
+    public void showGoods(String data) {
+        TitleBean titleBean = JsonUtil.getTitle(data);
+        mLlTitle.removeAllViews();
+        for (int i = 0; i < titleBean.getCaptionEntities().size(); i++) {
+            if (titleBean.getCaptionEntities().get(i).getVISIBLE() != null && titleBean.getCaptionEntities().get(i).getVISIBLE().equalsIgnoreCase("N")) {
+                continue;
+            }
+            TextView temp = (TextView) LayoutInflater.from(this).inflate(R.layout.item_title, null).findViewById(R.id.txt_title);
+            temp.setGravity(Gravity.CENTER);
+            temp.setText(titleBean.getCaptionEntities().get(i).getCAPTION());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(120, LinearLayout.LayoutParams.WRAP_CONTENT);
+            mLlTitle.addView(temp, layoutParams);
+        }
+        mOrderAdapter = new OrderAdapter(this, new OrderAdapter.OrderTodoAdapterCallBack() {
+            @Override
+            public void click(int postion) {
+            }
+        }, titleBean.getCaptionEntities());
+        mOrderList.setAdapter(mOrderAdapter);
+        mOrderAdapter.setList(titleBean.getOrders());
+        datas = titleBean.getOrders();
     }
 
     @Override
     public void commitOK() {
-        ToastUtils.showLong(this, "收货成功");
+        ToastUtils.showLong(this, "上架成功");
         mEdtLpn.setText("");
         mEdtLpn.requestFocus();
         mEdtLoc.setText("");
         datas = new ArrayList<>();
-        scanOrderAdapter.setList(datas);
+        mOrderAdapter.setList(datas);
     }
 
     LocBean.DataEntity locEntity;
@@ -239,7 +263,7 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
         mEdtLoc.setText("");
         mEdtLpn.setText("");
         datas = new ArrayList<>();
-        scanOrderAdapter.setList(datas);
+        mOrderAdapter.setList(datas);
         mEdtLpn.requestFocus();
     }
 

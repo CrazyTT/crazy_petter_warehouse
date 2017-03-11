@@ -71,6 +71,7 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
     private void initView() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mOrderList.addItemDecoration(new MyDecoration(this, MyDecoration.VERTICAL_LIST));
         mOrderList.setLayoutManager(layoutManager);
         mOrderList.addItemDecoration(new MyDecoration(this, MyDecoration.VERTICAL_LIST));
         mOrderAdapter = new OrderAdapter(this, new OrderAdapter.OrderTodoAdapterCallBack() {
@@ -124,10 +125,10 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
                         detailsEntity.setLpnNo(mEdtOrderNum.getText().toString().trim());
                         detailsEntity.setExpiredDate("");
                         detailsEntity.setProduceDate("");
-                        detailsEntity.setReceiptQty(JsonUtil.getInt(datas.get(i), "QTY"));
-                        detailsEntity.setSeqNo(JsonUtil.getString(datas.get(i), "IBN_SEQ"));//行号需要确定
+                        detailsEntity.setReceiptQty(JsonUtil.getInt(datas.get(i), "QTY") - JsonUtil.getInt(datas.get(i), "RECEIVED_QTY"));
+                        detailsEntity.setSeqNo(JsonUtil.getString(datas.get(i), "IBN_SEQ"));
                         detailsEntity.setSkuId(JsonUtil.getString(datas.get(i), "SKU_ID"));
-                        detailsEntity.setSkuName(JsonUtil.getString(datas.get(i), "SKU_NAME"));//名称需要确定
+                        detailsEntity.setSkuName(JsonUtil.getString(datas.get(i), "SKU_NAME"));
                         detailsEntity.setSkuProperty(JsonUtil.getString(datas.get(i), "SKU_PROPERTY"));
                         entities.add(detailsEntity);
                     }
@@ -173,6 +174,7 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
     @Override
     public void showGoods(String data) {
         TitleBean titleBean = JsonUtil.getTitle(data);
+        mLlTitle.removeAllViews();
         for (int i = 0; i < titleBean.getCaptionEntities().size(); i++) {
             if (titleBean.getCaptionEntities().get(i).getVISIBLE() != null && titleBean.getCaptionEntities().get(i).getVISIBLE().equalsIgnoreCase("N")) {
                 continue;
@@ -180,7 +182,7 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
             TextView temp = (TextView) LayoutInflater.from(this).inflate(R.layout.item_title, null).findViewById(R.id.txt_title);
             temp.setGravity(Gravity.CENTER);
             temp.setText(titleBean.getCaptionEntities().get(i).getCAPTION());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(210, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(120, LinearLayout.LayoutParams.WRAP_CONTENT);
             mLlTitle.addView(temp, layoutParams);
         }
         mOrderAdapter = new OrderAdapter(this, new OrderAdapter.OrderTodoAdapterCallBack() {
