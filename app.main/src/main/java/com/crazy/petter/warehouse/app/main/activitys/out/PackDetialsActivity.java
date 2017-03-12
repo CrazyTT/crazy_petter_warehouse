@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -25,6 +26,7 @@ import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.SoundUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
+import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.adapters.OrderAdapter;
 import com.crazy.petter.warehouse.app.main.beans.ConfirmObnCartonBean;
@@ -92,15 +94,19 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void initViews() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mOrderList.setLayoutManager(layoutManager);
+        mOrderList.addItemDecoration(new MyDecoration(this, MyDecoration.VERTICAL_LIST));
         mOrderAdapter = new OrderAdapter(this, new OrderAdapter.OrderTodoAdapterCallBack() {
             @Override
             public void click(int postion) {
 
             }
         }, new ArrayList<OrderBean.CaptionEntity>());
-    }
-
-    private void initViews() {
         mTxtOrderNum.setText(JsonUtil.getString(mDataEntity, "OBN_ID"));
         mBtnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,12 +117,16 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                 }
                 double weight = 0;
                 for (JSONObject dataEntity : mList) {
-                    weight += Double.parseDouble(JsonUtil.getString(dataEntity, ""));//这里需要确定
+                    weight += Double.parseDouble(JsonUtil.getString(dataEntity, "TOTAL_GROSS_WEIGHT"));//这里需要确定
                 }
                 Intent intent = new Intent(PackDetialsActivity.this, SealActivity.class);
                 intent.putExtra("OutboundId", JsonUtil.getString(mDataEntity, "OBN_ID"));
                 intent.putExtra("CartonId", mEdtPackNum.getText().toString().trim());
-                intent.putExtra("CartonTypeId", mEdtPackstyle.getText().toString().trim());
+                if (TextUtils.isEmpty(cartonTypeId)) {
+                    ToastUtils.showLong(PackDetialsActivity.this, "请先扫描箱号");
+                    return;
+                }
+                intent.putExtra("CartonTypeId", cartonTypeId);
                 intent.putExtra("weight", weight);
                 intent.putExtra("Volume", Volume);
                 startActivityForResult(intent, 0x123);
@@ -252,7 +262,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         barCode = mEdtSkuid.getText().toString().trim();
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("OwnerId", JsonUtil.getString(mDataEntity, "OBN_ID"));
+            jsonObject.put("OwnerId", JsonUtil.getString(mDataEntity, "OWNER_ID"));
             jsonObject.put("BarCode", barCode);
             jsonObject.put("SkuId", "");
         } catch (JSONException e) {
@@ -294,10 +304,10 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     private void addlist() {
         ConfirmObnCartonBean temp = new ConfirmObnCartonBean();
         temp.setOutboundId(JsonUtil.getString(mDataEntity, "OBN_ID"));
-        temp.setAutoCartonId(true);
+        temp.setAutoCartonId(false);
         temp.setBarCode(barCode);
         temp.setCartonId(mEdtPackNum.getText().toString().trim());
-        temp.setCartonTypeId(mEdtPackstyle.getText().toString().trim());
+        temp.setCartonTypeId(cartonTypeId);
         temp.setQty(Integer.parseInt(mEdtQty.getText().toString().trim()));
         temp.setSkuId(mEdtSkuid.getText().toString().trim());
         mPackDetialsPresenter.addList(JsonFormatter.getInstance().object2Json(temp));
@@ -338,7 +348,6 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         mEdtSkuid.requestFocus();
         mEdtSkuid.setText("");
         mEdtQty.setText("");
-        mOrderAdapter.notifyDataSetChanged();
         mTxtReminder.setText(orderBean.getTotalPackageQty() + "    /   " + orderBean.getTotalPickedQty());
     }
 
@@ -358,13 +367,17 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
             mEdtPackstyle.setText("");
             Volume = 0;
             SoundUtil.getInstance(PackDetialsActivity.this).play(0);
+            cartonTypeId = "";
             return;
         }
+        cartonTypeId = data.get(0).getCartonTypeId();
         mEdtPackNum.setText(data.get(0).getCartonTypeId());
         Volume = data.get(0).getVolume();
         mEdtPackstyle.setText(data.get(0).getCartonTypeDesc());
         mEdtSkuid.requestFocus();
     }
+
+    private String cartonTypeId = "";
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
