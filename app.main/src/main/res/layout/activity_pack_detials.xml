@@ -9,223 +9,236 @@
     android:orientation="vertical"
     tools:context="com.crazy.petter.warehouse.app.main.activitys.out.PackDetialsActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="扫瞄装箱"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="30dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="出库单号"/>
-
-        <TextView
-            android:id="@+id/txt_orderNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="123123"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="30dp">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="箱号"/>
-
-        <me.grantland.widget.AutofitLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1">
-
-            <com.bjdv.lib.utils.widgets.EditTextAuto
-                android:id="@+id/edt_packNum"
-                android:layout_width="fill_parent"
-                android:layout_height="25dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/edt_back"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:singleLine="true"
-                autofit:minTextSize="13sp"/>
-        </me.grantland.widget.AutofitLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="30dp">
-
-        <TextView
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="箱型"/>
-
-        <me.grantland.widget.AutofitLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1">
-
-            <com.bjdv.lib.utils.widgets.EditTextAuto
-                android:id="@+id/edt_packstyle"
-                android:layout_width="fill_parent"
-                android:layout_height="25dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/edt_back"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:singleLine="true"
-                autofit:minTextSize="13sp"/>
-        </me.grantland.widget.AutofitLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:paddingLeft="30dp">
-
-        <TextView
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="货品代码"/>
-
-        <me.grantland.widget.AutofitLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1">
-
-            <com.bjdv.lib.utils.widgets.EditTextAuto
-                android:id="@+id/edt_skuid"
-                android:layout_width="fill_parent"
-                android:layout_height="25dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/edt_back"
-                android:hint="请扫描输入货品条码"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:singleLine="true"
-                autofit:minTextSize="13sp"/>
-        </me.grantland.widget.AutofitLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:paddingLeft="30dp">
-
-        <TextView
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="数量"/>
-
-        <me.grantland.widget.AutofitLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1">
-
-            <com.bjdv.lib.utils.widgets.EditTextAuto
-                android:id="@+id/edt_qty"
-                android:layout_width="fill_parent"
-                android:layout_height="25dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/edt_back"
-                android:inputType="numberDecimal"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:singleLine="true"
-                autofit:minTextSize="13sp"/>
-        </me.grantland.widget.AutofitLayout>
-
-        <com.bjdv.lib.utils.widgets.ButtonAutoBg
-            android:id="@+id/btn_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="加入明细"
-            android:textColor="@color/colorBlackTransparent"/>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@color/colorGrayTransparent"
-        android:paddingRight="5dp">
-
-        <TextView
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="已装箱/订单总数"/>
-
-        <TextView
-            android:id="@+id/txt_reminder"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:singleLine="true"/>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="已装明细"/>
-
-    <com.bjdv.lib.utils.widgets.CustomHorizontalScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="扫瞄装箱"/>
+
             <LinearLayout
-                android:id="@+id/ll_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/gray"
-                android:orientation="horizontal">
+                android:paddingLeft="30dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="出库单号"/>
+
+                <TextView
+                    android:id="@+id/txt_orderNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="123123"/>
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/order_list"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="30dp">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="箱号"/>
+
+                <me.grantland.widget.AutofitLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1">
+
+                    <com.bjdv.lib.utils.widgets.EditTextAuto
+                        android:id="@+id/edt_packNum"
+                        android:layout_width="fill_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/edt_back"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:singleLine="true"
+                        autofit:minTextSize="13sp"/>
+                </me.grantland.widget.AutofitLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="30dp">
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="箱型"/>
+
+                <me.grantland.widget.AutofitLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1">
+
+                    <com.bjdv.lib.utils.widgets.EditTextAuto
+                        android:id="@+id/edt_packstyle"
+                        android:layout_width="fill_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/edt_back"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:singleLine="true"
+                        autofit:minTextSize="13sp"/>
+                </me.grantland.widget.AutofitLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingLeft="30dp">
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="货品代码"/>
+
+                <me.grantland.widget.AutofitLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1">
+
+                    <com.bjdv.lib.utils.widgets.EditTextAuto
+                        android:id="@+id/edt_skuid"
+                        android:layout_width="fill_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/edt_back"
+                        android:hint="请扫描输入货品条码"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:singleLine="true"
+                        autofit:minTextSize="13sp"/>
+                </me.grantland.widget.AutofitLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingLeft="30dp">
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="数量"/>
+
+                <me.grantland.widget.AutofitLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1">
+
+                    <com.bjdv.lib.utils.widgets.EditTextAuto
+                        android:id="@+id/edt_qty"
+                        android:layout_width="fill_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/edt_back"
+                        android:inputType="numberDecimal"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:singleLine="true"
+                        autofit:minTextSize="13sp"/>
+                </me.grantland.widget.AutofitLayout>
+
+                <com.bjdv.lib.utils.widgets.ButtonAutoBg
+                    android:id="@+id/btn_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="加入明细"
+                    android:textColor="@color/colorBlackTransparent"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorGrayTransparent"
+                android:paddingRight="5dp">
+
+                <TextView
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="已装箱/订单总数"/>
+
+                <TextView
+                    android:id="@+id/txt_reminder"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:singleLine="true"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="已装明细"/>
+
+            <com.bjdv.lib.utils.widgets.CustomHorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/ll_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/gray"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/order_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
+            </com.bjdv.lib.utils.widgets.CustomHorizontalScrollView>
         </LinearLayout>
-    </com.bjdv.lib.utils.widgets.CustomHorizontalScrollView>
+    </ScrollView>
 
     <com.bjdv.lib.utils.widgets.ButtonAutoBg
         android:id="@+id/btn_commit"
