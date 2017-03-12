@@ -4,9 +4,9 @@ import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
+import com.bjdv.lib.utils.entity.OrderBean;
 import com.bjdv.lib.utils.util.JsonFormatter;
 import com.bjdv.lib.utils.util.SoundUtil;
-import com.crazy.petter.warehouse.app.main.beans.PickWaveBean;
 import com.crazy.petter.warehouse.app.main.views.DivideView;
 
 /**
@@ -26,13 +26,13 @@ public class DividePresenter extends BasePresenter {
         requestData(Constant.SERVER_URL_BASE + Constant.QueryReBinWallWave, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
-                PickWaveBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), PickWaveBean.class);
-                if (scanStoreageBean.getData() != null && scanStoreageBean.getData().size() > 0) {
-                    mDivideView.setList(scanStoreageBean.getData());
-                } else {
+                OrderBean orderBean = JsonFormatter.getInstance().json2object(o.toString(), OrderBean.class);
+                if (orderBean.getCount() <= 0) {
                     mDivideView.getOrderFailure();
-                    mDivideView.showTips(scanStoreageBean.getMessage());
+                    mDivideView.showTips(orderBean.getMessage());
                     SoundUtil.getInstance(context).play(0);
+                } else {
+                    mDivideView.setList(o.toString());
                 }
                 context.stopProgress();
             }

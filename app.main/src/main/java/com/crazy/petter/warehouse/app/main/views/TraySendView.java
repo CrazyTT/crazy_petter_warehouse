@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 
 public interface TraySendView extends IBaseView {
-    void setList(ArrayList<ScanSendBean.DataEntity> data);
+    void setList(String data);
 
     void getOrderFailure();
 }

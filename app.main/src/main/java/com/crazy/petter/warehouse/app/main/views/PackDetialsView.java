@@ -2,7 +2,6 @@ package com.crazy.petter.warehouse.app.main.views;
 
 import com.bjdv.lib.utils.base.IBaseView;
 import com.crazy.petter.warehouse.app.main.beans.PackBean;
-import com.crazy.petter.warehouse.app.main.beans.PackDetialsBean;
 import com.crazy.petter.warehouse.app.main.beans.SkuBean;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 public interface PackDetialsView extends IBaseView {
     void setPackInfo(ArrayList<PackBean.DataEntity> data);
 
-    void setConfirmResult(PackDetialsBean scanStoreageBean);
+    void setConfirmResult(String scanStoreageBean);
 
     void getPackFailure();
 

@@ -6,23 +6,27 @@ import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bjdv.lib.utils.base.BaseActivity;
+import com.bjdv.lib.utils.entity.OrderBean;
+import com.bjdv.lib.utils.entity.TitleBean;
 import com.bjdv.lib.utils.util.JsonFormatter;
-import com.bjdv.lib.utils.util.SoundUtil;
+import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.adapters.TratSendAdapter;
-import com.crazy.petter.warehouse.app.main.beans.ScanSendBean;
+import com.crazy.petter.warehouse.app.main.adapters.OrderAdapter;
 import com.crazy.petter.warehouse.app.main.beans.TraySendCommitBean;
-import com.crazy.petter.warehouse.app.main.beans.TraySendDetialsBean;
 import com.crazy.petter.warehouse.app.main.presenters.TraySendDetialsPresenter;
 import com.crazy.petter.warehouse.app.main.views.TraySendDetialsView;
 
@@ -45,32 +49,34 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
     @Bind(R.id.btn_commit)
     Button mBtnCommit;
     TraySendDetialsPresenter mTraySendDetialsPresenter;
-    ScanSendBean.DataEntity mDataEntity;
-    TratSendAdapter scanOrderAdapter;
+    JSONObject mDataEntity;
     @Bind(R.id.btn_cancle)
     Button mBtnCancle;
+    @Bind(R.id.ll_title)
+    LinearLayout mLlTitle;
+    OrderAdapter mOrderAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tray_send_detials);
         ButterKnife.bind(this);
-        mDataEntity = JsonFormatter.getInstance().json2object(getIntent().getStringExtra("detials"), ScanSendBean.DataEntity.class);
+        mDataEntity = JsonUtil.from(getIntent().getStringExtra("detials"));
         mTraySendDetialsPresenter = new TraySendDetialsPresenter(this, this, "mTraySendDetialsPresenter");
         initViews();
     }
 
     private void initViews() {
-        scanOrderAdapter = new TratSendAdapter(this, new TratSendAdapter.OrderTodoAdapterCallBack() {
-            @Override
-            public void click(int postion) {
-            }
-        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mOrderList.setLayoutManager(layoutManager);
         mOrderList.addItemDecoration(new MyDecoration(this, MyDecoration.VERTICAL_LIST));
-        mOrderList.setAdapter(scanOrderAdapter);
+        mOrderAdapter = new OrderAdapter(this, new OrderAdapter.OrderTodoAdapterCallBack() {
+            @Override
+            public void click(int postion) {
+
+            }
+        }, new ArrayList<OrderBean.CaptionEntity>());
         InputMethodManager imm = (InputMethodManager) mEdtOrderNum.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm.isActive()) {
             imm.hideSoftInputFromWindow(mEdtOrderNum.getApplicationWindowToken(), 0);
@@ -130,19 +136,20 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
                     return;
                 }
                 TraySendCommitBean traySendCommitBean = new TraySendCommitBean();
-                traySendCommitBean.setOutboundId(mDataEntity.getOutboundId());
+                traySendCommitBean.setOutboundId(JsonUtil.getString(mDataEntity, "OBN_ID"));
                 traySendCommitBean.setLpnNo(mEdtOrderNum.getText().toString().trim());
                 ArrayList<TraySendCommitBean.DetailsEntity> detailsEntities = new ArrayList<>();
-                for (TraySendDetialsBean.DataEntity data : datas) {
+                for (JSONObject data : datas) {
                     TraySendCommitBean.DetailsEntity temp = new TraySendCommitBean.DetailsEntity();
-                    temp.setOutboundId(data.getOutboundId());
-                    temp.setExtLot(data.getExtLot());
-                    temp.setObnPickInc(data.getObnPickInc());
-                    temp.setSeqNo(data.getSeqNo());
-                    temp.setShipQty(data.getShippedQty());
-                    temp.setSkuId(data.getSkuId());
-                    temp.setSkuName(data.getSkuName());
-                    temp.setSkuProperty(data.getSkuProperty());
+
+                    temp.setOutboundId(JsonUtil.getString(data, "OBN_ID"));
+                    temp.setExtLot(JsonUtil.getString(data, "EXT_LOT"));
+                    temp.setObnPickInc(JsonUtil.getInt(data, "OBN_PICK_INC"));
+                    temp.setSeqNo(JsonUtil.getInt(data, "OBN_SEQ"));
+                    temp.setShipQty(JsonUtil.getInt(data, "PICK_QTY"));
+                    temp.setSkuId(JsonUtil.getString(data, "SKU_ID"));
+                    temp.setSkuName(JsonUtil.getString(data, "SKU_NAME"));
+                    temp.setSkuProperty(JsonUtil.getString(data, "SKU_PROPERTY"));
                     detailsEntities.add(temp);
                 }
                 traySendCommitBean.setDetails(detailsEntities);
@@ -161,19 +168,22 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
     @Override
     public void commitOK() {
         ToastUtils.showLong(this, "发货成功");
-
+        datas = new ArrayList<>();
+        mOrderAdapter.setList(datas);
+        mEdtOrderNum.setText("");
+        mEdtOrderNum.requestFocus();
     }
 
     @Override
     public void getOrderFailure() {
         datas = new ArrayList<>();
-        scanOrderAdapter.setList(datas);
+        mOrderAdapter.setList(datas);
     }
 
     private void getDetials() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("OutboundId", mDataEntity.getOutboundId());
+            jsonObject.put("OutboundId", JsonUtil.getString(mDataEntity, "OBN_ID"));
             jsonObject.put("LpnNo", mEdtOrderNum.getText().toString().trim());
         } catch (JSONException e) {
             e.printStackTrace();
@@ -187,16 +197,29 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
         ToastUtils.showLong(this, s);
     }
 
-    ArrayList<TraySendDetialsBean.DataEntity> datas = new ArrayList<>();
+    ArrayList<JSONObject> datas = new ArrayList<>();
 
     @Override
-    public void showGoods(ArrayList<TraySendDetialsBean.DataEntity> data) {
-        if (data == null || data.size() == 0) {
-            ToastUtils.showLong(TraySendDetialsActivity.this, "没有查询到明细");
-            SoundUtil.getInstance(TraySendDetialsActivity.this).play(0);
-            return;
+    public void showGoods(String data) {
+        TitleBean titleBean = JsonUtil.getTitle(data);
+        mLlTitle.removeAllViews();
+        for (int i = 0; i < titleBean.getCaptionEntities().size(); i++) {
+            if (titleBean.getCaptionEntities().get(i).getVISIBLE() != null && titleBean.getCaptionEntities().get(i).getVISIBLE().equalsIgnoreCase("N")) {
+                continue;
+            }
+            TextView temp = (TextView) LayoutInflater.from(this).inflate(R.layout.item_title, null).findViewById(R.id.txt_title);
+            temp.setGravity(Gravity.CENTER);
+            temp.setText(titleBean.getCaptionEntities().get(i).getCAPTION());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(120, LinearLayout.LayoutParams.WRAP_CONTENT);
+            mLlTitle.addView(temp, layoutParams);
         }
-        datas = data;
-        scanOrderAdapter.setList(datas);
+        mOrderAdapter = new OrderAdapter(this, new OrderAdapter.OrderTodoAdapterCallBack() {
+            @Override
+            public void click(int postion) {
+            }
+        }, titleBean.getCaptionEntities());
+        mOrderList.setAdapter(mOrderAdapter);
+        mOrderAdapter.setList(titleBean.getOrders());
+        datas = titleBean.getOrders();
     }
 }

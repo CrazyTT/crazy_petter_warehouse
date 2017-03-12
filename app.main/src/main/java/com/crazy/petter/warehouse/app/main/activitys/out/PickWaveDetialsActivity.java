@@ -16,12 +16,12 @@ import android.widget.TextView;
 
 import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.adapters.RemarkWaveAdapter2;
 import com.crazy.petter.warehouse.app.main.beans.ConfirmWavePickBean;
-import com.crazy.petter.warehouse.app.main.beans.PickWaveBean;
 import com.crazy.petter.warehouse.app.main.beans.PickWaveDetialsBean;
 import com.crazy.petter.warehouse.app.main.presenters.PickWaveDetialsPresenter;
 import com.crazy.petter.warehouse.app.main.views.PickWaveDetialsView;
@@ -59,7 +59,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
     TextView mTxtBottom;
     @Bind(R.id.activity_pick_detials)
     LinearLayout mActivityPickDetials;
-    PickWaveBean.DataEntity mDataEntity;
+    JSONObject mDataEntity;
     PickWaveDetialsPresenter mPickDetialsPresenter;
     @Bind(R.id.rl_remark)
     ListView mRlRemark;
@@ -77,7 +77,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_wave_detials);
         ButterKnife.bind(this);
-        mDataEntity = JsonFormatter.getInstance().json2object(getIntent().getStringExtra("detials"), PickWaveBean.DataEntity.class);
+        mDataEntity = JsonUtil.from(getIntent().getStringExtra("detials"));
         mPickDetialsPresenter = new PickWaveDetialsPresenter(this, this, "PickDetialsActivity");
         initViews();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -96,10 +96,10 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
     }
 
     private void initViews() {
-        mTxtOrderNum.setText(mDataEntity.getWaveDocId());
+        mTxtOrderNum.setText(JsonUtil.getString(mDataEntity, "WAVE_ID"));
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("WaveId", mDataEntity.getWaveDocId());
+            jsonObject.put("WaveId", JsonUtil.getString(mDataEntity, "WAVE_ID"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -124,7 +124,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
                     }
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("WaveId", mDataEntity.getWaveDocId());
+                        jsonObject.put("WaveId", JsonUtil.getString(mDataEntity, "WAVE_ID"));
                         jsonObject.put("PickLoc", mEdtLoc.getText().toString().trim());
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -178,7 +178,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
                 detailsEntity.setPickLoc(temp.getPickLoc());
                 detailsEntity.setLotProperty(temp.getLotProperty());
                 detailsEntities.add(detailsEntity);
-                confirmObnPickBean.setWaveId(mDataEntity.getWaveDocId());
+                confirmObnPickBean.setWaveId(JsonUtil.getString(mDataEntity, "WAVE_ID"));
                 confirmObnPickBean.setDetails(detailsEntities);
                 if (Integer.parseInt(mEdtQty.getText().toString().trim()) > Integer.parseInt(mTxtQty.getText().toString())) {
                     ToastUtils.showLong(PickWaveDetialsActivity.this, "拣货数量超出范围了");
@@ -210,7 +210,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
                     setCurrent(current);
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("WaveId", mDataEntity.getWaveDocId());
+                        jsonObject.put("WaveId", JsonUtil.getString(mDataEntity, "WAVE_ID"));
                         jsonObject.put("PickLoc", mEdtLoc.getText().toString().trim());
                     } catch (JSONException e) {
                         e.printStackTrace();

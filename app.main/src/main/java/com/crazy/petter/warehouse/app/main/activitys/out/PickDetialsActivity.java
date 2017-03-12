@@ -14,12 +14,12 @@ import android.widget.TextView;
 
 import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.adapters.RemarkAdapter2;
 import com.crazy.petter.warehouse.app.main.beans.ConfirmObnPickBean;
-import com.crazy.petter.warehouse.app.main.beans.PickBean;
 import com.crazy.petter.warehouse.app.main.beans.PickDetialsBean;
 import com.crazy.petter.warehouse.app.main.presenters.PickDetialsPresenter;
 import com.crazy.petter.warehouse.app.main.views.PickDetialsView;
@@ -57,7 +57,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
     TextView mTxtBottom;
     @Bind(R.id.activity_pick_detials)
     LinearLayout mActivityPickDetials;
-    PickBean.DataEntity mDataEntity;
+    JSONObject mDataEntity;
     PickDetialsPresenter mPickDetialsPresenter;
     @Bind(R.id.rl_remark)
     ListView mRlRemark;
@@ -75,7 +75,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_detials);
         ButterKnife.bind(this);
-        mDataEntity = JsonFormatter.getInstance().json2object(getIntent().getStringExtra("detials"), PickBean.DataEntity.class);
+        mDataEntity = JsonUtil.from(getIntent().getStringExtra("detials"));
         mPickDetialsPresenter = new PickDetialsPresenter(this, this, "PickDetialsActivity");
         initViews();
         try {
@@ -93,10 +93,10 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
     }
 
     private void initViews() {
-        mTxtOrderNum.setText(mDataEntity.getOutboundId());
+        mTxtOrderNum.setText(JsonUtil.getString(mDataEntity, "OBN_ID"));
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("OutboundId", mDataEntity.getOutboundId());
+            jsonObject.put("OutboundId", JsonUtil.getString(mDataEntity, "OBN_ID"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -121,7 +121,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
                     }
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("OutboundId", mDataEntity.getOutboundId());
+                        jsonObject.put("OutboundId", JsonUtil.getString(mDataEntity, "OBN_ID"));
                         jsonObject.put("PickLoc", mEdtLoc.getText().toString().trim());
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -177,7 +177,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
                 detailsEntity.setToLoc(temp.getPickLoc());
                 detailsEntities.add(detailsEntity);
                 confirmObnPickBean.setDetails(detailsEntities);
-                confirmObnPickBean.setOutboundId(mDataEntity.getOutboundId());
+                confirmObnPickBean.setOutboundId(JsonUtil.getString(mDataEntity, "OBN_ID"));
                 if (Integer.parseInt(mEdtQty.getText().toString().trim()) > Integer.parseInt(mTxtQty.getText().toString())) {
                     ToastUtils.showLong(PickDetialsActivity.this, "拣货数量超出范围了");
                     return;
@@ -205,7 +205,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
 
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("OutboundId", mDataEntity.getOutboundId());
+                        jsonObject.put("OutboundId", JsonUtil.getString(mDataEntity, "OBN_ID"));
                         jsonObject.put("PickLoc", mEdtLoc.getText().toString().trim());
                     } catch (JSONException e) {
                         e.printStackTrace();

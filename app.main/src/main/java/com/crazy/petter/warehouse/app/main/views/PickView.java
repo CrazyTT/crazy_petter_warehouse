@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public interface PickView extends IBaseView {
 
-    void setList(ArrayList<PickBean.DataEntity> data);
+    void setList(String data);
 
     void getOrderFailure();
 

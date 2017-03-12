@@ -6,24 +6,29 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bjdv.lib.utils.base.BaseActivity;
+import com.bjdv.lib.utils.entity.OrderBean;
+import com.bjdv.lib.utils.entity.OrderBeanPack;
+import com.bjdv.lib.utils.entity.TitleBean;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.SoundUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.adapters.PackDetialsAdapter;
+import com.crazy.petter.warehouse.app.main.adapters.OrderAdapter;
 import com.crazy.petter.warehouse.app.main.beans.ConfirmObnCartonBean;
 import com.crazy.petter.warehouse.app.main.beans.PackBean;
-import com.crazy.petter.warehouse.app.main.beans.PackDetialsBean;
-import com.crazy.petter.warehouse.app.main.beans.QueryObnCartonBean;
 import com.crazy.petter.warehouse.app.main.beans.SkuBean;
 import com.crazy.petter.warehouse.app.main.presenters.PackDetialsPresenter;
 import com.crazy.petter.warehouse.app.main.views.PackDetialsView;
@@ -38,7 +43,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class PackDetialsActivity extends BaseActivity implements PackDetialsView {
-    QueryObnCartonBean.DataEntity mDataEntity;
+    JSONObject mDataEntity;
     PackDetialsPresenter mPackDetialsPresenter;
     @Bind(R.id.txt_orderNum)
     TextView mTxtOrderNum;
@@ -58,18 +63,20 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     RecyclerView mOrderList;
     @Bind(R.id.btn_commit)
     ButtonAutoBg mBtnCommit;
-    PackDetialsAdapter mPackDetialsAdapter;
     @Bind(R.id.btn_add)
     ButtonAutoBg mBtnAdd;
     private String barCode = "";
     double Volume = 0;
+    @Bind(R.id.ll_title)
+    LinearLayout mLlTitle;
+    OrderAdapter mOrderAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pack_detials);
         ButterKnife.bind(this);
-        mDataEntity = JsonFormatter.getInstance().json2object(getIntent().getStringExtra("detials"), QueryObnCartonBean.DataEntity.class);
+        mDataEntity = JsonUtil.from(getIntent().getStringExtra("detials"));
         mPackDetialsPresenter = new PackDetialsPresenter(this, this, "PackDetialsActivity");
         initViews();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -85,18 +92,16 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mPackDetialsAdapter = new PackDetialsAdapter(this, new PackDetialsAdapter.OrderTodoAdapterCallBack() {
+        mOrderAdapter = new OrderAdapter(this, new OrderAdapter.OrderTodoAdapterCallBack() {
             @Override
             public void click(int postion) {
 
             }
-        });
-        mPackDetialsAdapter.setList(mList);
-        mOrderList.setAdapter(mPackDetialsAdapter);
+        }, new ArrayList<OrderBean.CaptionEntity>());
     }
 
     private void initViews() {
-        mTxtOrderNum.setText(mDataEntity.getOutboundId());
+        mTxtOrderNum.setText(JsonUtil.getString(mDataEntity, "OBN_ID"));
         mBtnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,11 +110,11 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                     return;
                 }
                 double weight = 0;
-                for (PackDetialsBean.DataEntity dataEntity : mList) {
-                    weight += dataEntity.getTotalGrossWeight();
+                for (JSONObject dataEntity : mList) {
+                    weight += Double.parseDouble(JsonUtil.getString(dataEntity, ""));//这里需要确定
                 }
                 Intent intent = new Intent(PackDetialsActivity.this, SealActivity.class);
-                intent.putExtra("OutboundId", mDataEntity.getOutboundId());
+                intent.putExtra("OutboundId", JsonUtil.getString(mDataEntity, "OBN_ID"));
                 intent.putExtra("CartonId", mEdtPackNum.getText().toString().trim());
                 intent.putExtra("CartonTypeId", mEdtPackstyle.getText().toString().trim());
                 intent.putExtra("weight", weight);
@@ -247,7 +252,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         barCode = mEdtSkuid.getText().toString().trim();
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("OwnerId", mDataEntity.getOwnerId());
+            jsonObject.put("OwnerId", JsonUtil.getString(mDataEntity, "OBN_ID"));
             jsonObject.put("BarCode", barCode);
             jsonObject.put("SkuId", "");
         } catch (JSONException e) {
@@ -276,7 +281,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         mEdtPackNum.requestFocus();
     }
 
-    ArrayList<PackDetialsBean.DataEntity> mList = new ArrayList<>();
+    ArrayList<JSONObject> mList = new ArrayList<>();
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_CALL && event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -288,7 +293,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
 
     private void addlist() {
         ConfirmObnCartonBean temp = new ConfirmObnCartonBean();
-        temp.setOutboundId(mDataEntity.getOutboundId());
+        temp.setOutboundId(JsonUtil.getString(mDataEntity, "OBN_ID"));
         temp.setAutoCartonId(true);
         temp.setBarCode(barCode);
         temp.setCartonId(mEdtPackNum.getText().toString().trim());
@@ -304,13 +309,37 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     }
 
     @Override
-    public void setConfirmResult(PackDetialsBean scanStoreageBean) {
-        mList = scanStoreageBean.getData();
+    public void setConfirmResult(String data) {
+        OrderBeanPack orderBean = JsonFormatter.getInstance().json2object(data.toString(), OrderBeanPack.class);
+        TitleBean titleBean = JsonUtil.getTitle(data);
+        if (titleBean == null) {
+            return;
+        }
+        mLlTitle.removeAllViews();
+        for (int i = 0; i < titleBean.getCaptionEntities().size(); i++) {
+            if (titleBean.getCaptionEntities().get(i).getVISIBLE() != null && titleBean.getCaptionEntities().get(i).getVISIBLE().equalsIgnoreCase("N")) {
+                continue;
+            }
+            TextView temp = (TextView) LayoutInflater.from(PackDetialsActivity.this).inflate(R.layout.item_title, null).findViewById(R.id.txt_title);
+            temp.setGravity(Gravity.CENTER);
+            temp.setText(titleBean.getCaptionEntities().get(i).getCAPTION());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(120, LinearLayout.LayoutParams.WRAP_CONTENT);
+            mLlTitle.addView(temp, layoutParams);
+        }
+        mOrderAdapter = new OrderAdapter(PackDetialsActivity.this, new OrderAdapter.OrderTodoAdapterCallBack() {
+            @Override
+            public void click(int postion) {
+            }
+        }, titleBean.getCaptionEntities());
+        mOrderList.setAdapter(mOrderAdapter);
+        mOrderAdapter.setList(titleBean.getOrders());
+        mList = titleBean.getOrders();
+
         mEdtSkuid.requestFocus();
         mEdtSkuid.setText("");
         mEdtQty.setText("");
-        mPackDetialsAdapter.notifyDataSetChanged();
-        mTxtReminder.setText(scanStoreageBean.getTotalPackageQty() + "    /   " + scanStoreageBean.getTotalPickedQty());
+        mOrderAdapter.notifyDataSetChanged();
+        mTxtReminder.setText(orderBean.getTotalPackageQty() + "    /   " + orderBean.getTotalPickedQty());
     }
 
     @Override

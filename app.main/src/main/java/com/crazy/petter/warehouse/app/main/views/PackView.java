@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 
 public interface PackView extends IBaseView {
-    void setList(ArrayList<QueryObnCartonBean.DataEntity> data);
+    void setList(String data);
 
     void getOrderFailure();
 }

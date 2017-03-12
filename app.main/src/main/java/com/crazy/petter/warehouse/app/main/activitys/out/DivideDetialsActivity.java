@@ -12,11 +12,11 @@ import android.widget.TextView;
 
 import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.beans.ConfirmRebinWallWaveBean;
-import com.crazy.petter.warehouse.app.main.beans.PickWaveBean;
 import com.crazy.petter.warehouse.app.main.beans.PickWaveDtBean;
 import com.crazy.petter.warehouse.app.main.presenters.DivideDetialsPresenter;
 import com.crazy.petter.warehouse.app.main.views.DivideDetialsView;
@@ -45,7 +45,7 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
     ButtonAutoBg mBtnCommit;
     @Bind(R.id.txt_bottom)
     TextView mTxtBottom;
-    PickWaveBean.DataEntity mDataEntity;
+    JSONObject mDataEntity;
 
 
     @Override
@@ -53,8 +53,8 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_divide_detials);
         ButterKnife.bind(this);
-        mDataEntity = JsonFormatter.getInstance().json2object(getIntent().getStringExtra("detials"), PickWaveBean.DataEntity.class);
-        mTxtOrderNum.setText(mDataEntity.getWaveDocId() + "");
+        mDataEntity = JsonUtil.from(getIntent().getStringExtra("detials"));
+        mTxtOrderNum.setText(JsonUtil.getString(mDataEntity, "WAVE_ID"));
         mDivideDetialsPresenter = new DivideDetialsPresenter(this, this, "DivideDetialsActivity");
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         try {
@@ -76,7 +76,7 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
                     }
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("WaveId", mDataEntity.getWaveDocId());
+                        jsonObject.put("WaveId",JsonUtil.getString(mDataEntity, "WAVE_ID"));
                         jsonObject.put("SkuId", mEdtSkuId.getText().toString().trim());
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -104,7 +104,7 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
                 waveBean.setContainerId(one.getContainerId());
                 waveBean.setObnSeq(one.getObnSeq() + "");
                 waveBean.setPickQty(one.getPickQty());
-                waveBean.setWaveId(mDataEntity.getWaveDocId());
+                waveBean.setWaveId(JsonUtil.getString(mDataEntity, "WAVE_ID"));
                 mDivideDetialsPresenter.commit(JsonFormatter.getInstance().object2Json(waveBean));
             }
         });
@@ -114,7 +114,7 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
     private void initAll() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("WaveId", mDataEntity.getWaveDocId());
+            jsonObject.put("WaveId", JsonUtil.getString(mDataEntity, "WAVE_ID"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

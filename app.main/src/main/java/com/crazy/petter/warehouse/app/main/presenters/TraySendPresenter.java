@@ -4,9 +4,9 @@ import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
+import com.bjdv.lib.utils.entity.OrderBean;
 import com.bjdv.lib.utils.util.JsonFormatter;
 import com.bjdv.lib.utils.util.SoundUtil;
-import com.crazy.petter.warehouse.app.main.beans.ScanSendBean;
 import com.crazy.petter.warehouse.app.main.views.TraySendView;
 
 /**
@@ -26,13 +26,13 @@ public class TraySendPresenter extends BasePresenter {
         requestData(Constant.SERVER_URL_BASE + Constant.TRAYSEND, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
-                ScanSendBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), ScanSendBean.class);
-                if (scanStoreageBean.getData() != null && scanStoreageBean.getData().size() > 0) {
-                    mTraySendView.setList(scanStoreageBean.getData());
-                } else {
+                OrderBean orderBean = JsonFormatter.getInstance().json2object(o.toString(), OrderBean.class);
+                if (orderBean.getCount() <= 0) {
                     mTraySendView.getOrderFailure();
-                    mTraySendView.showTips(scanStoreageBean.getMessage());
+                    mTraySendView.showTips(orderBean.getMessage());
                     SoundUtil.getInstance(context).play(0);
+                } else {
+                    mTraySendView.setList(o.toString());
                 }
                 context.stopProgress();
             }

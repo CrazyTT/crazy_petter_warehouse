@@ -7,19 +7,24 @@ import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bjdv.lib.utils.base.BaseActivity;
-import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.entity.OrderBean;
+import com.bjdv.lib.utils.entity.TitleBean;
+import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.bjdv.lib.utils.widgets.MyDecoration;
 import com.crazy.petter.warehouse.app.main.R;
-import com.crazy.petter.warehouse.app.main.adapters.ScanSendOrderAdapter;
-import com.crazy.petter.warehouse.app.main.beans.ScanSendBean;
+import com.crazy.petter.warehouse.app.main.adapters.OrderAdapter;
 import com.crazy.petter.warehouse.app.main.presenters.TraySendPresenter;
 import com.crazy.petter.warehouse.app.main.views.TraySendView;
 
@@ -39,7 +44,9 @@ public class TraySendActivity extends BaseActivity implements TraySendView {
     ButtonAutoBg mBtnQuery;
     @Bind(R.id.order_list)
     RecyclerView mOrderList;
-    ScanSendOrderAdapter scanOrderAdapter;
+    @Bind(R.id.ll_title)
+    LinearLayout mLlTitle;
+    OrderAdapter mOrderAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +58,16 @@ public class TraySendActivity extends BaseActivity implements TraySendView {
     }
 
     private void initViews() {
-        scanOrderAdapter = new ScanSendOrderAdapter(this, new ScanSendOrderAdapter.OrderTodoAdapterCallBack() {
-            @Override
-            public void click(int postion) {
-                jump(postion);
-
-            }
-        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mOrderList.setLayoutManager(layoutManager);
         mOrderList.addItemDecoration(new MyDecoration(this, MyDecoration.VERTICAL_LIST));
-        mOrderList.setAdapter(scanOrderAdapter);
+        mOrderAdapter = new OrderAdapter(this, new OrderAdapter.OrderTodoAdapterCallBack() {
+            @Override
+            public void click(int postion) {
+
+            }
+        }, new ArrayList<OrderBean.CaptionEntity>());
         InputMethodManager imm = (InputMethodManager) mEdtOrderNum.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm.isActive()) {
             imm.hideSoftInputFromWindow(mEdtOrderNum.getApplicationWindowToken(), 0);
@@ -122,25 +127,46 @@ public class TraySendActivity extends BaseActivity implements TraySendView {
     }
 
     private void jump(int postion) {
-        mEdtOrderNum.setText(scanOrderAdapter.getList().get(postion).getOutboundId());
-        mEdtOrderNum.setSelection(scanOrderAdapter.getList().get(postion).getOutboundId().length());
+        mEdtOrderNum.setText(JsonUtil.getString(mOrderAdapter.getList().get(postion), "OBN_ID"));
+        mEdtOrderNum.setSelection(JsonUtil.getString(mOrderAdapter.getList().get(postion), "OBN_ID").length());
         Intent intent = new Intent(this, TraySendDetialsActivity.class);
-        intent.putExtra("detials", JsonFormatter.getInstance().object2Json(scanOrderAdapter.getList().get(postion)));
+        intent.putExtra("detials", mOrderAdapter.getList().get(postion).toString());
         startActivity(intent);
     }
 
     @Override
-    public void setList(ArrayList<ScanSendBean.DataEntity> data) {
-        if (data == null) {
+    public void setList(String data) {
+        TitleBean titleBean = JsonUtil.getTitle(data);
+        if (titleBean == null) {
+            getOrderFailure();
             return;
         }
-        scanOrderAdapter.setList(data);
+        mLlTitle.removeAllViews();
+        for (int i = 0; i < titleBean.getCaptionEntities().size(); i++) {
+            if (titleBean.getCaptionEntities().get(i).getVISIBLE() != null && titleBean.getCaptionEntities().get(i).getVISIBLE().equalsIgnoreCase("N")) {
+                continue;
+            }
+            TextView temp = (TextView) LayoutInflater.from(TraySendActivity.this).inflate(R.layout.item_title, null).findViewById(R.id.txt_title);
+            temp.setGravity(Gravity.CENTER);
+            temp.setText(titleBean.getCaptionEntities().get(i).getCAPTION());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(120, LinearLayout.LayoutParams.WRAP_CONTENT);
+            mLlTitle.addView(temp, layoutParams);
+        }
+        mOrderAdapter = new OrderAdapter(TraySendActivity.this, new OrderAdapter.OrderTodoAdapterCallBack() {
+            @Override
+            public void click(int postion) {
+                jump(postion);
+
+            }
+        }, titleBean.getCaptionEntities());
+        mOrderList.setAdapter(mOrderAdapter);
+        mOrderAdapter.setList(titleBean.getOrders());
     }
 
     @Override
     public void getOrderFailure() {
-        ArrayList<ScanSendBean.DataEntity> data = new ArrayList<>();
-        scanOrderAdapter.setList(data);
+        ArrayList<JSONObject> data = new ArrayList<>();
+        mOrderAdapter.setList(data);
         new Handler().postDelayed(new Thread(new Runnable() {
             @Override
             public void run() {

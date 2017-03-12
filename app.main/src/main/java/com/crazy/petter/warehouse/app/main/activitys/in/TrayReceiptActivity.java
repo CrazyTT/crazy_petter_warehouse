@@ -125,7 +125,7 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
                         detailsEntity.setLpnNo(mEdtOrderNum.getText().toString().trim());
                         detailsEntity.setExpiredDate("");
                         detailsEntity.setProduceDate("");
-                        detailsEntity.setReceiptQty(JsonUtil.getInt(datas.get(i), "QTY") - JsonUtil.getInt(datas.get(i), "RECEIVED_QTY"));
+                        detailsEntity.setReceiptQty(JsonUtil.getInt(datas.get(i), "WAIT_RECEIVE_QTY"));
                         detailsEntity.setSeqNo(JsonUtil.getString(datas.get(i), "IBN_SEQ"));
                         detailsEntity.setSkuId(JsonUtil.getString(datas.get(i), "SKU_ID"));
                         detailsEntity.setSkuName(JsonUtil.getString(datas.get(i), "SKU_NAME"));

@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 
 public interface TraySendDetialsView extends IBaseView {
-    void showGoods(ArrayList<TraySendDetialsBean.DataEntity> data);
+    void showGoods(String data);
 
     void commitOK();
 

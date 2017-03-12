@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public interface PickWaveView extends IBaseView {
 
-    void setList(ArrayList<PickWaveBean.DataEntity> data);
+    void setList(String data);
 
     void getOrderFailure();
 

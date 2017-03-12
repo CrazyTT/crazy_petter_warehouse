@@ -49,57 +49,28 @@
             android:text="查询"/>
     </LinearLayout>
 
-    <LinearLayout
+    <com.bjdv.lib.utils.widgets.CustomHorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/ll_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:background="@color/gray"
+                android:id="@+id/ll_title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="波次单号"
-                android:textColor="@color/black_gray"/>
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="波次状态"
-                android:textColor="@color/black_gray"/>
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="波次类型"
-                android:textColor="@color/black_gray"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="总单数"
-                android:textColor="@color/black_gray"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/order_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
         </LinearLayout>
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/order_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    </com.bjdv.lib.utils.widgets.CustomHorizontalScrollView>
 </LinearLayout>

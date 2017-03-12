@@ -4,10 +4,10 @@ import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
+import com.bjdv.lib.utils.entity.OrderBean;
 import com.bjdv.lib.utils.util.JsonFormatter;
 import com.bjdv.lib.utils.util.SoundUtil;
 import com.crazy.petter.warehouse.app.main.beans.PackBean;
-import com.crazy.petter.warehouse.app.main.beans.PackDetialsBean;
 import com.crazy.petter.warehouse.app.main.beans.SkuBean;
 import com.crazy.petter.warehouse.app.main.views.PackDetialsView;
 
@@ -47,10 +47,16 @@ public class PackDetialsPresenter extends BasePresenter {
         requestData(Constant.SERVER_URL_BASE + Constant.ConfirmObnCarton, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
-                PackDetialsBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), PackDetialsBean.class);
-                mPackDetialsView.setConfirmResult(scanStoreageBean);
+                OrderBean orderBean = JsonFormatter.getInstance().json2object(o.toString(), OrderBean.class);
+                if (orderBean.getCount() <= 0) {
+                    mPackDetialsView.addListFailure();
+                    mPackDetialsView.showTips(orderBean.getMessage());
+                    SoundUtil.getInstance(context).play(0);
+                } else {
+                    SoundUtil.getInstance(context).play(1);
+                    mPackDetialsView.setConfirmResult(o.toString());
+                }
                 context.stopProgress();
-                SoundUtil.getInstance(context).play(1);
             }
 
             @Override
