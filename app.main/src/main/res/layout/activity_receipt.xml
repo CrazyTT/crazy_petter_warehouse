@@ -163,6 +163,7 @@
             android:layout_marginTop="3dp">
 
             <TextView
+                android:visibility="invisible"
                 android:id="@+id/txt_date"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"

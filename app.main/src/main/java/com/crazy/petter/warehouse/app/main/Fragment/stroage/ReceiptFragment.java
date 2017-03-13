@@ -117,8 +117,6 @@ public class ReceiptFragment extends Fragment implements ReceiptView {
                 return false;
             }
         });
-        Calendar c = Calendar.getInstance();
-        mEdtDate.setText(c.get(Calendar.YEAR) + "");
         mBtnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,26 +150,31 @@ public class ReceiptFragment extends Fragment implements ReceiptView {
                 ReceiptBean.DetailsEntity detailsEntity = new ReceiptBean.DetailsEntity();
                 detailsEntity.setExtLot(goodsBean.getData().get(0).getExtLot());
                 detailsEntity.setLpnNo(mEdtLpn.getText().toString().trim());
-                SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-                format.setLenient(false);
-                boolean dateflag = true;
-                Date date = null;
-                try {
-                    date = format.parse(mEdtDate.getText().toString().trim());
-                } catch (ParseException e) {
-                    dateflag = false;
-                } finally {
-                    System.out.println("日期是否满足要求" + dateflag);
-                }
-                if (!dateflag) {
-                    ToastUtils.showLong(getActivity(), "请输入正确的日期");
-                    return;
-                }
-                if (!isP) {
-                    detailsEntity.setExpiredDate(formatter.format(date));
-                    detailsEntity.setProduceDate("");
+                if (isctrl) {
+                    SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+                    format.setLenient(false);
+                    boolean dateflag = true;
+                    Date date = null;
+                    try {
+                        date = format.parse(mEdtDate.getText().toString().trim());
+                    } catch (ParseException e) {
+                        dateflag = false;
+                    } finally {
+                        System.out.println("日期是否满足要求" + dateflag);
+                    }
+                    if (!dateflag) {
+                        ToastUtils.showLong(getActivity(), "请输入正确的日期");
+                        return;
+                    }
+                    if (!isP) {
+                        detailsEntity.setExpiredDate(formatter.format(date));
+                        detailsEntity.setProduceDate("");
+                    } else {
+                        detailsEntity.setProduceDate(formatter.format(date));
+                        detailsEntity.setExpiredDate("");
+                    }
                 } else {
-                    detailsEntity.setProduceDate(formatter.format(date));
+                    detailsEntity.setProduceDate("");
                     detailsEntity.setExpiredDate("");
                 }
                 if (TextUtils.isEmpty(mEdtNum.getText().toString().trim())) {
@@ -261,14 +264,15 @@ public class ReceiptFragment extends Fragment implements ReceiptView {
     @Override
     public void receiptOK() {
         ToastUtils.showLong(getActivity(), "收货成功");
+        isctrl = false;
         mEdtGoodBar.setText("");
         mEdtGoodName.setText("");
         mEdtLpn.setText("");
-        Calendar c = Calendar.getInstance();
-        mEdtDate.setText(c.get(Calendar.YEAR) + "");
+        mEdtDate.setText("");
         mEdtNum.setText("");
         mEdtGoodBar.requestFocus();
         goodsBean = null;
+        mTxtDate.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -287,28 +291,38 @@ public class ReceiptFragment extends Fragment implements ReceiptView {
 
     @Override
     public void showNoGoods() {
+        isctrl = false;
         mEdtGoodBar.setText("");
         mEdtGoodName.setText("");
         mEdtLpn.setText("");
-        Calendar c = Calendar.getInstance();
-        mEdtDate.setText(c.get(Calendar.YEAR) + "");
+        mEdtDate.setText("");
         mEdtNum.setText("");
         mSpGoodProperty.setSelection(0);
+        mTxtDate.setVisibility(View.INVISIBLE);
         mEdtGoodBar.requestFocus();
         goodsBean = null;
     }
 
     boolean isP = true;
+    boolean isctrl = false;
 
     private void init() {
         mEdtGoodBar.setText(goodsBean.getData().get(0).getSkuId());
         mEdtGoodName.setText(goodsBean.getData().get(0).getSkuName());
-        if ("E".equalsIgnoreCase(goodsBean.getData().get(0).getShelfLifeCtrlType())) {
-            mTxtDate.setText("失效日期");
-            isP = false;
+        isctrl = goodsBean.getData().get(0).isShelfLifeCtrl();
+        if (isctrl) {
+            mTxtDate.setVisibility(View.VISIBLE);
+            if ("E".equalsIgnoreCase(goodsBean.getData().get(0).getShelfLifeCtrlType())) {
+                mTxtDate.setText("失效日期");
+                isP = false;
+            } else {
+                mTxtDate.setText("生产日期");
+                isP = true;
+            }
+            Calendar c = Calendar.getInstance();
+            mEdtDate.setText(c.get(Calendar.YEAR) + "");
         } else {
-            mTxtDate.setText("生产日期");
-            isP = true;
+            mTxtDate.setVisibility(View.INVISIBLE);
         }
         mEdtLpn.setText(goodsBean.getData().get(0).getLPN());
         mEdtNum.requestFocus();

@@ -1,15 +1,14 @@
 package com.crazy.petter.warehouse.app.main.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.bjdv.lib.utils.entity.OrderBean;
 import com.bjdv.lib.utils.util.JsonUtil;
@@ -24,6 +23,7 @@ public class OrderSelectAdapter extends RecyclerView.Adapter<OrderSelectAdapter.
     public ArrayList<JSONObject> datas = new ArrayList<>();
     public ArrayList<OrderBean.CaptionEntity> titles = new ArrayList<>();
     private Context mContext;
+    public ArrayList<ArrayList<String>> mListOrder = new ArrayList<>();
     OrderTodoAdapterCallBack mOrderTodoAdapterCallBack;
 
     private HashMap<Integer, Boolean> isSelected;
@@ -52,25 +52,15 @@ public class OrderSelectAdapter extends RecyclerView.Adapter<OrderSelectAdapter.
 
     @Override
     public void onBindViewHolder(final OrderSelectAdapter.ViewHolder viewHolder, final int position) {
-        final JSONObject obj = datas.get(position);
-        for (int i = 0; i < titles.size(); i++) {
-            if (titles.get(i).getVISIBLE() != null && titles.get(i).getVISIBLE().equalsIgnoreCase("N")) {
-                continue;
-            }
-            TextView temp = (TextView) LayoutInflater.from(mContext).inflate(R.layout.item_title, null).findViewById(R.id.txt_title);
-            temp.setText(JsonUtil.getString(obj, titles.get(i).getFIELD_NAME()));
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(120, LinearLayout.LayoutParams.WRAP_CONTENT);
-            temp.setPadding(3, 0, 3, 0);
-            temp.setGravity(Gravity.CENTER);
-            viewHolder.mLinearLayout.addView(temp, layoutParams);
-        }
-        viewHolder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOrderTodoAdapterCallBack.click(position);
-            }
-        });
-        viewHolder.mCheckBox.setChecked(false);
+        final ArrayList<String> obj = mListOrder.get(position);
+//        for (int i = 0; i < obj.size(); i++) {
+//            TextView temp = (TextView) LayoutInflater.from(mContext).inflate(R.layout.item_title, null).findViewById(R.id.txt_title);
+//            temp.setText(obj.get(i));
+//            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(120, LinearLayout.LayoutParams.WRAP_CONTENT);
+//            temp.setPadding(3, 0, 3, 0);
+//            temp.setGravity(Gravity.CENTER);
+//            viewHolder.mLinearLayout.addView(temp, layoutParams);
+//        }
         viewHolder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -78,13 +68,18 @@ public class OrderSelectAdapter extends RecyclerView.Adapter<OrderSelectAdapter.
                 mOrderTodoAdapterCallBack.change();
             }
         });
-        viewHolder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        viewHolder.mHorizontalListView.setLayoutManager(layoutManager);
+        ItemAdapter itemAdapter = new ItemAdapter(obj, new ItemAdapter.AdapterCallBack() {
             @Override
-            public void onClick(View v) {
+            public void click(final int postion2) {
                 viewHolder.mCheckBox.toggle();
                 mOrderTodoAdapterCallBack.change();
             }
-        });
+        }, position);
+        viewHolder.mHorizontalListView.setAdapter(itemAdapter);
+        viewHolder.mCheckBox.setChecked(false);
         if (position == 0 && datas.size() == 1) {
             viewHolder.mLinearLayout.performClick();
         }
@@ -100,6 +95,17 @@ public class OrderSelectAdapter extends RecyclerView.Adapter<OrderSelectAdapter.
             titles = new ArrayList<>();
         }
         datas = mList;
+        //初始化列表
+        for (int i = 0; i < mList.size(); i++) {
+            ArrayList<String> temp = new ArrayList<>();
+            for (int j = 0; j < titles.size(); j++) {
+                if (titles.get(j).getVISIBLE() != null && titles.get(j).getVISIBLE().equalsIgnoreCase("N")) {
+                    continue;
+                }
+                temp.add(JsonUtil.getString(mList.get(i), titles.get(j).getFIELD_NAME()));
+            }
+            mListOrder.add(temp);
+        }
         notifyDataSetChanged();
 
     }
@@ -116,12 +122,13 @@ public class OrderSelectAdapter extends RecyclerView.Adapter<OrderSelectAdapter.
     public static class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout mLinearLayout;
         CheckBox mCheckBox;
-
+        RecyclerView mHorizontalListView;
 
         public ViewHolder(View view) {
             super(view);
             mCheckBox = (CheckBox) view.findViewById(R.id.cb_check);
             mLinearLayout = (LinearLayout) view.findViewById(R.id.ll_content);
+            mHorizontalListView = (RecyclerView) view.findViewById(R.id.list_item);
         }
     }
 

@@ -15,6 +15,29 @@
         android:textColor="@color/colorAccent"
         android:textSize="20sp"/>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="版本:"
+            android:textColor="@color/colorBlackTransparent"/>
+
+        <TextView
+            android:id="@+id/txt_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="30dp"
+            android:text="1.0"
+            android:textColor="@color/colorBlackTransparent"/>
+
+    </LinearLayout>
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -28,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:autoLink="phone"
-        android:text="电话:17712394972"
+        android:text="电话: 17712394972"
         android:textColor="@color/colorBlackTransparent"/>
 
     <TextView

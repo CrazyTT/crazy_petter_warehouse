@@ -13,8 +13,13 @@
 
     <LinearLayout
         android:id="@+id/ll_content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 </LinearLayout>
