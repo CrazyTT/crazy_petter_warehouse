@@ -293,13 +293,6 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
 
     ArrayList<JSONObject> mList = new ArrayList<>();
 
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_CALL && event.getAction() == KeyEvent.ACTION_DOWN) {
-            mBtnCommit.performClick();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
     private void addlist() {
         ConfirmObnCartonBean temp = new ConfirmObnCartonBean();
@@ -387,5 +380,15 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                 this.finish();
             }
         }
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_CALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            mBtnCommit.performClick();
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_ENDCALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

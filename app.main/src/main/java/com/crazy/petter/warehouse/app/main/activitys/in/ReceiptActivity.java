@@ -292,4 +292,14 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
         mEdtLpn.setText(goodsBean.getData().get(0).getLPN());
         mEdtNum.requestFocus();
     }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_CALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            mBtnCommit.performClick();
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_ENDCALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

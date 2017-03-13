@@ -14,6 +14,9 @@ import com.crazy.petter.warehouse.app.main.Fragment.stroage.DetialsStoreageFragm
 import com.crazy.petter.warehouse.app.main.Fragment.stroage.ReceiptFragment;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.adapters.FragAdapter;
+import com.crazy.petter.warehouse.app.main.beans.ChangeEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -65,6 +68,7 @@ public class ReceiptMixActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
+                currentIndex = position;
                 if (position == 1) {
                     tabTwo.onResume();
                 } else {
@@ -80,12 +84,22 @@ public class ReceiptMixActivity extends BaseActivity {
         });
     }
 
+    int currentIndex = 0;
+
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_CALL && event.getAction() == KeyEvent.ACTION_DOWN) {
-            mMainViewpager.setCurrentItem(0);
+        if (keyCode == KeyEvent.KEYCODE_ENDCALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (currentIndex == 0) {
+                mMainViewpager.setCurrentItem(1);
+            } else {
+                mMainViewpager.setCurrentItem(0);
+            }
             return true;
-        } else if (keyCode == KeyEvent.KEYCODE_ENDCALL && event.getAction() == KeyEvent.ACTION_DOWN) {
-            mMainViewpager.setCurrentItem(1);
+        } else if (keyCode == KeyEvent.KEYCODE_CALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (currentIndex == 0) {
+                ChangeEvent changeEvent = new ChangeEvent();
+                changeEvent.setEvent("commit");
+                EventBus.getDefault().post(changeEvent);
+            }
             return true;
         }
         return super.onKeyDown(keyCode, event);

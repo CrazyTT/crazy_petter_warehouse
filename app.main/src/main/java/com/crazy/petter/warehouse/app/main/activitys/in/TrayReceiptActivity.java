@@ -134,6 +134,8 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
                     }
                     receiptBean.setDetails(entities);
                     mTrayReceiptPresenter.receipt(JsonFormatter.getInstance().object2Json(receiptBean));
+                } else {
+                    ToastUtils.showLong(TrayReceiptActivity.this, "没有明细，无法收货");
                 }
             }
         });
@@ -202,6 +204,7 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
     public void receiptOK() {
         ToastUtils.showLong(this, "收货成功");
         mEdtOrderNum.setText("");
+        mEdtOrderNum.requestFocus();
         datas.clear();
         mOrderAdapter.notifyDataSetChanged();
     }
@@ -216,5 +219,13 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
                 mEdtOrderNum.requestFocus();
             }
         }), 300);
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_CALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            mBtnCommit.performClick();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

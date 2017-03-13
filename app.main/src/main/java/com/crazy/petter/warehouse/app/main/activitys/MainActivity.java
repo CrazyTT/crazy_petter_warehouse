@@ -123,14 +123,12 @@ public class MainActivity extends BaseActivity {
                 startActivity(new Intent(MainActivity.this, DivideActivity.class));
             }
         });
-
         initIn();
-
         initOut();
     }
 
     private void initIn() {
-        mAdapterIn = new GridAdapter(this);
+        mAdapterIn = new GridAdapter(this, 0);
         ArrayList<GridViewItem> mlist = new ArrayList<>();
         GridViewItem gridViewItem1 = new GridViewItem(R.mipmap.icon_zsk, "扫描收货");
         mlist.add(gridViewItem1);
@@ -146,7 +144,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initOut() {
-        mAdapterOut = new GridAdapter(this);
+        mAdapterOut = new GridAdapter(this, 4);
         ArrayList<GridViewItem> mlist = new ArrayList<>();
         GridViewItem gridViewItem1 = new GridViewItem(R.mipmap.icon_wgjyx, "扫描拣货");
         mlist.add(gridViewItem1);
@@ -216,6 +214,47 @@ public class MainActivity extends BaseActivity {
             } else {
                 finish();
             }
+            return true;
+        }
+        if (keyCode == KeyEvent.KEYCODE_1 && event.getAction() == KeyEvent.ACTION_DOWN) {
+            startActivity(new Intent(MainActivity.this, StorageActivity.class));
+            return true;
+        }
+        if (keyCode == KeyEvent.KEYCODE_2 && event.getAction() == KeyEvent.ACTION_DOWN) {
+            startActivity(new Intent(MainActivity.this, TrayStorageActivity.class));
+            return true;
+        }
+        if (keyCode == KeyEvent.KEYCODE_3 && event.getAction() == KeyEvent.ACTION_DOWN) {
+            startActivity(new Intent(MainActivity.this, PutAwayActivity.class));
+            return true;
+        }
+        if (keyCode == KeyEvent.KEYCODE_4 && event.getAction() == KeyEvent.ACTION_DOWN) {
+            startActivity(new Intent(MainActivity.this, TrayPutAwayActivity.class));
+            return true;
+        }
+        if (keyCode == KeyEvent.KEYCODE_5 && event.getAction() == KeyEvent.ACTION_DOWN) {
+            startActivity(new Intent(MainActivity.this, PickActivity.class));
+            return true;
+        }
+        if (keyCode == KeyEvent.KEYCODE_6 && event.getAction() == KeyEvent.ACTION_DOWN) {
+            startActivity(new Intent(MainActivity.this, PackActivity.class));
+            return true;
+        }
+        if (keyCode == KeyEvent.KEYCODE_7 && event.getAction() == KeyEvent.ACTION_DOWN) {
+            startActivity(new Intent(MainActivity.this, TraySendActivity.class));
+            return true;
+        }
+        if (keyCode == KeyEvent.KEYCODE_8 && event.getAction() == KeyEvent.ACTION_DOWN) {
+            startActivity(new Intent(MainActivity.this, PickWaveActivity.class));
+            return true;
+        }
+        if (keyCode == KeyEvent.KEYCODE_9 && event.getAction() == KeyEvent.ACTION_DOWN) {
+            startActivity(new Intent(MainActivity.this, DivideActivity.class));
+            return true;
+        }
+        if (keyCode == KeyEvent.KEYCODE_CALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_ENDCALL && event.getAction() == KeyEvent.ACTION_DOWN) {
             return true;
         }
         return super.onKeyDown(keyCode, event);

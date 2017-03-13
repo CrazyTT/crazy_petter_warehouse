@@ -222,4 +222,14 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
         mOrderAdapter.setList(titleBean.getOrders());
         datas = titleBean.getOrders();
     }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_CALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            mBtnCommit.performClick();
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_ENDCALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

@@ -164,6 +164,14 @@ public class PutAwayActivity extends BaseActivity implements PutAwayView {
                 mEdtOrderNum.requestFocus();
             }
         }), 300);
+    }
 
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_CALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_ENDCALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

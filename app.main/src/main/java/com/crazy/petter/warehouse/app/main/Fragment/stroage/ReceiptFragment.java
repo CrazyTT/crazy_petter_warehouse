@@ -24,12 +24,15 @@ import com.bjdv.lib.utils.util.SharedPreferencesUtil;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.crazy.petter.warehouse.app.main.R;
+import com.crazy.petter.warehouse.app.main.beans.ChangeEvent;
 import com.crazy.petter.warehouse.app.main.beans.GoodsBean;
 import com.crazy.petter.warehouse.app.main.beans.PropertyBean;
 import com.crazy.petter.warehouse.app.main.beans.ReceiptBean;
 import com.crazy.petter.warehouse.app.main.presenters.ReceiptPresenter;
 import com.crazy.petter.warehouse.app.main.views.ReceiptView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -216,6 +219,7 @@ public class ReceiptFragment extends Fragment implements ReceiptView {
 //                }
 //            }
 //        });
+        EventBus.getDefault().register(this);
     }
 
     String SkuProperty = "";
@@ -238,6 +242,7 @@ public class ReceiptFragment extends Fragment implements ReceiptView {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -312,7 +317,15 @@ public class ReceiptFragment extends Fragment implements ReceiptView {
     @Override
     public void showTips(String s) {
         ToastUtils.showLong(getActivity(), s);
+    }
+
+    @Subscribe
+    public void onEventMainThread(ChangeEvent event) {
+        if ("commit".equals(event.getEvent())) {
+            mBtnCommit.performClick();
+        }
 
     }
+
 }
 

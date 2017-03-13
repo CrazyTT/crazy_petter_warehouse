@@ -93,6 +93,7 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
             public void onClick(View v) {
                 if (TextUtils.isEmpty(mEdtSkuId.getText().toString().trim())) {
                     ToastUtils.showLong(DivideDetialsActivity.this, "请先扫描");
+                    return;
                 } else if (one == null) {
                     ToastUtils.showLong(DivideDetialsActivity.this, "没有该商品的明细");
                     mEdtSkuId.setText("");
@@ -160,5 +161,14 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
         one = null;
         mEdtSkuId.requestFocus();
         initAll();
+    }
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_CALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            mBtnCommit.performClick();
+            return true;
+        }else if(keyCode == KeyEvent.KEYCODE_ENDCALL && event.getAction() == KeyEvent.ACTION_DOWN){
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

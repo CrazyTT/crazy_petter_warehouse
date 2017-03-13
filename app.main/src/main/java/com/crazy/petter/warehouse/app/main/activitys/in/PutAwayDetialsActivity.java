@@ -155,6 +155,8 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
                     }
                     receiptBean.setDetails(entities);
                     mPutAwayDetialsPresenter.commit(JsonFormatter.getInstance().object2Json(receiptBean));
+                } else {
+                    ToastUtils.showLong(PutAwayDetialsActivity.this, "没有明细，无法上架");
                 }
             }
         });
@@ -311,5 +313,15 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
         mEdtSkuqty.setText("");
         mEdtLoc.setText("");
         mQty.setText("0");
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_CALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            mBtnCommit.performClick();
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_ENDCALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

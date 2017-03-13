@@ -48,7 +48,7 @@ public class StorageActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_storage);
+        setContentView(R.layout.activity_storage_mix);
         sp = new SharedPreferencesUtil(this);
         sp.setString("num", "");
         ButterKnife.bind(this);
@@ -130,6 +130,11 @@ public class StorageActivity extends BaseActivity {
             mMainViewpager.setCurrentItem(1);
             return true;
         }
+        if (keyCode == KeyEvent.KEYCODE_CALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_ENDCALL && event.getAction() == KeyEvent.ACTION_DOWN) {
+            return true;
+        }
         return super.onKeyDown(keyCode, event);
     }
 
@@ -137,6 +142,5 @@ public class StorageActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
-
     }
 }
