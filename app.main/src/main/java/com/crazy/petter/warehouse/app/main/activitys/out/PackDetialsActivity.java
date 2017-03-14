@@ -96,6 +96,8 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         }
     }
 
+    double weight = 0;
+
     private void initViews() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -115,7 +117,6 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                     ToastUtils.showLong(PackDetialsActivity.this, "还没有添加任何明细");
                     return;
                 }
-                double weight = 0;
                 for (JSONObject dataEntity : mList) {
                     weight += Double.parseDouble(JsonUtil.getString(dataEntity, "TOTAL_GROSS_WEIGHT"));//这里需要确定
                 }
@@ -123,7 +124,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                 intent.putExtra("OutboundId", JsonUtil.getString(mDataEntity, "OBN_ID"));
                 intent.putExtra("CartonId", mEdtPackNum.getText().toString().trim());
                 if (TextUtils.isEmpty(cartonTypeId)) {
-                    ToastUtils.showLong(PackDetialsActivity.this, "请先扫描箱号");
+                    ToastUtils.showLong(PackDetialsActivity.this, "请先扫描箱型");
                     return;
                 }
                 intent.putExtra("CartonTypeId", cartonTypeId);
@@ -132,36 +133,36 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                 startActivityForResult(intent, 0x123);
             }
         });
-        mEdtPackNum.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (imm.isActive()) {
-                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
-                    }
-                    if (TextUtils.isEmpty(mEdtPackNum.getText().toString().trim())) {
-                        ToastUtils.showLong(PackDetialsActivity.this, "请扫描输入箱号");
-                        new Handler().postDelayed(new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mEdtPackNum.requestFocus();
-                            }
-                        }), 300);
-                        return true;
-                    }
-                    JSONObject jsonObject = new JSONObject();
-                    try {
-                        jsonObject.put("TypeId", mEdtPackNum.getText().toString().trim());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    mPackDetialsPresenter.getPackType(jsonObject.toString());
-                    return true;
-                }
-                return false;
-            }
-        });
+//        mEdtPackNum.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+//                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    if (imm.isActive()) {
+//                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+//                    }
+//                    if (TextUtils.isEmpty(mEdtPackNum.getText().toString().trim())) {
+//                        ToastUtils.showLong(PackDetialsActivity.this, "请扫描输入箱号");
+//                        new Handler().postDelayed(new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                mEdtPackNum.requestFocus();
+//                            }
+//                        }), 300);
+//                        return true;
+//                    }
+//                    JSONObject jsonObject = new JSONObject();
+//                    try {
+//                        jsonObject.put("TypeId", mEdtPackNum.getText().toString().trim());
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                    mPackDetialsPresenter.getPackType(jsonObject.toString());
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
         mEdtPackstyle.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -182,7 +183,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                     }
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("TypeDesc", mEdtPackstyle.getText().toString().trim());
+                        jsonObject.put("TypeId", mEdtPackstyle.getText().toString().trim());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -192,6 +193,32 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                 return false;
             }
         });
+        mEdtPackstyle.setOnFocusChangeListener(new android.view.View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    if (TextUtils.isEmpty(mEdtPackstyle.getText().toString().trim())) {
+                        ToastUtils.showLong(PackDetialsActivity.this, "请扫描输入箱型");
+                        new Handler().postDelayed(new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mEdtPackstyle.requestFocus();
+                            }
+                        }), 300);
+                        return;
+                    }
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("TypeId", mEdtPackstyle.getText().toString().trim());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    mPackDetialsPresenter.getPackType(jsonObject.toString());
+                }
+            }
+        });
+
+
         mBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -288,7 +315,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     @Override
     public void showTips(String s) {
         ToastUtils.showLong(this, s);
-        mEdtPackNum.requestFocus();
+        mEdtPackstyle.requestFocus();
     }
 
     ArrayList<JSONObject> mList = new ArrayList<>();
@@ -342,31 +369,38 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         mEdtSkuid.setText("");
         mEdtQty.setText("");
         mTxtReminder.setText(orderBean.getTotalPackageQty() + "    /   " + orderBean.getTotalPickedQty());
+        if (orderBean.getTotalPackageQty() >= orderBean.getTotalPickedQty()) {
+            isFinsh = true;
+        } else {
+            isFinsh = false;
+        }
     }
+
+    boolean isFinsh = false;
 
     @Override
     public void getPackFailure() {
-        mEdtPackNum.requestFocus();
-        mEdtPackNum.setText("");
+        mEdtPackstyle.requestFocus();
         mEdtPackstyle.setText("");
+        weight = 0;
     }
 
     @Override
     public void setPackInfo(ArrayList<PackBean.DataEntity> data) {
         if (data.size() <= 0) {
             ToastUtils.showLong(this, "不存在此箱");
-            mEdtPackNum.requestFocus();
-            mEdtPackNum.setText("");
+            mEdtPackstyle.requestFocus();
             mEdtPackstyle.setText("");
             Volume = 0;
             SoundUtil.getInstance(PackDetialsActivity.this).play(0);
             cartonTypeId = "";
+            weight = 0;
             return;
         }
         cartonTypeId = data.get(0).getCartonTypeId();
-        mEdtPackNum.setText(data.get(0).getCartonTypeId());
+        mEdtPackstyle.setText(data.get(0).getCartonTypeId());
         Volume = data.get(0).getVolume();
-        mEdtPackstyle.setText(data.get(0).getCartonTypeDesc());
+        weight = data.get(0).getWeight();
         mEdtSkuid.requestFocus();
     }
 
@@ -377,7 +411,18 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == 0x123) {
-                this.finish();
+                mEdtPackNum.setText("");
+                mEdtPackstyle.setText("");
+                mEdtSkuid.setText("");
+                mEdtQty.setText("");
+                mList = new ArrayList<>();
+                mOrderAdapter.setList(mList);
+                if (isFinsh) {
+                    this.finish();
+                    ToastUtils.showLong(PackDetialsActivity.this, "装箱结束");
+                } else {
+                    ToastUtils.showLong(PackDetialsActivity.this, "请继续装箱");
+                }
             }
         }
     }

@@ -119,6 +119,6 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="5dp"
         android:background="@drawable/backgroud_gradview"
-        android:text="装箱"
+        android:text="确定"
         android:textColor="@color/colorWhite"/>
 </RelativeLayout>

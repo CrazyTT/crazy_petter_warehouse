@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,6 +49,8 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
     RecyclerView mOrderList;
     @Bind(R.id.btn_commit)
     Button mBtnCommit;
+    @Bind(R.id.cb_default)
+    CheckBox mCbDefault;
     TraySendDetialsPresenter mTraySendDetialsPresenter;
     JSONObject mDataEntity;
     @Bind(R.id.btn_cancle)
@@ -221,6 +224,9 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
         mOrderList.setAdapter(mOrderAdapter);
         mOrderAdapter.setList(titleBean.getOrders());
         datas = titleBean.getOrders();
+        if (mCbDefault.isChecked()) {
+            mBtnCommit.performClick();
+        }
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {

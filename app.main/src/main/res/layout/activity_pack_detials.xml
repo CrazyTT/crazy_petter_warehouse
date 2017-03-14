@@ -178,7 +178,7 @@
                     android:id="@+id/btn_add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="加入明细"
+                    android:text="装箱"
                     android:textColor="@color/colorBlackTransparent"/>
             </LinearLayout>
 
@@ -246,7 +246,7 @@
         android:layout_height="35dp"
         android:layout_margin="5dp"
         android:background="@drawable/backgroud_gradview"
-        android:text="装箱"
+        android:text="封箱"
         android:textColor="@color/colorWhite"/>
 
 </LinearLayout>

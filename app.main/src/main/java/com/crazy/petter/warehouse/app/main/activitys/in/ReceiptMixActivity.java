@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 
 import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.util.SharedPreferencesUtil;
-import com.bjdv.lib.utils.widgets.EditTextAuto;
 import com.crazy.petter.warehouse.app.main.Fragment.stroage.DetialsStoreageFragment2;
 import com.crazy.petter.warehouse.app.main.Fragment.stroage.ReceiptFragment;
 import com.crazy.petter.warehouse.app.main.R;
@@ -22,6 +21,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import me.grantland.widget.AutofitTextView;
 
 public class ReceiptMixActivity extends BaseActivity {
 
@@ -32,7 +32,7 @@ public class ReceiptMixActivity extends BaseActivity {
     @Bind(R.id.activity_storage)
     LinearLayout mActivityStorage;
     @Bind(R.id.edt_order_num)
-    EditTextAuto mEdtOrderNum;
+    AutofitTextView mEdtOrderNum;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private ArrayList<String> rbs = new ArrayList<>();
     FragAdapter tabAdapter;
