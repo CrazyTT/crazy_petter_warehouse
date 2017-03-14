@@ -110,7 +110,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
                         imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                     }
                     if (TextUtils.isEmpty(mEdtLoc.getText().toString().trim())) {
-                        ToastUtils.showLong(PickDetialsActivity.this, "请先扫描货位");
+                        ToastUtils.showLong(PickDetialsActivity.this, "请先输入货位");
                         new Handler().postDelayed(new Thread(new Runnable() {
                             @Override
                             public void run() {

@@ -283,6 +283,25 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                 return false;
             }
         });
+        mEdtSkuid.setOnFocusChangeListener(new android.view.View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    //获取商品信息
+                    if (TextUtils.isEmpty(mEdtSkuid.getText().toString().trim())) {
+                        new Handler().postDelayed(new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ToastUtils.showLong(PackDetialsActivity.this, "商品条码不能为空");
+                                mEdtSkuid.requestFocus();
+                            }
+                        }), 300);
+                        return;
+                    }
+                    getSkuInfo();
+                }
+            }
+        });
     }
 
     private void getSkuInfo() {

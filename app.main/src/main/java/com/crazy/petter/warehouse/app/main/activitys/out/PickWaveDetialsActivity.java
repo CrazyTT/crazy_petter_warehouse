@@ -113,7 +113,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
                         imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                     }
                     if (TextUtils.isEmpty(mEdtLoc.getText().toString().trim())) {
-                        ToastUtils.showLong(PickWaveDetialsActivity.this, "请先扫描货位");
+                        ToastUtils.showLong(PickWaveDetialsActivity.this, "请先输入货位");
                         new Handler().postDelayed(new Thread(new Runnable() {
                             @Override
                             public void run() {

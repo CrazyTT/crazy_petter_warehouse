@@ -96,6 +96,7 @@
                     android:layout_weight="1">
 
                     <com.bjdv.lib.utils.widgets.EditTextAuto
+                        android:hint="请输入箱型"
                         android:id="@+id/edt_packstyle"
                         android:layout_width="fill_parent"
                         android:layout_height="25dp"
