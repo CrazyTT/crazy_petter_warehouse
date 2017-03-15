@@ -70,6 +70,15 @@ public class PickWaveDtBean extends BaseBean {
         public String SkuId;
         public String SkuName;
         public int PickQty;
+        private String WavePickInc;
+
+        public String getWavePickInc() {
+            return WavePickInc;
+        }
+
+        public void setWavePickInc(String wavePickInc) {
+            WavePickInc = wavePickInc;
+        }
 
         public String getOutboundId() {
             return OutboundId;

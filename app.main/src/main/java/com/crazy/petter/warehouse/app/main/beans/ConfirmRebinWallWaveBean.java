@@ -21,6 +21,15 @@ public class ConfirmRebinWallWaveBean {
     private String ContainerId;
     private String SkuId;
     private int PickQty;
+    private String WavePickInc;
+
+    public String getWavePickInc() {
+        return WavePickInc;
+    }
+
+    public void setWavePickInc(String wavePickInc) {
+        WavePickInc = wavePickInc;
+    }
 
     public String getWaveId() {
         return WaveId;
