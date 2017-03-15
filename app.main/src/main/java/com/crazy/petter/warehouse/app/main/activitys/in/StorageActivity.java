@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 
 import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.util.SharedPreferencesUtil;
+import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.bjdv.lib.utils.widgets.EditTextAuto;
 import com.crazy.petter.warehouse.app.main.Fragment.stroage.DetialsStoreageFragment;
 import com.crazy.petter.warehouse.app.main.Fragment.stroage.ScanStoreageFragment;
@@ -38,6 +39,8 @@ public class StorageActivity extends BaseActivity {
     LinearLayout mActivityStorage;
     @Bind(R.id.edt_order_num)
     EditTextAuto mEdtOrderNum;
+    @Bind(R.id.btn_query)
+    ButtonAutoBg mBtnQuery;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private ArrayList<String> rbs = new ArrayList<>();
     FragAdapter tabAdapter;
@@ -105,6 +108,12 @@ public class StorageActivity extends BaseActivity {
                     return true;
                 }
                 return false;
+            }
+        });
+        mBtnQuery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(mEdtOrderNum.getText().toString().trim());
             }
         });
         mEdtOrderNum.requestFocus();

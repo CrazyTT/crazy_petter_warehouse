@@ -65,6 +65,11 @@
                     android:singleLine="true"
                     autofit:minTextSize="13sp"/>
             </me.grantland.widget.AutofitLayout>
+            <com.bjdv.lib.utils.widgets.ButtonAutoBg
+                android:id="@+id/btn_query"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="查询"/>
         </LinearLayout>
 
         <com.bjdv.lib.utils.widgets.NoScrollViewPager

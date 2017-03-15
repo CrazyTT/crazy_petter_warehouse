@@ -198,13 +198,13 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     if (TextUtils.isEmpty(mEdtPackstyle.getText().toString().trim())) {
-                        ToastUtils.showLong(PackDetialsActivity.this, "请扫描输入箱型");
-                        new Handler().postDelayed(new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mEdtPackstyle.requestFocus();
-                            }
-                        }), 300);
+//                        ToastUtils.showLong(PackDetialsActivity.this, "请扫描输入箱型");
+//                        new Handler().postDelayed(new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                mEdtPackstyle.requestFocus();
+//                            }
+//                        }), 300);
                         return;
                     }
                     JSONObject jsonObject = new JSONObject();
@@ -289,13 +289,13 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                 if (!hasFocus) {
                     //获取商品信息
                     if (TextUtils.isEmpty(mEdtSkuid.getText().toString().trim())) {
-                        new Handler().postDelayed(new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ToastUtils.showLong(PackDetialsActivity.this, "商品条码不能为空");
-                                mEdtSkuid.requestFocus();
-                            }
-                        }), 300);
+//                        new Handler().postDelayed(new Thread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                ToastUtils.showLong(PackDetialsActivity.this, "商品条码不能为空");
+//                                mEdtSkuid.requestFocus();
+//                            }
+//                        }), 300);
                         return;
                     }
                     getSkuInfo();
@@ -436,6 +436,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                 mEdtQty.setText("");
                 mList = new ArrayList<>();
                 mOrderAdapter.setList(mList);
+                mEdtPackNum.requestFocus();
                 if (isFinsh) {
                     this.finish();
                     ToastUtils.showLong(PackDetialsActivity.this, "装箱结束");
