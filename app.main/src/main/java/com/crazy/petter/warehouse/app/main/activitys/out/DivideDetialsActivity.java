@@ -2,6 +2,7 @@ package com.crazy.petter.warehouse.app.main.activitys.out;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -25,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -87,54 +89,54 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
                 return false;
             }
         });
-//        initAll();
         mBtnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (TextUtils.isEmpty(mEdtSkuId.getText().toString().trim())) {
                     ToastUtils.showLong(DivideDetialsActivity.this, "请先扫描");
                     return;
-                } else if (one == null) {
+                } else if (dataEntity.size() <= 0) {
                     ToastUtils.showLong(DivideDetialsActivity.this, "没有该商品的明细");
                     mEdtSkuId.setText("");
                     return;
                 }
                 ConfirmRebinWallWaveBean waveBean = new ConfirmRebinWallWaveBean();
-                waveBean.setOutboundId(one.getOutboundId());
-                waveBean.setSkuId(one.getSkuId());
-                waveBean.setContainerId(one.getContainerId());
-                waveBean.setObnSeq(one.getObnSeq() + "");
-                waveBean.setPickQty(one.getPickQty());
+                waveBean.setOutboundId(dataEntity.get(0).getOutboundId());
+                waveBean.setSkuId(dataEntity.get(0).getSkuId());
+                waveBean.setContainerId(dataEntity.get(0).getContainerId());
+                waveBean.setObnSeq(dataEntity.get(0).getObnSeq() + "");
+                waveBean.setPickQty(dataEntity.get(0).getPickQty());
                 waveBean.setWaveId(JsonUtil.getString(mDataEntity, "WAVE_ID"));
-                waveBean.setWavePickInc(one.getWavePickInc());
+                waveBean.setWavePickInc(dataEntity.get(0).getWavePickInc());
                 mDivideDetialsPresenter.commit(JsonFormatter.getInstance().object2Json(waveBean));
             }
         });
 
+        getCount();
+
     }
 
-//    private void initAll() {
-//        JSONObject jsonObject = new JSONObject();
-//        try {
-//            jsonObject.put("WaveId", JsonUtil.getString(mDataEntity, "WAVE_ID"));
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        mDivideDetialsPresenter.getOrderAll(jsonObject.toString());
-//    }
+    private void getCount() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("WaveId", JsonUtil.getString(mDataEntity, "WAVE_ID"));
+            jsonObject.put("BarCode", mEdtSkuId.getText().toString().trim());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mDivideDetialsPresenter.getCount(jsonObject.toString());
+    }
+
 
     @Override
     public void showTips(String s) {
-        mEdtSkuId.requestFocus();
         ToastUtils.showLong(this, s);
     }
 
     @Override
     public void setBottom(int totalQty2, int totalPickQty2) {
-        this.totalQty = totalQty2;
-        this.totalPickQty = totalPickQty2;
-        mTxtBottom.setText("总数量" + totalQty + "/已经分货数量" + totalPickQty);
-        if (totalQty == totalPickQty) {
+        mTxtBottom.setText("总数量" + totalQty2 + "/已经分货数量" + totalPickQty2);
+        if (totalQty2 == totalPickQty2) {
             ToastUtils.showLong(this, "此单已经分获完毕");
             if (isCommit) {
                 DivideDetialsActivity.this.finish();
@@ -142,26 +144,21 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
         }
     }
 
-    private int totalQty = 0;
-    private int totalPickQty = 0;
+    ArrayList<PickWaveDtBean.DataEntity> dataEntity = new ArrayList<>();
 
     @Override
-    public void getOrderAllFailure() {
-        mEdtSkuId.requestFocus();
-        mTxtBottom.setText("总数量xx/已经分货数量xx");
+    public void setOne(ArrayList<PickWaveDtBean.DataEntity> dataEntity2) {
+        dataEntity = dataEntity2;
+        setCurrent(0);
     }
 
-    PickWaveDtBean.DataEntity one;
-
-    @Override
-    public void setOne(PickWaveDtBean.DataEntity dataEntity, int totalQty, int totalPickQty) {
-        mTxtContainer.setText(dataEntity.getContainerId());
-        mTxtQty.setText(dataEntity.getPickQty());
-        mTxtWaveNum.setText(dataEntity.getExtId());
-        mEdtSkuId.setText(dataEntity.getSkuId());
-        one = dataEntity;
-        setBottom(totalQty, totalPickQty);
+    private void setCurrent(int index) {
+        mTxtContainer.setText(dataEntity.get(index).getContainerId());
+        mTxtQty.setText(dataEntity.get(index).getPickQty());
+        mTxtWaveNum.setText(dataEntity.get(index).getOutboundId());
+        mEdtSkuId.setText(dataEntity.get(index).getSkuId());
     }
+
 
     private boolean isCommit = false;
 
@@ -171,15 +168,23 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
         mTxtContainer.setText("");
         mTxtQty.setText("");
         mTxtWaveNum.setText("");
-        one = null;
+        dataEntity = new ArrayList<>();
         mEdtSkuId.requestFocus();
-        mTxtBottom.setText("总数量xx/已经分货数量xx");
-//        initAll();
     }
 
     @Override
     public void getOrderOneFailure() {
         mEdtSkuId.setText("");
+        new Handler().postDelayed(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mEdtSkuId.requestFocus();
+            }
+        }), 300);
+    }
+
+    @Override
+    public void commitfailure() {
         mEdtSkuId.requestFocus();
     }
 

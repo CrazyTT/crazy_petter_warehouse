@@ -5,9 +5,12 @@ import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.SoundUtil;
 import com.crazy.petter.warehouse.app.main.beans.PickWaveDtBean;
 import com.crazy.petter.warehouse.app.main.views.DivideDetialsView;
+
+import org.json.JSONObject;
 
 /**
  * Created by liuliuchen on 2017/2/16.
@@ -21,30 +24,30 @@ public class DivideDetialsPresenter extends BasePresenter {
         mDivideDetialsView = iBaseView;
     }
 
-    public void getOrderAll(String params) {
-        requestData(Constant.SERVER_URL_BASE + Constant.QueryReBinWallWaveDt, params, new DataCallBack() {
+    public void getCount(String params) {
+        requestData2(Constant.SERVER_URL_BASE + Constant.QueryReBinWallWaveDt, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
-                PickWaveDtBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), PickWaveDtBean.class);
-                mDivideDetialsView.setBottom(scanStoreageBean.getTotalQty(), scanStoreageBean.getTotalPickQty());
+
             }
 
             @Override
             public void onFailure(String s) {
-                SoundUtil.getInstance(context).play(0);
-                mDivideDetialsView.getOrderAllFailure();
+                JSONObject jsonObject = JsonUtil.from(s);
+                mDivideDetialsView.setBottom(JsonUtil.getInt(jsonObject, "TotalQty"), JsonUtil.getInt(jsonObject, "TotalPickQty"));
             }
         });
 
     }
 
-    public void getOrderOne(String params) {
+    public void getOrderOne(final String params) {
         requestData(Constant.SERVER_URL_BASE + Constant.QueryReBinWallWaveDt, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
                 PickWaveDtBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), PickWaveDtBean.class);
                 if (scanStoreageBean.getData() != null && scanStoreageBean.getData().size() > 0) {
-                    mDivideDetialsView.setOne(scanStoreageBean.getData().get(0),scanStoreageBean.getTotalQty(), scanStoreageBean.getTotalPickQty());
+                    mDivideDetialsView.setOne(scanStoreageBean.getData());
+                    getCount(params);
                 } else {
                     mDivideDetialsView.getOrderOneFailure();
                     mDivideDetialsView.showTips("没有查到明细");
@@ -73,6 +76,7 @@ public class DivideDetialsPresenter extends BasePresenter {
 
             @Override
             public void onFailure(String s) {
+                mDivideDetialsView.commitfailure();
                 SoundUtil.getInstance(context).play(0);
                 context.stopProgress();
             }

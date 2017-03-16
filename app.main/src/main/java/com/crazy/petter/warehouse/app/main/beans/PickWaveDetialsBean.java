@@ -38,9 +38,9 @@ public class PickWaveDetialsBean extends BaseBean {
         public String PickLoc;
         public String SkuId;
         public String SkuName;
-        public int Qty;
-        public int PickedQty;
-        public int WaitPickQty;
+        public double Qty;
+        public double PickedQty;
+        public double WaitPickQty;
         public ArrayList<LotPropertyEntity> LotProperty;
 
         public String getWaveId() {
@@ -83,27 +83,27 @@ public class PickWaveDetialsBean extends BaseBean {
             this.SkuName = SkuName;
         }
 
-        public int getQty() {
+        public double getQty() {
             return Qty;
         }
 
-        public void setQty(int Qty) {
+        public void setQty(double Qty) {
             this.Qty = Qty;
         }
 
-        public int getPickedQty() {
+        public double getPickedQty() {
             return PickedQty;
         }
 
-        public void setPickedQty(int PickedQty) {
+        public void setPickedQty(double PickedQty) {
             this.PickedQty = PickedQty;
         }
 
-        public int getWaitPickQty() {
+        public double getWaitPickQty() {
             return WaitPickQty;
         }
 
-        public void setWaitPickQty(int WaitPickQty) {
+        public void setWaitPickQty(double WaitPickQty) {
             this.WaitPickQty = WaitPickQty;
         }
 

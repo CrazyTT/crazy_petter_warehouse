@@ -2,6 +2,7 @@ package com.bjdv.lib.utils.base;
 
 import com.bjdv.lib.utils.network.Connection;
 import com.bjdv.lib.utils.network.RequestCallBack;
+import com.bjdv.lib.utils.network.RequestCallBack2;
 import com.bjdv.lib.utils.util.JsonFormatter;
 
 /**
@@ -54,6 +55,28 @@ public abstract class BasePresenter implements IPresenter<String> {
             }
         };
         mConnection.requestData(url, params, tag, callBack);
+    }
+
+    public void requestData2(String url, String params, final DataCallBack dataCallBack) {
+        mConnection = Connection.getInstance(context);
+        RequestCallBack2 callBack = new RequestCallBack2() {
+            @Override
+            public void onResponse(String response) {
+                BaseBean baseBean = JsonFormatter.getInstance().json2object(response, BaseBean.class);
+                if (baseBean.isSuccess()) {
+                    dataCallBack.onSuccess(response);
+                } else {
+                    dataCallBack.onFailure(response);//失败提示
+                }
+            }
+
+            @Override
+            public void onErrorResponse(String errorInfo) {
+                iBaseView.showTips(errorInfo);
+                dataCallBack.onFailure(errorInfo);
+            }
+        };
+        mConnection.requestData2(url, params, tag, callBack);
     }
 
     /**

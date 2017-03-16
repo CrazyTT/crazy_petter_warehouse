@@ -49,9 +49,9 @@ public class PickDetialsBean extends BaseBean {
         public String SkuName;
         public String ExtLot;
         public String PickLoc;
-        public int Qty;
-        public int PickedQty;
-        public int WaitPickQty;
+        public double Qty;
+        public double PickedQty;
+        public double WaitPickQty;
         public String SkuProperty;
         public boolean ShelfLifeCtrl;
         public String ShelfLifeCtrlType;
@@ -117,27 +117,27 @@ public class PickDetialsBean extends BaseBean {
             this.PickLoc = PickLoc;
         }
 
-        public int getQty() {
+        public double getQty() {
             return Qty;
         }
 
-        public void setQty(int Qty) {
+        public void setQty(double Qty) {
             this.Qty = Qty;
         }
 
-        public int getPickedQty() {
+        public double getPickedQty() {
             return PickedQty;
         }
 
-        public void setPickedQty(int PickedQty) {
+        public void setPickedQty(double PickedQty) {
             this.PickedQty = PickedQty;
         }
 
-        public int getWaitPickQty() {
+        public double getWaitPickQty() {
             return WaitPickQty;
         }
 
-        public void setWaitPickQty(int WaitPickQty) {
+        public void setWaitPickQty(double WaitPickQty) {
             this.WaitPickQty = WaitPickQty;
         }
 

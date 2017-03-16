@@ -138,6 +138,72 @@ public class Connection {
         }
     }
 
+    public void requestData2(String url, final String params, String Tag, final RequestCallBack2 callback) {
+        LogUtils.i(TAG, "[volly request]->url=" + url);
+        LogUtils.i(TAG, "[volly params]->params=" + params);
+        try {
+            if (mRequestQueue == null) {
+                LogUtils.e(TAG, "Volley未初始化，请先执行初始化方法");
+                return;
+            }
+            final byte[] content = params.getBytes("UTF-8");
+            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String s) {
+                    if (callback != null) {
+                        String resp = s;
+                        KLog.json(resp);
+                        KLog.i(resp);
+                        callback.onResponse(resp);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    LogUtils.i(TAG, "[volly onResponse]->volleyError=" + getErrorInfo(volleyError));
+                    if (callback != null)
+                        callback.onErrorResponse(getErrorInfo(volleyError));
+                }
+            }) {
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    return content;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> sendHeader = new HashMap<>();
+                    if (true) {
+                        sendHeader.put("Content-Type", "application/json; charset=UTF-8");
+                        sendHeader.put("userName", sp.getString("userName"));
+                        sendHeader.put("apiKey", sp.getString("passWord"));
+                    }
+                    return sendHeader;
+                }
+
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=UTF-8";
+                }
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    response.headers.put("Content-Type", "application/json; charset=UTF-8");
+                    return super.parseNetworkResponse(response);
+                }
+            };
+            request.setRetryPolicy(new DefaultRetryPolicy(15 * 000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            request.setTag(Tag);
+            if (JsonUtil.jsonArrayToBooleanArray2()) {
+                mRequestQueue.add(request);
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void requestData(String url, final Map<String, String> params, String Tag, final RequestCallBack callback) {
         LogUtils.i(TAG, "[volly request]->url=" + url);
         LogUtils.i(TAG, "[volly params]->params=" + params);

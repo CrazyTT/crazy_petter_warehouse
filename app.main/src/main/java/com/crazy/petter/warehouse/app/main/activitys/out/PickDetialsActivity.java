@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -178,7 +179,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
                 detailsEntities.add(detailsEntity);
                 confirmObnPickBean.setDetails(detailsEntities);
                 confirmObnPickBean.setOutboundId(JsonUtil.getString(mDataEntity, "OBN_ID"));
-                if (Integer.parseInt(mEdtQty.getText().toString().trim()) > Integer.parseInt(mTxtQty.getText().toString())) {
+                if (Double.parseDouble(mEdtQty.getText().toString().trim()) > Double.parseDouble(mTxtQty.getText().toString())) {
                     ToastUtils.showLong(PickDetialsActivity.this, "拣货数量超出范围了");
                     return;
                 }
@@ -245,8 +246,8 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
                 setCurrent(0);
             }
         } else {
-            datas.get(current).setWaitPickQty(Integer.parseInt(mTxtQty.getText().toString().trim()) - Integer.parseInt(mEdtQty.getText().toString().trim()));
-            mTxtQty.setText(Integer.parseInt(mTxtQty.getText().toString().trim()) - Integer.parseInt(mEdtQty.getText().toString().trim()) + "");
+            datas.get(current).setWaitPickQty(Double.parseDouble(mTxtQty.getText().toString().trim()) - Double.parseDouble(mEdtQty.getText().toString().trim()));
+            mTxtQty.setText(decimalFormat.format(Double.parseDouble(mTxtQty.getText().toString().trim()) - Double.parseDouble(mEdtQty.getText().toString().trim())));
             mEdtQty.setText("");
             mEdtQty.requestFocus();
         }
@@ -309,7 +310,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
         } else {
             boolean exist = false;
             String skuName = "";
-            int count = -1;
+            double count = -1;
             for (int i = 0; i < data.size(); i++) {
                 if (data.get(i).getSkuId().equalsIgnoreCase(currentSkuid) && data.get(i).getWaitPickQty() > 0) {
                     exist = true;
@@ -361,10 +362,11 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
     private void setCurrent(int postion) {
         mTxtLoc.setText(datas.get(postion).getPickLoc());
         mTxtSkuid.setText(datas.get(postion).getSkuId());
-        mTxtQty.setText(datas.get(postion).getWaitPickQty() + "");
+        mTxtQty.setText(decimalFormat.format(datas.get(postion).getWaitPickQty()));
         currentSkuid = datas.get(postion).getSkuId();
     }
 
+    DecimalFormat decimalFormat = new DecimalFormat("###################.###########");
     int all = 0;
     int finish = 0;
 
