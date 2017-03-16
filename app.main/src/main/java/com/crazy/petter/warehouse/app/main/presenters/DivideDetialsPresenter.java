@@ -44,8 +44,9 @@ public class DivideDetialsPresenter extends BasePresenter {
             public void onSuccess(Object o) {
                 PickWaveDtBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), PickWaveDtBean.class);
                 if (scanStoreageBean.getData() != null && scanStoreageBean.getData().size() > 0) {
-                    mDivideDetialsView.setOne(scanStoreageBean.getData().get(0));
+                    mDivideDetialsView.setOne(scanStoreageBean.getData().get(0),scanStoreageBean.getTotalQty(), scanStoreageBean.getTotalPickQty());
                 } else {
+                    mDivideDetialsView.getOrderOneFailure();
                     mDivideDetialsView.showTips("没有查到明细");
                     SoundUtil.getInstance(context).play(0);
                 }
@@ -54,6 +55,7 @@ public class DivideDetialsPresenter extends BasePresenter {
 
             @Override
             public void onFailure(String s) {
+                mDivideDetialsView.getOrderOneFailure();
                 SoundUtil.getInstance(context).play(0);
             }
         });

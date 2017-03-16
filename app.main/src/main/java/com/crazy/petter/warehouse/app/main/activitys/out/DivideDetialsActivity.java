@@ -77,7 +77,7 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
                     JSONObject jsonObject = new JSONObject();
                     try {
                         jsonObject.put("WaveId", JsonUtil.getString(mDataEntity, "WAVE_ID"));
-                        jsonObject.put("SkuId", mEdtSkuId.getText().toString().trim());
+                        jsonObject.put("BarCode", mEdtSkuId.getText().toString().trim());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -87,7 +87,7 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
                 return false;
             }
         });
-        initAll();
+//        initAll();
         mBtnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,15 +113,15 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
 
     }
 
-    private void initAll() {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("WaveId", JsonUtil.getString(mDataEntity, "WAVE_ID"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        mDivideDetialsPresenter.getOrderAll(jsonObject.toString());
-    }
+//    private void initAll() {
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("WaveId", JsonUtil.getString(mDataEntity, "WAVE_ID"));
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        mDivideDetialsPresenter.getOrderAll(jsonObject.toString());
+//    }
 
     @Override
     public void showTips(String s) {
@@ -154,12 +154,13 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
     PickWaveDtBean.DataEntity one;
 
     @Override
-    public void setOne(PickWaveDtBean.DataEntity dataEntity) {
+    public void setOne(PickWaveDtBean.DataEntity dataEntity, int totalQty, int totalPickQty) {
         mTxtContainer.setText(dataEntity.getContainerId());
         mTxtQty.setText(dataEntity.getPickQty());
         mTxtWaveNum.setText(dataEntity.getExtId());
         mEdtSkuId.setText(dataEntity.getSkuId());
         one = dataEntity;
+        setBottom(totalQty, totalPickQty);
     }
 
     private boolean isCommit = false;
@@ -172,7 +173,14 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
         mTxtWaveNum.setText("");
         one = null;
         mEdtSkuId.requestFocus();
-        initAll();
+        mTxtBottom.setText("总数量xx/已经分货数量xx");
+//        initAll();
+    }
+
+    @Override
+    public void getOrderOneFailure() {
+        mEdtSkuId.setText("");
+        mEdtSkuId.requestFocus();
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {

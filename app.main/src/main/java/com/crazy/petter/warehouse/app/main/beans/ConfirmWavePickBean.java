@@ -47,7 +47,7 @@ public class ConfirmWavePickBean {
         private String PickLoc;
         private String SkuId;
         private String SkuName;
-        private int Qty;
+        private double Qty;
         private ArrayList<PickWaveDetialsBean.DataEntity.LotPropertyEntity> LotProperty;
 
         public int getLocSeq() {
@@ -82,11 +82,11 @@ public class ConfirmWavePickBean {
             this.SkuName = SkuName;
         }
 
-        public int getQty() {
+        public double getQty() {
             return Qty;
         }
 
-        public void setQty(int Qty) {
+        public void setQty(double Qty) {
             this.Qty = Qty;
         }
 

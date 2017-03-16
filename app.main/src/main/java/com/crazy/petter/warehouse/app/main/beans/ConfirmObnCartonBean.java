@@ -22,7 +22,7 @@ public class ConfirmObnCartonBean  {
     private boolean AutoCartonId;
     private String BarCode;
     private String SkuId;
-    private int Qty;
+    private double Qty;
 
     public String getOutboundId() {
         return OutboundId;
@@ -72,11 +72,11 @@ public class ConfirmObnCartonBean  {
         this.SkuId = SkuId;
     }
 
-    public int getQty() {
+    public double getQty() {
         return Qty;
     }
 
-    public void setQty(int Qty) {
+    public void setQty(double Qty) {
         this.Qty = Qty;
     }
 }

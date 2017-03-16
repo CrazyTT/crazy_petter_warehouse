@@ -33,10 +33,10 @@ public class PackBean extends BaseBean {
 
         public String CartonTypeId;
         public String CartonTypeDesc;
-        public int Length;
-        public int Width;
-        public int Height;
-        public int Weight;
+        public double Length;
+        public double Width;
+        public double Height;
+        public double Weight;
         public double Volume;
 
         public String getCartonTypeId() {
@@ -55,35 +55,35 @@ public class PackBean extends BaseBean {
             this.CartonTypeDesc = CartonTypeDesc;
         }
 
-        public int getLength() {
+        public double getLength() {
             return Length;
         }
 
-        public void setLength(int Length) {
+        public void setLength(double Length) {
             this.Length = Length;
         }
 
-        public int getWidth() {
+        public double getWidth() {
             return Width;
         }
 
-        public void setWidth(int Width) {
+        public void setWidth(double Width) {
             this.Width = Width;
         }
 
-        public int getHeight() {
+        public double getHeight() {
             return Height;
         }
 
-        public void setHeight(int Height) {
+        public void setHeight(double Height) {
             this.Height = Height;
         }
 
-        public int getWeight() {
+        public double getWeight() {
             return Weight;
         }
 
-        public void setWeight(int Weight) {
+        public void setWeight(double Weight) {
             this.Weight = Weight;
         }
 

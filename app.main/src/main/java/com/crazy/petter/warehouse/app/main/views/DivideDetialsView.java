@@ -12,7 +12,10 @@ public interface DivideDetialsView extends IBaseView {
 
     void getOrderAllFailure();
 
-    void setOne(PickWaveDtBean.DataEntity dataEntity);
+    void setOne(PickWaveDtBean.DataEntity dataEntity,int totalQty, int totalPickQty);
 
     void commitOk();
+
+    void getOrderOneFailure();
+
 }

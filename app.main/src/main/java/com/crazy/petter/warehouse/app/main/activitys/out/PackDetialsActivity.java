@@ -97,6 +97,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     }
 
     double weight = 0;
+    double weightBox = 0;
 
     private void initViews() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -117,9 +118,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                     ToastUtils.showLong(PackDetialsActivity.this, "还没有添加任何明细");
                     return;
                 }
-                for (JSONObject dataEntity : mList) {
-                    weight += Double.parseDouble(JsonUtil.getString(dataEntity, "TOTAL_GROSS_WEIGHT"));//这里需要确定
-                }
+                weight += Double.parseDouble(JsonUtil.getString(mList.get(0), "TOTAL_GROSS_WEIGHT"));//这里需要确定
                 Intent intent = new Intent(PackDetialsActivity.this, SealActivity.class);
                 intent.putExtra("OutboundId", JsonUtil.getString(mDataEntity, "OBN_ID"));
                 intent.putExtra("CartonId", mEdtPackNum.getText().toString().trim());
@@ -217,8 +216,6 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                 }
             }
         });
-
-
         mBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -347,7 +344,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         temp.setBarCode(barCode);
         temp.setCartonId(mEdtPackNum.getText().toString().trim());
         temp.setCartonTypeId(cartonTypeId);
-        temp.setQty(Integer.parseInt(mEdtQty.getText().toString().trim()));
+        temp.setQty(Double.parseDouble(mEdtQty.getText().toString().trim()));
         temp.setSkuId(mEdtSkuid.getText().toString().trim());
         mPackDetialsPresenter.addList(JsonFormatter.getInstance().object2Json(temp));
     }
@@ -402,6 +399,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         mEdtPackstyle.requestFocus();
         mEdtPackstyle.setText("");
         weight = 0;
+        weightBox = 0;
     }
 
     @Override
@@ -414,12 +412,14 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
             SoundUtil.getInstance(PackDetialsActivity.this).play(0);
             cartonTypeId = "";
             weight = 0;
+            weightBox = 0;
             return;
         }
         cartonTypeId = data.get(0).getCartonTypeId();
         mEdtPackstyle.setText(data.get(0).getCartonTypeId());
         Volume = data.get(0).getVolume();
         weight = data.get(0).getWeight();
+        weightBox = data.get(0).getWeight();
         mEdtSkuid.requestFocus();
     }
 
@@ -428,6 +428,7 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        weight = weightBox;//初始化总的重量
         if (resultCode == RESULT_OK) {
             if (requestCode == 0x123) {
                 mEdtPackNum.setText("");

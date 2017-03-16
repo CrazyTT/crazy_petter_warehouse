@@ -49,7 +49,7 @@ public class ConfirmObnPickBean {
         private int SeqNo;
         private String SkuId;
         private String SkuName;
-        private int Qty;
+        private double Qty;
         private String ToLoc;
         private String LpnNo;
 
@@ -85,11 +85,11 @@ public class ConfirmObnPickBean {
             this.SkuName = SkuName;
         }
 
-        public int getQty() {
+        public double getQty() {
             return Qty;
         }
 
-        public void setQty(int Qty) {
+        public void setQty(double Qty) {
             this.Qty = Qty;
         }
 

@@ -181,7 +181,7 @@ public class ReceiptFragment extends Fragment implements ReceiptView {
                     ToastUtils.showLong(getActivity(), "请输入数量");
                     return;
                 }
-                detailsEntity.setReceiptQty(Integer.parseInt(mEdtNum.getText().toString().trim()));
+                detailsEntity.setReceiptQty(Double.parseDouble(mEdtNum.getText().toString().trim()));
                 detailsEntity.setSeqNo(goodsBean.getData().get(0).getSeqNo());
                 detailsEntity.setSkuId(goodsBean.getData().get(0).getSkuId());
                 detailsEntity.setSkuName(goodsBean.getData().get(0).getSkuName());

@@ -170,7 +170,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
                     ToastUtils.showLong(PickDetialsActivity.this, "数量不能为空");
                     return;
                 }
-                detailsEntity.setQty(Integer.parseInt(mEdtQty.getText().toString().trim()));
+                detailsEntity.setQty(Double.parseDouble(mEdtQty.getText().toString().trim()));
                 detailsEntity.setSeqNo(temp.getSeqNo());
                 detailsEntity.setSkuId(temp.getSkuId());
                 detailsEntity.setSkuName(temp.getSkuName());

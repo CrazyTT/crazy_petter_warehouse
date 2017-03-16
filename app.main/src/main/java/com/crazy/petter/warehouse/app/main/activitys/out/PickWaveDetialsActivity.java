@@ -171,7 +171,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
                     ToastUtils.showLong(PickWaveDetialsActivity.this, "数量不能为空");
                     return;
                 }
-                detailsEntity.setQty(Integer.parseInt(mEdtQty.getText().toString().trim()));
+                detailsEntity.setQty(Double.parseDouble(mEdtQty.getText().toString().trim()));
                 detailsEntity.setSkuId(temp.getSkuId());
                 detailsEntity.setSkuName(temp.getSkuName());
                 detailsEntity.setLocSeq(temp.getLocSeq());
@@ -282,7 +282,9 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
     @Override
     public void setList(ArrayList<PickWaveDetialsBean.DataEntity> data) {
         if (data == null || data.size() <= 0) {
-            ToastUtils.showLong(this, "此单没有明细");
+            ToastUtils.showLong(this, "货位有误");
+            mEdtLoc.setText("");
+            mEdtLoc.requestFocus();
             return;
         }
         if (isFirst) {
