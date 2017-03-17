@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.util.JsonFormatter;
 import com.bjdv.lib.utils.util.JsonUtil;
+import com.bjdv.lib.utils.util.StringUtils;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.crazy.petter.warehouse.app.main.R;
@@ -169,6 +170,10 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
                 detailsEntity.setLpnNo("");
                 if (TextUtils.isEmpty(mEdtQty.getText().toString().trim())) {
                     ToastUtils.showLong(PickDetialsActivity.this, "数量不能为空");
+                    return;
+                }
+                if (!StringUtils.isDouble(mEdtQty.getText().toString().trim())) {
+                    ToastUtils.showLong(PickDetialsActivity.this, "请输入合法数量");
                     return;
                 }
                 detailsEntity.setQty(Double.parseDouble(mEdtQty.getText().toString().trim()));

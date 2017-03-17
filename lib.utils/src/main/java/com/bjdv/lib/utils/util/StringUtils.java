@@ -658,14 +658,16 @@ public class StringUtils {
         }
         return false;
     }
+
     /**
      * 判断一个字符串是否都为数字
      */
-    public  static boolean isDigit(String strNum) {
+    public static boolean isDigit(String strNum) {
         Pattern pattern = Pattern.compile("[0-9]{1,}");
         Matcher matcher = pattern.matcher((CharSequence) strNum);
         return matcher.matches();
     }
+
     /**
      * 判断是否是合法的手机号码
      *
@@ -677,5 +679,14 @@ public class StringUtils {
                 .compile("^((13[0-9])|(15[^4,\\D])|(18[0-9]))\\d{8}$");
         Matcher m = p.matcher(mobiles);
         return m.matches();
+    }
+
+    public static boolean isDouble(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException ex) {
+        }
+        return false;
     }
 }

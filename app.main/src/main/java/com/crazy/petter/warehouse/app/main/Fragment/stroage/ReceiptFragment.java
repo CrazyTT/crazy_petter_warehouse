@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.util.JsonFormatter;
 import com.bjdv.lib.utils.util.SharedPreferencesUtil;
+import com.bjdv.lib.utils.util.StringUtils;
 import com.bjdv.lib.utils.util.ToastUtils;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.crazy.petter.warehouse.app.main.R;
@@ -179,6 +180,10 @@ public class ReceiptFragment extends Fragment implements ReceiptView {
                 }
                 if (TextUtils.isEmpty(mEdtNum.getText().toString().trim())) {
                     ToastUtils.showLong(getActivity(), "请输入数量");
+                    return;
+                }
+                if (!StringUtils.isDouble(mEdtNum.getText().toString().trim())) {
+                    ToastUtils.showLong(getActivity(), "请输入合法数量");
                     return;
                 }
                 detailsEntity.setReceiptQty(Double.parseDouble(mEdtNum.getText().toString().trim()));
