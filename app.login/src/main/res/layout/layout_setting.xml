@@ -15,36 +15,44 @@
         android:textColor="@color/colorAccent"
         android:textSize="20sp"/>
 
-    <LinearLayout
+    <com.bjdv.lib.utils.widgets.CustomHorizontalScrollView
+        android:id="@+id/hsv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:scrollbars="none">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:text="服务器设置"
-            android:textColor="@color/colorBlackTransparent"/>
-
-
-        <EditText
-            android:id="@+id/edt_url"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginLeft="20dp"
-            android:layout_weight="4"
-            android:background="@drawable/edt_back"
-            android:gravity="start"
-            android:maxHeight="80dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:textColor="@color/colorBlackTransparent"
-            android:textSize="15sp"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:text="服务器设置"
+                android:textColor="@color/colorBlackTransparent"/>
+
+
+            <EditText
+                android:id="@+id/edt_url"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="4"
+                android:background="@drawable/edt_back"
+                android:gravity="center_vertical"
+                android:maxHeight="80dp"
+                android:minWidth="160dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/colorBlackTransparent"
+                android:textSize="15sp"/>
+        </LinearLayout>
+    </com.bjdv.lib.utils.widgets.CustomHorizontalScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
