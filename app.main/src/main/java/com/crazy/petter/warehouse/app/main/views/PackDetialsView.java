@@ -22,4 +22,6 @@ public interface PackDetialsView extends IBaseView {
     void getSkuFailure();
 
     void showSkuInfo(ArrayList<SkuBean.DataEntity> data);
+
+    void getListFailure();
 }

@@ -66,20 +66,39 @@ public class DivideDetialsPresenter extends BasePresenter {
 
     public void commit(String params) {
         context.showProgress("确认分货中...", false);
-        requestData(Constant.SERVER_URL_BASE + Constant.ConfirmRebinWallWave, params, new DataCallBack() {
+        requestData2(Constant.SERVER_URL_BASE + Constant.ConfirmRebinWallWave, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
                 context.stopProgress();
                 mDivideDetialsView.commitOk();
                 SoundUtil.getInstance(context).play(1);
+                JSONObject jsonObject = JsonUtil.from(o.toString());
+                mDivideDetialsView.setBottom(JsonUtil.getInt(jsonObject, "TotalQty"), JsonUtil.getInt(jsonObject, "TotalPickQty"));
             }
 
             @Override
             public void onFailure(String s) {
-                mDivideDetialsView.commitfailure();
-                SoundUtil.getInstance(context).play(0);
                 context.stopProgress();
+                mDivideDetialsView.commitfailure();
+                JSONObject jsonObject = JsonUtil.from(s);
+                mDivideDetialsView.setBottom(JsonUtil.getInt(jsonObject, "TotalQty"), JsonUtil.getInt(jsonObject, "TotalPickQty"));
             }
         });
+//        context.showProgress("确认分货中...", false);
+//        requestData(Constant.SERVER_URL_BASE + Constant.ConfirmRebinWallWave, params, new DataCallBack() {
+//            @Override
+//            public void onSuccess(Object o) {
+//                context.stopProgress();
+//                mDivideDetialsView.commitOk();
+//                SoundUtil.getInstance(context).play(1);
+//            }
+//
+//            @Override
+//            public void onFailure(String s) {
+//                mDivideDetialsView.commitfailure();
+//                SoundUtil.getInstance(context).play(0);
+//                context.stopProgress();
+//            }
+//        });
     }
 }

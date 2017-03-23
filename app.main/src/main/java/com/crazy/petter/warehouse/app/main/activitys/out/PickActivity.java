@@ -126,8 +126,8 @@ public class PickActivity extends BaseActivity implements PickView {
     }
 
     private void jump(int postion) {
-        mEdtOrderNum.setText(JsonUtil.getString(mOrderAdapter.getList().get(postion),""));
-        mEdtOrderNum.setSelection(JsonUtil.getString(mOrderAdapter.getList().get(postion),"").length());
+        mEdtOrderNum.setText(JsonUtil.getString(mOrderAdapter.getList().get(postion),"OBN_ID"));
+        mEdtOrderNum.setSelection(JsonUtil.getString(mOrderAdapter.getList().get(postion),"OBN_ID").length());
         Intent intent = new Intent(this, PickDetialsActivity.class);
         intent.putExtra("detials", mOrderAdapter.getList().get(postion).toString());
         startActivity(intent);

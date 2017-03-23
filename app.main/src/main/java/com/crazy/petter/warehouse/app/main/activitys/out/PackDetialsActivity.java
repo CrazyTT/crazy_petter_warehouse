@@ -39,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -132,36 +133,68 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
                 startActivityForResult(intent, 0x123);
             }
         });
-//        mEdtPackNum.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-//                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    if (imm.isActive()) {
-//                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
-//                    }
-//                    if (TextUtils.isEmpty(mEdtPackNum.getText().toString().trim())) {
-//                        ToastUtils.showLong(PackDetialsActivity.this, "请扫描输入箱号");
+        mEdtPackNum.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm.isActive()) {
+                        imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    }
+                    if (TextUtils.isEmpty(mEdtPackNum.getText().toString().trim())) {
+                        ToastUtils.showLong(PackDetialsActivity.this, "请扫描输入箱号");
+                        new Handler().postDelayed(new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mEdtPackNum.requestFocus();
+                            }
+                        }), 300);
+                        return true;
+                    }
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("SkuId", "");
+                        jsonObject.put("CartonId", mEdtPackNum.getText().toString().trim());
+                        jsonObject.put("OutboundId", JsonUtil.getString(mDataEntity, "OBN_ID"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    mPackDetialsPresenter.getList(jsonObject.toString());
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+        mEdtPackNum.setOnFocusChangeListener(new android.view.View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    if (TextUtils.isEmpty(mEdtPackNum.getText().toString().trim())) {
+//                        ToastUtils.showLong(PackDetialsActivity.this, "请扫描输入箱型");
 //                        new Handler().postDelayed(new Thread(new Runnable() {
 //                            @Override
 //                            public void run() {
-//                                mEdtPackNum.requestFocus();
+//                                mEdtPackstyle.requestFocus();
 //                            }
 //                        }), 300);
-//                        return true;
-//                    }
-//                    JSONObject jsonObject = new JSONObject();
-//                    try {
-//                        jsonObject.put("TypeId", mEdtPackNum.getText().toString().trim());
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                    mPackDetialsPresenter.getPackType(jsonObject.toString());
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
+                        return;
+                    }
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("SkuId", "");
+                        jsonObject.put("CartonId", mEdtPackNum.getText().toString().trim());
+                        jsonObject.put("OutboundId", JsonUtil.getString(mDataEntity, "OBN_ID"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    mPackDetialsPresenter.getList(jsonObject.toString());
+                }
+            }
+        });
+
+
         mEdtPackstyle.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -322,6 +355,12 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
     }
 
     @Override
+    public void getListFailure() {
+        mEdtPackNum.setText("");
+        mEdtPackNum.requestFocus();
+    }
+
+    @Override
     public void getSkuFailure() {
         mEdtSkuid.setText("");
         ToastUtils.showLong(this, "查询不到此条码的商品");
@@ -354,9 +393,12 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         mEdtQty.requestFocus();
     }
 
+    DecimalFormat decimalFormat = new DecimalFormat("###################.###########");
+
     @Override
     public void setConfirmResult(String data) {
         OrderBeanPack orderBean = JsonFormatter.getInstance().json2object(data.toString(), OrderBeanPack.class);
+        mTxtReminder.setText(decimalFormat.format(orderBean.getTotalPackageQty()) + "    /   " + decimalFormat.format(orderBean.getTotalPickedQty()));
         TitleBean titleBean = JsonUtil.getTitle(data);
         if (titleBean == null) {
             return;
@@ -384,7 +426,6 @@ public class PackDetialsActivity extends BaseActivity implements PackDetialsView
         mEdtSkuid.requestFocus();
         mEdtSkuid.setText("");
         mEdtQty.setText("");
-        mTxtReminder.setText(orderBean.getTotalPackageQty() + "    /   " + orderBean.getTotalPickedQty());
         if (orderBean.getTotalPackageQty() >= orderBean.getTotalPickedQty()) {
             isFinsh = true;
         } else {

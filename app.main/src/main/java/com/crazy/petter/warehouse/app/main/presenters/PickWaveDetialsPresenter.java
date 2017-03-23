@@ -22,37 +22,39 @@ public class PickWaveDetialsPresenter extends BasePresenter {
     }
 
     public void getOrders(String params) {
+        context.showProgress("查询数据中。。。", false);
         requestData(Constant.SERVER_URL_BASE + Constant.QueryWavePickDt, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
+                context.stopProgress();
                 PickWaveDetialsBean scanStoreageBean = JsonFormatter.getInstance().json2object(o.toString(), PickWaveDetialsBean.class);
                 mPickDetialsView.setList(scanStoreageBean.getData());
-                context.stopProgress();
             }
 
             @Override
             public void onFailure(String s) {
-                mPickDetialsView.getOrderFailure();
                 context.stopProgress();
+                mPickDetialsView.getOrderFailure();
                 SoundUtil.getInstance(context).play(0);
             }
         });
     }
 
     public void commit(String params) {
+        context.showProgress("确认拣货中。。。", false);
         requestData(Constant.SERVER_URL_BASE + Constant.ConfirmWavePic, params, new DataCallBack() {
             @Override
             public void onSuccess(Object o) {
+                context.stopProgress();
                 mPickDetialsView.commitOk();
                 SoundUtil.getInstance(context).play(1);
-
-                context.stopProgress();
             }
 
             @Override
             public void onFailure(String s) {
-                SoundUtil.getInstance(context).play(0);
                 context.stopProgress();
+                mPickDetialsView.commitFauilure();
+                SoundUtil.getInstance(context).play(0);
             }
         });
 

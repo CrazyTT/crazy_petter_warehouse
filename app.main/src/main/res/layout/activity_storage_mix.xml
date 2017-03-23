@@ -19,8 +19,7 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/main_tab"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="3"
+            android:layout_height="0dp"
             android:visibility="visible"
             app:tabIndicatorColor="@color/colorTitleBar"
             app:tabMode="fixed"
@@ -37,7 +36,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
@@ -49,10 +48,10 @@
                 android:text="单号:"/>
 
             <me.grantland.widget.AutofitLayout
-                android:layout_marginLeft="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
                 android:layout_weight="2">
 
                 <com.bjdv.lib.utils.widgets.EditTextAuto
@@ -65,18 +64,18 @@
                     android:singleLine="true"
                     autofit:minTextSize="13sp"/>
             </me.grantland.widget.AutofitLayout>
+
             <com.bjdv.lib.utils.widgets.ButtonAutoBg
                 android:id="@+id/btn_query"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:text="查询"/>
         </LinearLayout>
-
-        <com.bjdv.lib.utils.widgets.NoScrollViewPager
-            android:id="@+id/main_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/main_tab"
-            android:layout_marginTop="5dp"/>
     </LinearLayout>
+
+    <com.bjdv.lib.utils.widgets.NoScrollViewPager
+        android:id="@+id/main_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/main_tab"/>
 </LinearLayout>

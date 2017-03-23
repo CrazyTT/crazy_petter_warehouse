@@ -20,7 +20,7 @@ public class ConfirmRebinWallWaveBean {
     private String ObnSeq;
     private String ContainerId;
     private String SkuId;
-    private int PickQty;
+    private double PickQty;
     private String WavePickInc;
 
     public String getWavePickInc() {
@@ -71,11 +71,11 @@ public class ConfirmRebinWallWaveBean {
         this.SkuId = SkuId;
     }
 
-    public int getPickQty() {
+    public double getPickQty() {
         return PickQty;
     }
 
-    public void setPickQty(int PickQty) {
+    public void setPickQty(double PickQty) {
         this.PickQty = PickQty;
     }
 }

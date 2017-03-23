@@ -41,7 +41,7 @@
                     android:layout_height="25dp"
                     android:layout_weight="1"
                     android:background="@drawable/edt_back"
-                    android:hint="请扫描输入货品条码"
+                    android:hint="请扫描货品条码"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:singleLine="true"

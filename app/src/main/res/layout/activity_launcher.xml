@@ -12,9 +12,19 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"
         android:gravity="center"
-        android:text="仓 库 管 理"
-        android:textColor="@color/colorAccent"
+        android:text="仓储扫描系统"
+        android:textColor="#fff"
         android:textSize="30sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="140dp"
+        android:gravity="right"
+        android:paddingRight="60dp"
+        android:text="—电商版"
+        android:textColor="#fff"
+        android:textSize="20sp"/>
 
 
     <LinearLayout

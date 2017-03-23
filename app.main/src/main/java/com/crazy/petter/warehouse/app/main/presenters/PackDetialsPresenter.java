@@ -93,4 +93,23 @@ public class PackDetialsPresenter extends BasePresenter {
         });
 
     }
+
+    public void getList(String params) {
+        requestData(Constant.SERVER_URL_BASE + Constant.ConfirmObnCarton, params, new DataCallBack() {
+            @Override
+            public void onSuccess(Object o) {
+                OrderBean orderBean = JsonFormatter.getInstance().json2object(o.toString(), OrderBean.class);
+                mPackDetialsView.setConfirmResult(o.toString());
+                context.stopProgress();
+            }
+
+            @Override
+            public void onFailure(String s) {
+                mPackDetialsView.getListFailure();
+                SoundUtil.getInstance(context).play(0);
+                context.stopProgress();
+            }
+        });
+
+    }
 }

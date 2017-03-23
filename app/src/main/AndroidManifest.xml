@@ -36,7 +36,7 @@
     <application
         android:name=".SmallApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher2"
+        android:icon="@mipmap/icon_first"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">

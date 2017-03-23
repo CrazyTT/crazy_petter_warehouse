@@ -69,8 +69,8 @@ public class PickWaveDtBean extends BaseBean {
         public String ContainerId;
         public String SkuId;
         public String SkuName;
-        public int PickQty;
-        private String WavePickInc;
+        public double PickQty;
+        public String WavePickInc;
 
         public String getWavePickInc() {
             return WavePickInc;
@@ -160,11 +160,11 @@ public class PickWaveDtBean extends BaseBean {
             this.SkuName = SkuName;
         }
 
-        public int getPickQty() {
+        public double getPickQty() {
             return PickQty;
         }
 
-        public void setPickQty(int PickQty) {
+        public void setPickQty(double PickQty) {
             this.PickQty = PickQty;
         }
     }

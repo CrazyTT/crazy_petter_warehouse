@@ -170,10 +170,17 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
                 detailsEntity.setLpnNo("");
                 if (TextUtils.isEmpty(mEdtQty.getText().toString().trim())) {
                     ToastUtils.showLong(PickDetialsActivity.this, "数量不能为空");
+                    mEdtQty.requestFocus();
                     return;
                 }
                 if (!StringUtils.isDouble(mEdtQty.getText().toString().trim())) {
                     ToastUtils.showLong(PickDetialsActivity.this, "请输入合法数量");
+                    mEdtQty.requestFocus();
+                    return;
+                }
+                if (Double.parseDouble(mEdtQty.getText().toString().trim()) == 0) {
+                    //// TODO: 2017/3/17  
+                    commitOk();
                     return;
                 }
                 detailsEntity.setQty(Double.parseDouble(mEdtQty.getText().toString().trim()));
@@ -186,6 +193,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
                 confirmObnPickBean.setOutboundId(JsonUtil.getString(mDataEntity, "OBN_ID"));
                 if (Double.parseDouble(mEdtQty.getText().toString().trim()) > Double.parseDouble(mTxtQty.getText().toString())) {
                     ToastUtils.showLong(PickDetialsActivity.this, "拣货数量超出范围了");
+                    mEdtQty.requestFocus();
                     return;
                 }
                 mPickDetialsPresenter.commit(JsonFormatter.getInstance().object2Json(confirmObnPickBean));
@@ -196,14 +204,20 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
     @Override
     public void commitOk() {
         //提交成功
-        if (mTxtQty.getText().toString().trim().equals(mEdtQty.getText().toString().trim())) {
+        if (Double.parseDouble(mTxtQty.getText().toString().trim()) == Double.parseDouble(mEdtQty.getText().toString().trim()) || Double.parseDouble(mEdtQty.getText().toString().trim()) == 0) {
             //这条记录拣货完毕了
-            boolean exist = false;
-            datas.get(current).setWaitPickQty(0);
-            finish++;
+            boolean exist = false;//是否存在相同位置，并且拣货数量>0的货品
+            datas.get(current).setWaitPickQty(Double.parseDouble(mTxtQty.getText().toString().trim()) - Double.parseDouble(mEdtQty.getText().toString().trim()));
+            int first = 0;
+            if (Double.parseDouble(mEdtQty.getText().toString().trim()) != 0) {
+                finish++;
+                first = 0;
+            } else {
+                first = current + 1;
+            }
             initBottom();
             mEdtQty.setText("");
-            for (int i = 0; i < datas.size(); i++) {
+            for (int i = first; i < datas.size(); i++) {
                 if (datas.get(i).getPickLoc().equalsIgnoreCase(currentLoc) && datas.get(i).getWaitPickQty() > 0) {
                     exist = true;
                     current = i;
@@ -271,6 +285,11 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
         }
     }
 
+    @Override
+    public void commitFailure() {
+        mEdtQty.requestFocus();
+    }
+
     private void getOrders(String params, boolean isFirst) {
         this.isFirst = isFirst;
         mPickDetialsPresenter.getOrders(params);
@@ -317,7 +336,7 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
             String skuName = "";
             double count = -1;
             for (int i = 0; i < data.size(); i++) {
-                if (data.get(i).getSkuId().equalsIgnoreCase(currentSkuid) && data.get(i).getWaitPickQty() > 0) {
+                if (data.get(i).getSeqNo() == currentSeqNo && data.get(i).getObnPickInc() == currentObnPickInc && data.get(i).getSkuId().equalsIgnoreCase(currentSkuid) && data.get(i).getWaitPickQty() > 0) {
                     exist = true;
                     temp = data.get(i);
                     break;
@@ -369,7 +388,12 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
         mTxtSkuid.setText(datas.get(postion).getSkuId());
         mTxtQty.setText(decimalFormat.format(datas.get(postion).getWaitPickQty()));
         currentSkuid = datas.get(postion).getSkuId();
+        currentSeqNo = datas.get(postion).getSeqNo();
+        currentObnPickInc = datas.get(postion).getObnPickInc();
     }
+
+    int currentSeqNo = -1;
+    int currentObnPickInc = -1;
 
     DecimalFormat decimalFormat = new DecimalFormat("###################.###########");
     int all = 0;

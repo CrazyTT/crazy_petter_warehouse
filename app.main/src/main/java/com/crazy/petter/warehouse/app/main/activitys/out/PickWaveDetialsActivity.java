@@ -171,10 +171,17 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
                 ConfirmWavePickBean.DetailsEntity detailsEntity = new ConfirmWavePickBean.DetailsEntity();
                 if (TextUtils.isEmpty(mEdtQty.getText().toString().trim())) {
                     ToastUtils.showLong(PickWaveDetialsActivity.this, "数量不能为空");
+                    mEdtQty.requestFocus();
                     return;
                 }
                 if (!StringUtils.isDouble(mEdtQty.getText().toString().trim())) {
                     ToastUtils.showLong(PickWaveDetialsActivity.this, "请输入合法数量");
+                    mEdtQty.requestFocus();
+                    return;
+                }
+                if (Double.parseDouble(mEdtQty.getText().toString().trim()) == 0) {
+                    //// TODO: 2017/3/17
+                    commitOk();
                     return;
                 }
                 detailsEntity.setQty(Double.parseDouble(mEdtQty.getText().toString().trim()));
@@ -188,28 +195,34 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
                 confirmObnPickBean.setDetails(detailsEntities);
                 if (Double.parseDouble(mEdtQty.getText().toString().trim()) > Double.parseDouble(mTxtQty.getText().toString())) {
                     ToastUtils.showLong(PickWaveDetialsActivity.this, "拣货数量超出范围了");
+                    mEdtQty.requestFocus();
                     return;
                 }
-                currentLocSeq = temp.getLocSeq();
                 mPickDetialsPresenter.commit(JsonFormatter.getInstance().object2Json(confirmObnPickBean));
             }
         });
 
     }
 
-    private int currentLocSeq = -1;
+    private int currentLocSeq = -11;
 
     @Override
     public void commitOk() {
         //提交成功
-        if (mTxtQty.getText().toString().trim().equals(mEdtQty.getText().toString().trim())) {
+        if (Double.parseDouble(mTxtQty.getText().toString().trim()) == Double.parseDouble(mEdtQty.getText().toString().trim()) || Double.parseDouble(mEdtQty.getText().toString().trim()) == 0) {
             //这条记录拣货完毕了
             boolean exist = false;//是否存在相同位置，并且拣货数量>0的货品
-            datas.get(current).setWaitPickQty(0);
-            finish++;
+            datas.get(current).setWaitPickQty(Double.parseDouble(mTxtQty.getText().toString().trim()) - Double.parseDouble(mEdtQty.getText().toString().trim()));
+            int first = 0;
+            if (Double.parseDouble(mEdtQty.getText().toString().trim()) != 0) {
+                finish++;
+                first = 0;
+            } else {
+                first = current + 1;
+            }
             initBottom();
             mEdtQty.setText("");
-            for (int i = 0; i < datas.size(); i++) {
+            for (int i = first; i < datas.size(); i++) {
                 if (datas.get(i).getPickLoc().equalsIgnoreCase(currentLoc) && datas.get(i).getWaitPickQty() > 0) {
                     exist = true;
                     current = i;
@@ -275,6 +288,11 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
         }
     }
 
+    @Override
+    public void commitFauilure() {
+        mEdtQty.requestFocus();
+    }
+
     private void getOrders(String params, boolean isFirst) {
         this.isFirst = isFirst;
         mPickDetialsPresenter.getOrders(params);
@@ -324,7 +342,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
             String skuName = "";
             double count = -1;
             for (int i = 0; i < data.size(); i++) {//我自己都不知道什么意思了
-                if (data.get(i).getSkuId().equalsIgnoreCase(currentSkuid) && data.get(i).getWaitPickQty() > 0) {
+                if (currentWaitPick == data.get(i).getWaitPickQty() && currentPicked == data.get(i).getPickedQty() && currentLocSeq == data.get(i).getLocSeq() && data.get(i).getSkuId().equalsIgnoreCase(currentSkuid) && data.get(i).getWaitPickQty() > 0) {
                     exist = true;
                     temp = data.get(i);
                     break;
@@ -376,7 +394,14 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
         mTxtSkuid.setText(datas.get(postion).getSkuId());
         mTxtQty.setText(decimalFormat.format(datas.get(postion).getWaitPickQty()));
         currentSkuid = datas.get(postion).getSkuId();
+        currentLocSeq = datas.get(postion).getLocSeq();
+        currentWaitPick = datas.get(postion).getWaitPickQty();
+        currentPicked = datas.get(postion).getPickedQty();
+
     }
+
+    double currentPicked = -1;
+    double currentWaitPick = -1;
 
     DecimalFormat decimalFormat = new DecimalFormat("###################.###########");
 

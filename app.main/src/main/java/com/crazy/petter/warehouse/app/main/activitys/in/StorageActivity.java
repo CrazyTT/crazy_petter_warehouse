@@ -15,7 +15,6 @@ import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.util.SharedPreferencesUtil;
 import com.bjdv.lib.utils.widgets.ButtonAutoBg;
 import com.bjdv.lib.utils.widgets.EditTextAuto;
-import com.crazy.petter.warehouse.app.main.Fragment.stroage.DetialsStoreageFragment;
 import com.crazy.petter.warehouse.app.main.Fragment.stroage.ScanStoreageFragment;
 import com.crazy.petter.warehouse.app.main.R;
 import com.crazy.petter.warehouse.app.main.adapters.FragAdapter;
@@ -60,11 +59,11 @@ public class StorageActivity extends BaseActivity {
 
     private void initViews() {
         rbs.add("扫描收货");
-        rbs.add("收货明细");
+//        rbs.add("收货明细");
         tabOne = new ScanStoreageFragment();
-        tabTwo = new DetialsStoreageFragment();
+//        tabTwo = new DetialsStoreageFragment();
         fragments.add(tabOne);
-        fragments.add(tabTwo);
+//        fragments.add(tabTwo);
         tabAdapter = new FragAdapter(getSupportFragmentManager(), fragments, rbs);
         mMainTab.setupWithViewPager(mMainViewpager);
         mMainViewpager.setAdapter(tabAdapter);

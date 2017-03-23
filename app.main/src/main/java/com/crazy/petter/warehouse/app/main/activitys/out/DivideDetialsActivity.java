@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -153,21 +154,31 @@ public class DivideDetialsActivity extends BaseActivity implements DivideDetials
     }
 
     private void setCurrent(int index) {
-        mTxtContainer.setText(dataEntity.get(index).getContainerId());
-        mTxtQty.setText(dataEntity.get(index).getPickQty());
+        mTxtContainer.setText("C" + dataEntity.get(index).getContainerId());
+        mTxtQty.setText(decimalFormat.format(dataEntity.get(index).getPickQty()));
         mTxtWaveNum.setText(dataEntity.get(index).getOutboundId());
         mEdtSkuId.setText(dataEntity.get(index).getSkuId());
+        new Handler().postDelayed(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mEdtSkuId.requestFocus();
+            }
+        }), 300);
     }
 
+    DecimalFormat decimalFormat = new DecimalFormat("###################.###########");
 
     private boolean isCommit = false;
 
     @Override
     public void commitOk() {
+        ToastUtils.showLong(this, "分货完成");
         isCommit = true;
         mTxtContainer.setText("");
         mTxtQty.setText("");
         mTxtWaveNum.setText("");
+        mEdtSkuId.setText("");
+        mEdtSkuId.requestFocus();
         dataEntity = new ArrayList<>();
         mEdtSkuId.requestFocus();
     }
