@@ -54,6 +54,8 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
     @Bind(R.id.ll_title)
     LinearLayout mLlTitle;
     OrderAdapter mOrderAdapter;
+    @Bind(R.id.txt_orderNum)
+    TextView mTxtOrderNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
     }
 
     private void initView() {
+        mTxtOrderNum.setText(JsonUtil.getString(mDataEntity, "IBN_ID"));
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mOrderList.setLayoutManager(layoutManager);
@@ -271,7 +274,7 @@ public class TrayPutAwayDetialsActivity extends BaseActivity implements PutAwayD
         if (keyCode == KeyEvent.KEYCODE_CALL && event.getAction() == KeyEvent.ACTION_DOWN) {
             mBtnCommit.performClick();
             return true;
-        }else if(keyCode == KeyEvent.KEYCODE_ENDCALL && event.getAction() == KeyEvent.ACTION_DOWN){
+        } else if (keyCode == KeyEvent.KEYCODE_ENDCALL && event.getAction() == KeyEvent.ACTION_DOWN) {
             return true;
         }
         return super.onKeyDown(keyCode, event);

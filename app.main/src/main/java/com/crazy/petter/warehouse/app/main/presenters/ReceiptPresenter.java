@@ -1,14 +1,20 @@
 package com.crazy.petter.warehouse.app.main.presenters;
 
+import android.util.Log;
+
 import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.base.BasePresenter;
 import com.bjdv.lib.utils.base.DataCallBack;
 import com.bjdv.lib.utils.constants.Constant;
+import com.bjdv.lib.utils.entity.TitleBean;
 import com.bjdv.lib.utils.util.JsonFormatter;
+import com.bjdv.lib.utils.util.JsonUtil;
 import com.bjdv.lib.utils.util.SoundUtil;
 import com.crazy.petter.warehouse.app.main.beans.GoodsBean;
 import com.crazy.petter.warehouse.app.main.beans.PropertyBean;
 import com.crazy.petter.warehouse.app.main.views.ReceiptView;
+
+import org.json.JSONObject;
 
 /**
  * Created by liuliuchen on 2017/2/12.
@@ -72,5 +78,31 @@ public class ReceiptPresenter extends BasePresenter {
             public void onFailure(String s) {
             }
         });
+    }
+
+    public void getFinish(String params) {
+        requestData(Constant.SERVER_URL_BASE + Constant.HISTORY, params, new DataCallBack() {
+            @Override
+            public void onSuccess(Object o) {
+                context.stopProgress();
+                TitleBean titleBean = JsonUtil.getTitle(o.toString());
+                int all = titleBean.getOrders().size();
+                int finish = 0;
+                for (JSONObject jsonObject : titleBean.getOrders()) {
+                    if (JsonUtil.getString(jsonObject, "QTY").equalsIgnoreCase(JsonUtil.getString(jsonObject, "RECEIVED_QTY"))) {
+                        finish++;
+                    }
+                }
+                Log.e("==========", all + "/" + finish);
+                mReceiptView.showFinish(all == finish);
+            }
+
+            @Override
+            public void onFailure(String s) {
+                context.stopProgress();
+                mReceiptView.showFinish(false);
+            }
+        });
+
     }
 }

@@ -1,9 +1,15 @@
 package com.crazy.petter.warehouse.app.main.activitys.out;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -48,9 +54,9 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
     @Bind(R.id.txt_skuid)
     TextView mTxtSkuid;
     @Bind(R.id.edt_skuid)
-    EditText mEdtSkuid;
+    TextView mEdtSkuid;
     @Bind(R.id.edt_skuname)
-    EditText mEdtSkuname;
+    TextView mEdtSkuname;
     @Bind(R.id.txt_qty)
     TextView mTxtQty;
     @Bind(R.id.edt_qty)
@@ -80,7 +86,7 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
         setContentView(R.layout.activity_pick_wave_detials);
         ButterKnife.bind(this);
         mDataEntity = JsonUtil.from(getIntent().getStringExtra("detials"));
-        mPickDetialsPresenter = new PickWaveDetialsPresenter(this, this, "PickDetialsActivity");
+        mPickDetialsPresenter = new PickWaveDetialsPresenter(this, this, "PickWaveDetialsActivity");
         initViews();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         try {
@@ -95,8 +101,33 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
         } catch (Exception e) {
             e.printStackTrace();
         }
+        mEdtQty.addTextChangedListener(textWatcher);
     }
 
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (TextUtils.isEmpty(mEdtQty.getText().toString().trim())) {
+                mEdtQty.setTextColor(Color.rgb(0, 0, 0));
+                return;
+            }
+            if (Double.parseDouble(mTxtQty.getText().toString().trim()) < Double.parseDouble(mEdtQty.getText().toString().trim())) {
+                mEdtQty.setTextColor(Color.rgb(255, 0, 0));
+            } else {
+                mEdtQty.setTextColor(Color.rgb(0, 0, 0));
+            }
+
+        }
+    };
     private void initViews() {
         mTxtOrderNum.setText(JsonUtil.getString(mDataEntity, "WAVE_ID"));
         JSONObject jsonObject = new JSONObject();
@@ -412,7 +443,33 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
         if (all == finish) {
             ToastUtils.showLong(this, "全部拣货完成");
             if (!isFirst) {
-                PickWaveDetialsActivity.this.finish();
+                AlertDialog.Builder builder = new AlertDialog.Builder(PickWaveDetialsActivity.this);
+                builder.setTitle("提示");
+                builder.setMessage("拣货货已全部完成！");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        PickWaveDetialsActivity.this.finish();
+                    }
+                });
+                builder.setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                Dialog dialog = builder.create();
+                dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                        if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                            PickWaveDetialsActivity.this.finish();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+                dialog.show();
             }
         } else if (finish > all) {
             finish = all;
@@ -420,6 +477,41 @@ public class PickWaveDetialsActivity extends BaseActivity implements PickWaveDet
 
         } else {
             mTxtBottom.setText("共计" + all + "条/待处理" + (all - finish) + "条/已完成" + finish + "条");
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (all != 0 && all != finish) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(PickWaveDetialsActivity.this);
+            builder.setTitle("提示");
+            builder.setMessage("拣货未完成，确认退出？");
+            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    PickWaveDetialsActivity.this.finish();
+                }
+            });
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            Dialog dialog = builder.create();
+            dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                        PickWaveDetialsActivity.this.finish();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            dialog.show();
+        } else {
+            super.onBackPressed();
         }
     }
 

@@ -75,6 +75,16 @@ public class ReceiptFragment extends Fragment implements ReceiptView {
     private String[] SkuPropertyNames = {};
     private String[] SkuPropertyCodes = {};
 
+    public boolean isFinish() {
+        return isFinish;
+    }
+
+    public void setFinish(boolean finish) {
+        isFinish = finish;
+    }
+
+    private boolean isFinish = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_receipt, container, false);
@@ -87,6 +97,7 @@ public class ReceiptFragment extends Fragment implements ReceiptView {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getFinish();
         mEdtGoodBar.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -230,6 +241,18 @@ public class ReceiptFragment extends Fragment implements ReceiptView {
         EventBus.getDefault().register(this);
     }
 
+    private void getFinish() {
+        if (!TextUtils.isEmpty(sp.getString("num"))) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("InboundId", sp.getString("num"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            mReceiptPresenter.getFinish(jsonObject.toString());
+        }
+    }
+
     String SkuProperty = "";
 
     class SelectedListener implements AdapterView.OnItemSelectedListener {
@@ -266,8 +289,11 @@ public class ReceiptFragment extends Fragment implements ReceiptView {
         init();
     }
 
+    boolean isCommit = false;
+
     @Override
     public void receiptOK() {
+        isCommit = true;
         ToastUtils.showLong(getActivity(), "收货成功");
         isctrl = false;
         mEdtGoodBar.setText("");
@@ -278,6 +304,9 @@ public class ReceiptFragment extends Fragment implements ReceiptView {
         mEdtGoodBar.requestFocus();
         goodsBean = null;
         mTxtDate.setVisibility(View.INVISIBLE);
+        BaseActivity baseActivity = (BaseActivity) getActivity();
+        baseActivity.showProgress("获取数据中。。。", false);
+        getFinish();
     }
 
     @Override
@@ -306,6 +335,14 @@ public class ReceiptFragment extends Fragment implements ReceiptView {
         mTxtDate.setVisibility(View.INVISIBLE);
         mEdtGoodBar.requestFocus();
         goodsBean = null;
+    }
+
+    @Override
+    public void showFinish(boolean isFinishz) {
+        this.isFinish = isFinishz;
+        if (isFinishz && isCommit) {
+            getActivity().onBackPressed();
+        }
     }
 
     boolean isP = true;
@@ -343,8 +380,6 @@ public class ReceiptFragment extends Fragment implements ReceiptView {
         if ("commit".equals(event.getEvent())) {
             mBtnCommit.performClick();
         }
-
     }
-
 }
 

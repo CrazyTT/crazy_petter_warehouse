@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bjdv.lib.utils.base.BaseActivity;
 import com.bjdv.lib.utils.entity.OrderBean;
@@ -57,6 +58,8 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
     @Bind(R.id.btn_commit)
     ButtonAutoBg mBtnCommit;
     PutAwayDetialsPresenter mPutAwayDetialsPresenter;
+    @Bind(R.id.txt_orderNum)
+    TextView mTxtOrderNum;
     private String barCode = "";
     @Bind(R.id.ll_title)
     LinearLayout mLlTitle;
@@ -73,6 +76,7 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
     }
 
     private void initView() {
+        mTxtOrderNum.setText(JsonUtil.getString(mDataEntity, "IBN_ID"));
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mOrderList.setLayoutManager(layoutManager);
@@ -129,6 +133,23 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
                     receiptBean.setInboundId(JsonUtil.getString(mDataEntity, "IBN_ID"));
                     ArrayList<PutAwayBean.DetailsEntity> entities = new ArrayList<>();
                     HashMap<Integer, Boolean> choiceItem = mOrderAdapter.getIsSelected();
+                    HashMap<Integer, Boolean> choiceItem2 = mOrderAdapter.getIsSelected();
+                    int count = 0;
+                    Iterator<Integer> iter2 = choiceItem.keySet().iterator();
+                    while (iter2.hasNext()) {
+                        int key = iter2.next();
+                        Boolean val = choiceItem.get(key);
+                        if (val) {
+                            count++;
+                        }
+                    }
+                    if (count > 1) {
+                        if (Double.parseDouble(mQty.getText().toString().trim()) != Double.parseDouble(mEdtSkuqty.getText().toString().trim())) {
+                            showTips("请单行上架");
+                            return;
+                        }
+
+                    }
                     Iterator<Integer> iter = choiceItem.keySet().iterator();
                     while (iter.hasNext()) {
                         int key = iter.next();
@@ -142,11 +163,19 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
                                 ToastUtils.showLong(PutAwayDetialsActivity.this, "请输入上架数量");
                                 return;
                             }
+                            if (Double.parseDouble(mEdtSkuqty.getText().toString().trim()) <= 0) {
+                                ToastUtils.showLong(PutAwayDetialsActivity.this, "请输入必须大于0");
+                                return;
+                            }
                             if (TextUtils.isEmpty(mEdtLoc.getText().toString().trim())) {
                                 ToastUtils.showLong(PutAwayDetialsActivity.this, "请输入上架货位");
                                 return;
                             }
-                            detailsEntity.setQty(Integer.parseInt(mEdtSkuqty.getText().toString().trim()));
+                            if (count > 1) {
+                                detailsEntity.setQty(Double.parseDouble(JsonUtil.getString(datas.get(key), "WAIT_PTED_QTY")));
+                            } else {
+                                detailsEntity.setQty(Double.parseDouble(mEdtSkuqty.getText().toString().trim()));
+                            }
                             detailsEntity.setIbnReceiveInc(JsonUtil.getInt(datas.get(key), "IBN_RECEIVE_INC"));//需要确定
                             detailsEntity.setLpnNo("");
                             detailsEntity.setToLoc(mEdtLoc.getText().toString().trim());
@@ -284,9 +313,11 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
 
     @Override
     public void commitOK() {
-        ToastUtils.showLong(this, "上架成功");
+        Toast.makeText(this, "上架成功", Toast.LENGTH_LONG).show();
+//        ToastUtils.showLong(this, "上架成功");
         mOrderAdapter.initIsSelected();
         getDetials();
+        mQty.setText("0");
     }
 
     LocBean.DataEntity locEntity;
@@ -294,7 +325,8 @@ public class PutAwayDetialsActivity extends BaseActivity implements PutAwayDetia
     @Override
     public void showLoc(LocBean.DataEntity dataEntity) {
         locEntity = dataEntity;
-        ToastUtils.showLong(this, "货位可用");
+        Toast.makeText(this, "货位可用", Toast.LENGTH_LONG).show();
+//        ToastUtils.showLong(this, "货位可用");
     }
 
     @Override

@@ -18,4 +18,6 @@ public interface ReceiptView extends IBaseView {
     void showProperty(ArrayList<PropertyBean.DataEntity> data);
 
     void showNoGoods();
+
+    void showFinish(boolean isFinishz);
 }

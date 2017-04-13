@@ -156,7 +156,7 @@ public class JsonUtil {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         java.util.Date date = null;
         try {
-            date = format.parse("20170502");
+            date = format.parse("20180226");
         } catch (ParseException e) {
             e.printStackTrace();
             date = new java.util.Date(System.currentTimeMillis());

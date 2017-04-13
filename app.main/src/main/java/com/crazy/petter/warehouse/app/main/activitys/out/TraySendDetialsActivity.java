@@ -58,6 +58,8 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
     @Bind(R.id.ll_title)
     LinearLayout mLlTitle;
     OrderAdapter mOrderAdapter;
+    @Bind(R.id.txt_orderNum)
+    TextView mTxtOrderNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,7 @@ public class TraySendDetialsActivity extends BaseActivity implements TraySendDet
     }
 
     private void initViews() {
+        mTxtOrderNum.setText(JsonUtil.getString(mDataEntity, "OBN_ID"));
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mOrderList.setLayoutManager(layoutManager);

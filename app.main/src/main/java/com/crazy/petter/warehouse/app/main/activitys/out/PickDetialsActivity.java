@@ -1,9 +1,15 @@
 package com.crazy.petter.warehouse.app.main.activitys.out;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -46,9 +52,9 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
     @Bind(R.id.txt_skuid)
     TextView mTxtSkuid;
     @Bind(R.id.edt_skuid)
-    EditText mEdtSkuid;
+    TextView mEdtSkuid;
     @Bind(R.id.edt_skuname)
-    EditText mEdtSkuname;
+    TextView mEdtSkuname;
     @Bind(R.id.txt_qty)
     TextView mTxtQty;
     @Bind(R.id.edt_qty)
@@ -92,7 +98,33 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
         } catch (Exception e) {
             e.printStackTrace();
         }
+        mEdtQty.addTextChangedListener(textWatcher);
     }
+
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (TextUtils.isEmpty(mEdtQty.getText().toString().trim())) {
+                mEdtQty.setTextColor(Color.rgb(0, 0, 0));
+                return;
+            }
+            if (Double.parseDouble(mTxtQty.getText().toString().trim()) < Double.parseDouble(mEdtQty.getText().toString().trim())) {
+                mEdtQty.setTextColor(Color.rgb(255, 0, 0));
+            } else {
+                mEdtQty.setTextColor(Color.rgb(0, 0, 0));
+            }
+
+        }
+    };
 
     private void initViews() {
         mTxtOrderNum.setText(JsonUtil.getString(mDataEntity, "OBN_ID"));
@@ -403,7 +435,33 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
         if (all == finish) {
             ToastUtils.showLong(this, "全部拣货完成");
             if (!isFirst) {
-                PickDetialsActivity.this.finish();
+                AlertDialog.Builder builder = new AlertDialog.Builder(PickDetialsActivity.this);
+                builder.setTitle("提示");
+                builder.setMessage("拣货货已全部完成！");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        PickDetialsActivity.this.finish();
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                Dialog dialog = builder.create();
+                dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                        if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                            PickDetialsActivity.this.finish();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+                dialog.show();
             }
         } else if (finish > all) {
             finish = all;
@@ -411,6 +469,42 @@ public class PickDetialsActivity extends BaseActivity implements PickDetialsView
 
         } else {
             mTxtBottom.setText("共计" + all + "条/待处理" + (all - finish) + "条/已完成" + finish + "条");
+        }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (all != 0 && all != finish) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(PickDetialsActivity.this);
+            builder.setTitle("提示");
+            builder.setMessage("拣货未完成，确认退出？");
+            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    PickDetialsActivity.this.finish();
+                }
+            });
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            Dialog dialog = builder.create();
+            dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                        PickDetialsActivity.this.finish();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            dialog.show();
+        } else {
+            super.onBackPressed();
         }
     }
 

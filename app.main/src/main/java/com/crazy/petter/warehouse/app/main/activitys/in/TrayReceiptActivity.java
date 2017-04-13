@@ -57,6 +57,8 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
     @Bind(R.id.ll_title)
     LinearLayout mLlTitle;
     OrderAdapter mOrderAdapter;
+    @Bind(R.id.txt_orderNum)
+    TextView mTxtOrderNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class TrayReceiptActivity extends BaseActivity implements TrayReceiptView
     }
 
     private void initView() {
+        mTxtOrderNum.setText(JsonUtil.getString(mDataEntity, "IBN_ID"));
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mOrderList.addItemDecoration(new MyDecoration(this, MyDecoration.VERTICAL_LIST));

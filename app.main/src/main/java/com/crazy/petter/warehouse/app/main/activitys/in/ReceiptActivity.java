@@ -277,6 +277,10 @@ public class ReceiptActivity extends BaseActivity implements ReceiptView {
         goodsBean = null;
     }
 
+    @Override
+    public void showFinish(boolean isFinishz) {
+    }
+
     boolean isP = true;
 
     private void init() {

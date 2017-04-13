@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="仓储扫描系统"
         android:textColor="@color/colorWhite"
@@ -21,7 +21,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="65dp"
         android:gravity="right"
         android:paddingRight="60dp"
         android:text="—电商版"
@@ -90,9 +90,11 @@
         </LinearLayout>
 
         <com.bjdv.lib.utils.widgets.ButtonAutoBg
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/backgroud_gradview"
             android:text="登录"

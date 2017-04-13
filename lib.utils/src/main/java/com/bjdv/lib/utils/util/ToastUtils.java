@@ -2,7 +2,9 @@ package com.bjdv.lib.utils.util;
 
 import android.content.Context;
 import android.os.Handler;
-import android.widget.Toast;
+
+import com.bjdv.lib.utils.R;
+import com.bjdv.lib.utils.widgets.ToastDialog;
 
 /**
  * Title:
@@ -33,7 +35,9 @@ public class ToastUtils {
      * @param message
      */
     public static void showShort(Context context, CharSequence message) {
-        toast(context, message, Toast.LENGTH_SHORT);
+//        toast(context, message, Toast.LENGTH_SHORT);
+        ToastDialog toastDialog = new ToastDialog(context, R.style.dialog, message);
+        toastDialog.show();
     }
 
     /**
@@ -43,7 +47,9 @@ public class ToastUtils {
      * @param message
      */
     public static void showLong(Context context, CharSequence message) {
-        toast(context, message, Toast.LENGTH_LONG);
+//        toast(context, message, Toast.LENGTH_LONG);
+        ToastDialog toastDialog = new ToastDialog(context, R.style.dialog, message);
+        toastDialog.show();
     }
 
     /**

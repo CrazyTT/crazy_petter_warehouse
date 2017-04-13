@@ -127,16 +127,18 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
-            <com.bjdv.lib.utils.widgets.EditTextAuto
+            <TextView
                 android:id="@+id/edt_skuid"
                 android:layout_width="80dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="5dp"
                 android:background="@drawable/edt_back"
+                android:focusable="false"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:singleLine="true"
+                android:textColor="@color/black"
                 autofit:minTextSize="13sp"/>
         </me.grantland.widget.AutofitLayout>
     </LinearLayout>
@@ -158,16 +160,18 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
-            <com.bjdv.lib.utils.widgets.EditTextAuto
+            <TextView
                 android:id="@+id/edt_skuname"
                 android:layout_width="190dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="5dp"
                 android:background="@drawable/edt_back"
+                android:focusable="false"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:singleLine="true"
+                android:textColor="@color/black"
                 autofit:minTextSize="13sp"/>
         </me.grantland.widget.AutofitLayout>
     </LinearLayout>

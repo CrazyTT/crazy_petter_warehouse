@@ -1,9 +1,12 @@
 package com.crazy.petter.warehouse.app.main.activitys.in;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
 import android.widget.LinearLayout;
 
@@ -37,8 +40,8 @@ public class ReceiptMixActivity extends BaseActivity {
     private ArrayList<String> rbs = new ArrayList<>();
     FragAdapter tabAdapter;
     SharedPreferencesUtil sp;
-    Fragment tabOne;
-    Fragment tabTwo;
+    ReceiptFragment tabOne;
+    DetialsStoreageFragment2 tabTwo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,5 +111,40 @@ public class ReceiptMixActivity extends BaseActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("提示");
+        if (tabOne.isFinish()) {
+            builder.setMessage("收货已全部完成！");
+        } else {
+            builder.setMessage("收货未完成，确认退出？");
+        }
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ReceiptMixActivity.this.finish();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        Dialog dialog = builder.create();
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    ReceiptMixActivity.this.finish();
+                    return true;
+                }
+                return false;
+            }
+        });
+        dialog.show();
     }
 }
