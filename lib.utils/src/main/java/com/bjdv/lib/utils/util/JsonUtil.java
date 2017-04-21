@@ -112,6 +112,19 @@ public class JsonUtil {
         return 0;
     }
 
+
+    public static Double getDouble(JSONObject jsonObject, String name) {
+        if (!jsonObject.isNull(name)) {
+            try {
+                return jsonObject.getDouble(name);
+            } catch (JSONException e) {
+                Log.d("【JsonUtil】", "getInt解析json异常");
+                e.printStackTrace();
+            }
+        }
+        return Double.valueOf(0);
+    }
+
     public static Long getLong(JSONObject jsonObject, String name) {
         if (!jsonObject.isNull(name)) {
             try {

@@ -89,12 +89,12 @@ public class ReceiptPresenter extends BasePresenter {
                 int all = titleBean.getOrders().size();
                 int finish = 0;
                 for (JSONObject jsonObject : titleBean.getOrders()) {
-                    if (JsonUtil.getString(jsonObject, "QTY").equalsIgnoreCase(JsonUtil.getString(jsonObject, "RECEIVED_QTY"))) {
+                    if (JsonUtil.getDouble(jsonObject, "QTY") <= JsonUtil.getDouble(jsonObject, "RECEIVED_QTY")) {
                         finish++;
                     }
                 }
                 Log.e("==========", all + "/" + finish);
-                mReceiptView.showFinish(all == finish);
+                mReceiptView.showFinish(finish == finish);
             }
 
             @Override
