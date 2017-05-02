@@ -138,14 +138,10 @@ public class LoginActivity extends BaseActivity {
                 stopProgress();
                 JSONObject jsonObject1 = JsonUtil.from(s);
                 if (JsonUtil.getBoolean(jsonObject1, "success")) {
-                    if (JsonUtil.jsonArrayToBooleanArray2()) {
-                        sp.setString("userName", userName);
-                        sp.setString("passWord", passWord);
-                        Small.openUri("main", LoginActivity.this);
-                        LoginActivity.this.finish();
-                    } else {
-                        LoginActivity.this.finish();
-                    }
+                    sp.setString("userName", userName);
+                    sp.setString("passWord", passWord);
+                    Small.openUri("main", LoginActivity.this);
+                    LoginActivity.this.finish();
                 } else {
                     SoundUtil.getInstance(LoginActivity.this).play(0);
                     ToastUtils.showLong(LoginActivity.this, JsonUtil.getString(jsonObject1, "message"));
