@@ -94,7 +94,7 @@ public class ReceiptPresenter extends BasePresenter {
                     }
                 }
                 Log.e("==========", all + "/" + finish);
-                mReceiptView.showFinish(finish == finish);
+                mReceiptView.showFinish(finish == all);
             }
 
             @Override
